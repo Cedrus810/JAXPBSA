@@ -66,6 +66,18 @@ Full ΔG_PB (three species: complex, receptor, ligand) — **222.5 ms/frame** on
 | true residual | 8.79e-06 / 4.76e-06 / 7.81e-06 | **identical** |
 | end-to-end, single frame | 76.8 ms | 29.0 ms |
 
+**Against Amber `MMPBSA.py`** — same S4 frames, throughput regime (frames are free,
+the whole machine is yours). jaxpbsa on one 2080 Ti does **320 ms/frame**; `MMPBSA.py`
+scales from 5806 ms/frame serial down to **292 ms/frame** — but only when given the
+*entire* dual-socket server, **all 40 physical cores** (the machine has 80 threads;
+hyperthreading does not scale and is excluded). That is the only point where Amber is
+ahead, and barely: **parity is reached only at full-machine 40c/80t** — at 32 cores it
+is already behind (340 ms), and in the online/latency regime (frames arriving one at a
+time while the CPU is busy running the MD that produced them) jaxpbsa wins outright,
+325 ms vs 5806 ms, **17.9×**. Do not quote a "26×" speedup — that compares against
+`MMPBSA.py` on a single core, which is not how anyone would run it. Details and the
+full table: [`RESULTS.md`](./RESULTS.md) §13.
+
 ---
 
 ## How it works
@@ -103,7 +115,7 @@ error bar on ΔG_PB from the relative error on the absolute values: that gives
 jaxpbsa/
   pb/        grid, charges, surface, operator, solver (PCG), multigrid, dst, energy
   mm/        receptor–ligand Coulomb + LJ cross terms
-  sa/        nonpolar term — zsasa backend (stage 1), JAX rewrite (stage 2)
+  sa/        nonpolar term — JAX Shrake-Rupley (zsasa is a test-only reference)
   openmm_io/ parameter extraction, radii, load_canonical
   benchmark/ stage-resolved timing helpers
 scripts/
