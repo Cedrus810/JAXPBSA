@@ -20,7 +20,7 @@ import jax.numpy as jnp
 import numpy as np
 
 from .. import ACCUM_DTYPE, dtype as _dtype
-from ..constants import KT_TO_KCAL, debye_kappa2
+from ..constants import KT_TO_KCAL, PROBE_RADIUS, debye_kappa2
 from .charges import assign_density, interpolate, source_term
 from .grid import GridSpec
 from .operator import (
@@ -48,7 +48,7 @@ class PBParams:
     eps_out: float = 78.5
     ionic_strength_M: float = 0.15
     temperature_K: float = 298.15
-    probe_radius: float = 1.4  # Å
+    probe_radius: float = PROBE_RADIUS  # Å, 单源见 constants.py
     ion_radius: float = 2.0  # Å
     swin: float = 0.5  # ε/κ̄² 调和平滑半径, Å (≤0 关闭)
     ref_solver: str = "dst"  # "dst" (精确直解, 默认) | "pcg" (对照用)

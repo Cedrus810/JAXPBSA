@@ -8,6 +8,14 @@ from __future__ import annotations
 NM_TO_ANGSTROM = 10.0
 KJ_TO_KCAL = 1.0 / 4.184
 
+# 水探针半径 (Å)。**PB 与 SA 的唯一来源** —— 两者必须是同一个数, 否则
+# ΔG_PB 用的分子表面和 ΔG_SA 用的可及表面对应不同的溶剂, 加起来没有物理意义。
+# 半径 rᵢ 的单源是 `openmm_io.assign_radii` (mbondi2)。这两个量构成 SA/PB 之间
+# **唯一**该共享的东西: PB 的 voxel mask / atom→grid 映射 / erosion 表示 / 网格
+# 间距 h 全是离散化细节, 一律不外泄到 SA (见 DESIGN.md §3.10)。
+# `tests/test_constants.py::test_pb_and_sa_share_one_probe_radius` 卡这条。
+PROBE_RADIUS = 1.4
+
 # Coulomb constant in internal units
 COULOMB_K = 332.063713  # kcal·Å·mol⁻¹·e⁻²
 

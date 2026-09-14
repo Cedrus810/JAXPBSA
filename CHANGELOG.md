@@ -135,3 +135,55 @@
 不能再用纸面流量反推）。
 
 展开见 [RESULTS.md §9](./RESULTS.md)；明确不做/已证伪的方向见 §10。
+
+---
+
+## SA stage 2：JAX Shrake–Rupley（`sa/jax_sr.py`）
+
+SA 现在**只有这一个实现**。zsasa 那个外部 CLI **不是后端也不是依赖** —— 它的唯一职责
+是给 JAX 版做性能/结果对拍，所以从 `jaxpbsa/sa/zsasa.py` 挪到 `tests/zsasa_ref.py`，
+和 APBS 同一个待遇（「外部进程调用，不进包」）。
+
+`jaxpbsa.sa.sasa()` / `delta_g_sa()` 的 `backend=` 形参一并删掉：**一个实现的分派
+就是多余的抽象**，留着只会让人以为 zsasa 是个可选运行时路径。
+
+**不显式构造采样点。** 字面照抄 SR 要建 `[N,K,3]` 的 `p_ik = x_i + R_i·u_k` 再逐个测距；
+代进埋藏判据展开后 `|p_ik − x_j|² = d_ij² + R_i² + 2R_i·u_k·(x_i − x_j)`，
+判据变成一次 `u[P,3] @ disp[K,3]ᵀ` 的矩阵乘。顺带白捡：对 u_k 取极值得
+`d < R_i + R_j` 才可能遮挡，**远邻居 / padding(d²=∞) / 自身项(disp=0) 全部自动失效，
+不用写掩码**。
+
+| 项 | 值 |
+|---|---|
+| vs zsasa 总 SASA（S4, P=960 / 4000） | rel **4.6e-5 / 5.8e-5** |
+| vs 暴力法（显式建 p_ik 测距） | rel < 1e-6 = 逐点判定完全相同 |
+| 单 species（2080 Ti, B=16） | 41 → **7.2 ms/帧** |
+| 三 species ΔG_SA（B=16） | 131 → **13.7 ms/帧**，占每帧 6%（PB 222） |
+
+**加了一道硬闸**：K 近邻是有损的，`K ≥ maxᵢ|{j : d_ij < R_i + R_max}|` 才保证不丢遮挡。
+不满足**直接报错并报出该填多少**（`需要 ≥ 134 / 重试: k_neighbors=134`），一次重试必中。
+
+自动探测试过两条，**都不安全**：扫 CIF 给 131（真空最小化态，不是 MD 系综构象），
+MD 帧 0 给 126，而 10 ns 轨迹实际跨 **123–136** —— 单帧探不出系综上界，且 k 是
+static argnum，逐块重探会反复触发重编译。默认 192（40% 余量，堆积密度限的量，
+换蛋白不变）。
+
+没有闸就是第 1 节那种「不报错、只给看起来合理的错数字」：误差恒为正且单调
+（丢遮挡 ⇒ 暴露变多），k=32 时 +1.4%，没有任何提示。
+
+## 探针半径的 source of truth
+
+`probe_radius=1.4` 原来有 **3 份独立字面量**（`pb/energy.py` 的 `PBParams`、
+`sa/jax_sr.py`、`sa/zsasa.py`）。两边用不同的 r_p **不会报错**，只会悄悄给出偏掉的
+ΔG_MM/PBSA —— PB 的分子表面和 SA 的可及表面对应不同的溶剂，相加没有物理意义。
+
+现在唯一来源是 `constants.PROBE_RADIUS`。
+`tests/test_constants.py::test_pb_and_sa_share_one_probe_radius` 既比默认值、
+也扫源码里的裸字面量。
+
+顺带把边界写进 DESIGN.md §3.10：**SA 与 PB 只共享物理定义**（r_i 来自
+`openmm_io.assign_radii`，r_p 来自 `constants.PROBE_RADIUS`），
+**PB 的 voxel mask / atom→grid 映射 / erosion 表示 / 网格间距 h 一律不外泄**。
+两者的几何体确实同一个（`dilate(vdw, ball(R_probe))` 就是 SR 采样的那张球面所围的体），
+但从布尔占据格点数边界面取面积是 Cauchy 阶梯 —— 对球精确算是 **6πR² vs 真值 4πR²，
+系统性 +50%**，且会把 SA 的精度绑死在 PB 的 h 上。不合。

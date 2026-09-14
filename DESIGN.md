@@ -12,7 +12,7 @@
 | 开发环境 | `openmm_dev` (Python 3.12.13, JAX 0.11.1 + jax-cuda12-plugin, OpenMM 8.5.2, mdtraj, pdbfixer, **openmmforcefields 0.16.0**（phosaa14SB 等力场）, scipy, pytest 9.1.1) |
 | 开发机 | 24 核 CPU, 128 GB RAM, **RTX 2080 Ti (11 GB, sm_75)**；JAX 默认后端已是 gpu。fp64 = 1/32 fp32，显存限 h=0.5 下 B≈5 |
 | 目标 GPU | 用户侧 RTX 5090 (32 GB, sm_120)。jax 0.11.1 的 cu12 plugin 支持 CUDA 12.8+，兼容 5090 |
-| PB reference | APBS 3.4.1 (`~/software/APBS-3.4.1.Linux/bin/apbs`)，外部进程调用，不进包 |
+| 外部参照物（**都不进包**）| **MMPBSA.py 14.0 + pbsa**（AmberTools，在 `openmm_dev` 里；需 `AMBERHOME`）—— 端到端 ΔG_MM/PBSA，`scripts/validate_mmpbsa.py`<br>**APBS 3.4.1** (`~/software/APBS-3.4.1.Linux/bin/apbs`) —— ΔG_PB 逐参数归因<br>**zsasa** (`tests/zsasa_ref.py`) —— SASA 对拍 |
 | 离线测试体系 | pdbfixer/OpenMM Modeller 从氨基酸序列离线构建 S1–S3；真实体系 S4 = 1SPS/1SPR 已下载至 `data/raw/`（shell 默认沙箱无网络，需关沙箱联网，如 `curl files.rcsb.org`） |
 
 ---
@@ -319,7 +319,7 @@ carry **整个 `φ[3B, ...]`**——第 k 条 lane 用上一个 chunk 第 k 条 
 因此 M7 的 benchmark **必须把 B 作为一个轴扫**（B ∈ {1, 4, 16} × {cold, warm}），
 只报一个 B 下的「迭代数下降 30%」没有意义。
 
-### 3.10 `sa/` —— 两段式：zsasa 替补 → JAX 重写
+### 3.10 `sa/` —— JAX Shrake–Rupley（zsasa 只是对拍参照物）
 
 ```
 G_SA = γ·SASA + β        ΔG_SA = γ·(A_C − A_R − A_L) + β·(1 − 1 − 1) = γ·ΔSASA − β
@@ -330,39 +330,157 @@ G_SA = γ·SASA + β        ΔG_SA = γ·(A_C − A_R − A_L) + β·(1 − 1 �
 默认取 INP=1 的 (0.005, 0.0)，**论文里必须写明用的是哪一档**——γ 直接平移 ΔG_SA。
 测试 `test_beta_does_not_cancel_in_the_difference` 专门卡这条。
 
-#### stage 1（已实现）：zsasa 作为临时替补
+#### 实现：`sa/jax_sr.py`，唯一后端
 
-[zsasa](https://github.com/N283T/zsasa) 是 Zig 写的独立 CLI（Shrake–Rupley / Lee–Richards，
-SIMD + 多线程），**不是 Python 库，进不了 JIT 图**。但 SA 也不需要进图：
+`ΔG_MM/PBSA = ΔE_MM + ΔG_PB + ΔG_SA`，三项独立相加，**SA 从不回馈 PB**。
+所以 SA 是一个独立阶段——但它仍然进 JIT 图，理由是批处理和 `lax.scan`，不是耦合。
+
+**zsasa 不是后端，不是依赖，不进包。** [zsasa](https://github.com/N283T/zsasa)
+是 Zig 写的独立 CLI，在本项目里**只有一个职责：给 JAX 实现做性能/结果对拍**，
+因此它住在 `tests/zsasa_ref.py`，找不到二进制就跳过测试。
+**这和 APBS 是同一个待遇**（§0：「外部进程调用，不进包」）——参照物不是依赖。
+
+`jaxpbsa.sa.sasa()` 因此**没有 `backend=` 形参**：只有一个实现，分派是多余的。
+
+**对拍时走 JSON 而不是 PDB**：`calc` 的 JSON 输入有 `r` 字段（逐原子半径 Å），
+可以把我们的 mbondi2 **原样**喂进去。走 PDB 则半径由 zsasa 的分类器决定：实测 S4 上
+`CCD: 882 atoms classified, 953 fallback`，近半数原子是猜的，且 CCD 是联合原子半径——
+那样 rᵢ 的单源当场就破了，**对拍也就不是对拍**。
+
+zsasa 自己已对着解析解验过（孤立球 2e-16、两球重叠 9e-6），所以它做参照物是够格的。
+
+#### 算法：JAX Shrake–Rupley
+
+golden-spiral 点集（host 侧静态常量，全原子共用），dense N² 距离 + `top_k` 取 K 近邻，
+`lax.map` 分块限显存。整个核可 `jit`/`vmap`，`sasa_core` 是图内入口。
+
+**关键的一步代数变换：不显式构造采样点。** 字面照抄 SR 要建 `[N,K,3]` 的
+$\mathbf p_{ik}=\mathbf x_i+R_i\mathbf u_k$ 再逐个测距。把它代进埋藏判据展开：
 
 ```
-ΔG_MM/PBSA = ΔE_MM + ΔG_PB + ΔG_SA     三项独立相加，SA 从不回馈 PB
+|p_ik − x_j|² = d_ij² + R_i² + 2 R_i · u_k·(x_i − x_j)
+
+埋住 ⟺  2 R_i · u_k·(x_i − x_j)  <  R_j² − R_i² − d_ij²
+        └──── u[P,3] @ disp[K,3]ᵀ 一次矩阵乘 ────┘   └── 每对一个常数 ──┘
 ```
 
-所以它是一个**独立的 host 侧阶段**，藏在 `jaxpbsa/sa/` 的接口后面。
+每原子只剩一次 `[P,3]×[3,K]` 矩阵乘。**顺带白捡两件事**：对 uₖ 取极值
+`min(u·disp) = −d`，得 j 能遮住 i 的必要条件是 `d < R_i + R_j` —— 所以远邻居、
+padding（d²=∞ ⇒ rhs=−∞）、自身项（disp=0 ⇒ `0 < 0` 假）**全部自动失效，不用写掩码**。
 
-**走 JSON 而不是 PDB**：`calc` 的 JSON 输入有 `r` 字段（逐原子半径 Å），可以把我们的
-mbondi2 **原样**喂进去——SA 与 PB 用同一套半径是自洽的前提。走 PDB 则半径由 zsasa 的
-分类器决定：实测 S4 上 `CCD: 882 atoms classified, 953 fallback`，近半数原子是猜的，
-且 CCD 是联合原子半径。
+**K 近邻是有损的，所以有硬闸。** 判据 `K ≥ maxᵢ |{j : d_ij < R_i + R_max}|`。
+充分性：不在该集合里的原子距离 ≥ R_i + R_max，比集合里每一个都远，所以 top_k 取最近的
+K 个必然把整个集合装下，而任何可能的遮挡者都在集合里。
 
-**替补的第二职责：它是 stage 2 的验收基准。** zsasa 已对着解析解验过
-（孤立球 2e-16、两球重叠 9e-6），所以 JAX 版写完直接拿它对拍，不用另找参照物。
-`tests/test_sa.py` 的 `BACKENDS` 是参数化的，stage 2 落地后加上 `"jax"`，
-同一批断言自动同时跑在两个后端上。
+> **不能换成更紧的 `|{j : d_ij < R_i + R_j}|`**（S4 上 116 vs 136，看着省 15%）：
+> top_k 按**距离**排序，半径不进排序，一个近处的小原子（不遮挡）会挤掉一个远处的
+> 大原子（真遮挡）。所以界必须用 R_max。
 
-#### stage 2（待做）：JAX Shrake–Rupley
+**为什么不自动探测**（两条都实测过，都不安全）：
 
-golden-spiral 点集（static），复用 surface.py 的 cell-list gather 找 rᵢ+R_p 邻居。
+| 来源 | 所需 k |
+|---|---|
+| CIF（真空最小化的制备态） | 131 —— 不是 MD 系综的构象，**欠 5** |
+| MD 帧 0 | 126 —— **欠 10** |
+| MD 40 帧（10 ns 轨迹）跨度 | **123 – 136** |
 
-**动机已有实测数据**：zsasa 逐帧起子进程，S4 上 1835 原子含进程启动 41 ms/帧，
-三个 species 就是 **131 ms/帧**，而 PB 是 222 ms/帧 —— **SA 让每帧多 59%**。
-更要紧的是它在 host 侧，进不了 `lax.scan`，吃不到 warm start 和批处理。
+单帧探不出系综的上界，热运动会挤出更密的局部；而 k 是 static argnum，逐块重探还会
+反复触发重编译。默认 **192** 对这条轨迹有 40% 余量，且这个数是**堆积密度**限的
+（半径 6.4 Å 球内 ~0.1 原子/Å³ ≈ 110），换个折叠蛋白量级不变。
 
-**验收**：与 stage-1 的 zsasa 对拍（同半径、同探针、同 n_points），
-以及同一批解析解断言。注意**不要**拿 mdtraj 当基准——它的球面采样点生成方式与
-golden spiral 不同，逐原子对不上，且它不接受逐原子自定义半径（只有元素级的
-`change_radii`），无法表达 mbondi2 对氢的成键依赖。
+兜底的是闸本身，**它直接报出该填多少，一次重试必中**：
+
+```
+k_neighbors=96 不够, 本批需要 ≥ 134。真遮挡会被丢掉, 面积偏大 —— 所以这里报错而不是返回。
+  重试: sasa(..., k_neighbors=134)
+  注意这是**本批**的值; 逐块处理长轨迹时取各块最大, 否则 k 变化会触发重编译。
+```
+
+**闸是充分条件，会早报**（实测 S4 单帧，k=256 为基准）：
+
+| k | 128 | 96 | 80 | 64 | 48 | 32 |
+|---|---|---|---|---|---|---|
+| rel err | 0 | 0 | 5e-5 | 1.2e-4 | 1.4e-3 | **1.4e-2** |
+
+闸在 k<134 就拦，而面积到 k=80 才开始动 —— 保守约 1.7×，这是该错的方向。
+注意误差**恒为正且单调**（丢遮挡 ⇒ 暴露变多），所以没有闸的话就是第 1 节那种
+「不报错、只给看起来合理的错数字」：k=32 时 +1.4% 没有任何提示。
+
+**验收**（`tests/test_sa.py`，三层断言，只有第一层是自洽的）：
+
+| 对拍对象 | 结果 |
+|---|---|
+| 解析解（孤立球、两球重叠、远离可加） | 与 stage 1 同一批断言，全过 |
+| zsasa 参照物 总 SASA，S4，P=960 / 4000 | rel **4.6e-5 / 5.8e-5**（T4 要求 < 1%） |
+| zsasa 参照物 逐原子 | 中位 rel 7e-3 —— **预期对不上**，两边点集不同 |
+| 暴力法（显式建 p_ik、显式测距） | rel < 1e-6 = 逐点判定完全相同；这是上面那步代数变换的**唯一**独立验证，解析球测试发现不了它（无邻居时判据退化） |
+
+不要拿 mdtraj 当基准——它的球面采样点生成方式与 golden spiral 不同，逐原子对不上，
+且它不接受逐原子自定义半径（只有元素级的 `change_radii`），无法表达 mbondi2 对氢的成键依赖。
+
+**性能**（2080 Ti，S4 1835 原子，P=960）：
+
+| | zsasa 参照物 (host) | jax_sr B=1 | B=4 | B=16 |
+|---|---|---|---|---|
+| 单 species | 41 ms/帧 | 11.6 | 8.3 | **7.2** |
+| 三 species（ΔG_SA） | 131 ms/帧 | 25.0 | 16.7 | **14.4** |
+| 峰值显存 | — | 553 MB | 554 | 554 |
+
+SA 从「每帧多 59%」降到 **占总量 6%**（PB 222 ms/帧）。
+
+**邻居搜索在逐原子块内做，不物化 `[N,N]`。** 早先版本先建整张 d2 再分块跑采样点，
+显存就卡在 d2 上：
+
+| N | d2 矩阵（旧版） | 旧版 ms/帧 |
+|---|---|---|
+| 1835 | 13 MB | 10.3 |
+| 8000 | 244 MB | 54.5 |
+| 16000 | 977 MB | 138.8 |
+| 32000 | 3906 MB | **OOM**（11 GB 卡）|
+
+而**时间对 N 几乎是线性的**（主成本是逐原子那次 `[P,K]` 矩阵乘）——
+所以这堵墙是白挨的。挪进块里以后峰值是 `B × chunk × (P·K + N)`，
+**N 的二次项没了**，S4 结果逐位不变（6342.998 Ų），代码还少一层。
+
+`chunk` 的默认值**按 B 缩放**（定在 64M 元素 = 256 MB fp32）。分块的收益只在 B 小时
+才值得拿显存换 —— 实测 S4：B=1 时 chunk 42→256 是 **14.4→10.0 ms（−31%）**，
+而 B=16 时 6.96→6.74 几乎没差（批维已经把 GPU 喂饱了）。不除 B 就会在 B=16 上
+白占 5.8 GB。
+
+`ponytail:` 逐块 d2 仍是 O(N²) **计算量**（显存已经不是了），与 `mm/` 同一档天花板；
+真到十万原子再换 cell-list。
+
+#### SA ↔ PB 的边界：只共享物理定义，不共享离散化
+
+两者的几何体**确实是同一个**：`surface.py` 的中间量 `dilate(vdw, ball(R_probe))`
+就是 SR 采样的那张球面所围的体 `∪ B(xᵢ, rᵢ+r_p)`，PB 拿它 erode 成 SES 后就扔了。
+但**不能因此把 SA 挂到 PB 的网格上**：
+
+- PB 手里是**布尔占据**（scatter-max）。从布尔格点数边界面取面积是 Cauchy 阶梯：
+  对球精确算，x 向边界面数 = 2πR²/h²，三方向合计 ×h² = **6πR²** vs 真值 4πR² ——
+  **系统性 +50%**，不是调参能救的。
+- 要取面积得走 level-set `φ = minᵢ(|x−xᵢ| − Rᵢ)`，`A = ∫δ_ε(φ)|∇φ|`。但 φ 是
+  **另一个核**（逐节点对候选原子取 min），比布尔 scatter 贵，PB 根本不算它。
+- 合了会把 SA 的精度绑死在 PB 的 h 上。ΔSASA = −1146 Å² 是三个 ~6000 Å² 的差，
+  和 ΔG_PB 那个 890 抵成 −9.4 同构；h=0.5 的 level-set 误差按 1–3% 算，
+  落到 ΔG_SA(−5.73) 上就是 10% 量级。SR 现在对 zsasa 是 6e-5。
+- 而且不值：SA 只占每帧 6%。
+
+**该共享的**（必须只有一个 source of truth）：
+
+| 量 | 单源 |
+|---|---|
+| rᵢ | `openmm_io.assign_radii`（mbondi2），PB 与 SA 同吃一个数组 |
+| r_p | `constants.PROBE_RADIUS = 1.4 Å` |
+
+**不该共享的，一律不外泄到 SA**：PB voxel mask、atom→grid 映射、erosion 表示、
+网格间距 h。这些是离散化细节，不是物理。
+
+两边用不同的 r_p **不会报错**，只会悄悄给出偏掉的 ΔG_MM/PBSA（PB 的分子表面和
+SA 的可及表面对应不同溶剂），所以
+`tests/test_constants.py::test_pb_and_sa_share_one_probe_radius` 既比默认值、
+也扫源码里的裸字面量。zsasa 走 JSON 而不是 PDB 同属这条——走 PDB 半径就由它自己的
+分类器决定，rᵢ 的单源当场破掉。
 
 ### 3.11 `analysis/`
 
@@ -423,7 +541,8 @@ result = analyzer(coords_batch)        # [B,N,3] Å, 首次调用编译
 | T3 | MM cross | pdbfixer 构建的 peptide–peptide 体系 vs OpenMM CustomNonbondedForce | rel err < 1e-6 |
 | T4 | SASA | vs mdtraj shrake_rupley，两边 n_points=4000、同半径表、同探针 | **总 SASA rel err < 1%**（逐原子 0.1% 不可达，见 §3.10） |
 | T5 | batch 不变性 | 同帧单独算 vs batch 算 | **ΔG_PB rel err < 1e-6**（**不是** bitwise：XLA 在不同 B 下会重排 reduction，batched while_loop 的迭代数也随 B 变） |
-| T6 | APBS 单帧对拍 | 3 体系（见下）各 5–10 帧，`mg-manual` 参数逐项对齐（§3.12） | **绝对 G_PB^C/R/L：< 1%**；**验收卡在 ΔG_PB：< 1 kcal/mol 或 < 2%**。<br>（蛋白 G_PB ≈ −2000 kcal/mol，原定的「< 0.5 kcal/mol」= 0.025%，两个独立 PB 码做不到；而差值里误差会抵消，ΔG_PB 才是真正要用的量） |
+| T6a | **MMPBSA.py 端到端对拍**（`scripts/validate_mmpbsa.py`，已实现）| S4 单帧，&pb 参数逐项锁死；prmtop 由 parmed 从规范 System XML 直出，不走 tleap | **只有 ΔE_MM 是硬断言**：ΔE_coul / ΔE_LJ 必须近似逐位一致（实测 5.3e-6 / 1.8e-4）。<br>ΔG_PB、ΔG_SA 是**方法比较不设门槛**（另一套离散/表面/泛函；LCPO ≠ Shrake–Rupley）——实测 5.0% / 0.3%，且两边各自都已网格收敛，见 RESULTS §12 |
+| T6b | **APBS 单帧对拍** | 3 体系各 5–10 帧，`mg-manual` 参数逐项对齐（§3.12）| **绝对 G_PB^C/R/L：< 1%**；**验收卡在 ΔG_PB：< 1 kcal/mol 或 < 2%**。<br>这条门槛**只对 APBS 成立**——它与我们同方法族（同方程、同类离散、都是格点 FD），才能逐参数对齐。拿它卡 MMPBSA.py 是范畴错误。<br>（蛋白 G_PB ≈ −2000 kcal/mol，原定「< 0.5 kcal/mol」= 0.025%，两个独立 PB 码做不到；差值里误差会抵消，ΔG_PB 才是真正要用的量）|
 | T7 | warm start | 相同 tol 下能量一致；**扫 B ∈ {1,4,16} × {cold,warm}** | 迭代数下降曲线记录化（B 越大收益越弱，见 §3.9），不设硬断言 |
 
 **离线测试体系（4 个，覆盖 plan §16 规模梯度）**：
