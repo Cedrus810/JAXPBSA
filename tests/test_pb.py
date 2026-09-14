@@ -207,12 +207,14 @@ def test_trajectory_state_carries_across_chunks():
     assert np.array_equal(c_whole, c_split), (c_whole, c_split)
     assert c_whole.all(), "这个体系本该全部收敛"
 
-    # warm=False 必须忽略 initial_state: 冷启动的定义就是"不用上一帧的解"
+    # warm=False 必须**逐位**忽略 initial_state: 冷启动是 warm start 的对照组,
+    # 不能含任何来自其他帧或调用方的信息, 否则比较不公平。
+    # (曾经不是这样: carry 被当成每帧的固定初值传了进去, 能量差 ~2e-6 相对。)
     cold_a, _ = solve.trajectory(traj, [1.0], [2.0], warm=False)
     cold_b, _ = solve.trajectory(traj, [1.0], [2.0], warm=False,
                                  initial_state=st_a)
-    assert np.allclose(np.asarray(cold_a["g_pb"]), np.asarray(cold_b["g_pb"]),
-                       rtol=1e-6)
+    assert np.array_equal(np.asarray(cold_a["g_pb"]), np.asarray(cold_b["g_pb"])), (
+        "warm=False 仍受 initial_state 影响", cold_a["g_pb"], cold_b["g_pb"])
 
 
 def test_static_slice_morphology_matches_reference():

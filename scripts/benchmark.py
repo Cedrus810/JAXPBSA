@@ -168,8 +168,11 @@ def main() -> None:
                 reps=a.reps, cubic=a.cubic)
 
     hs = [0.5] if a.quick else a.h
-    combos = [(32, "mg")] if a.quick else [(64, "jacobi"), (64, "mg"),
-                                           (32, "jacobi"), (32, "mg")]
+    # "auto" 也进矩阵: 它按节点数在 jacobi/mg 之间选(阈值 MG_NODE_THRESHOLD),
+    # 跑一遍才能验证阈值在**这台机器**上是否仍然选对 —— 交叉点按节点数在两卡上
+    # 一致, 但两侧的幅度依赖设备, 所以换卡值得复核。
+    combos = [(32, "auto")] if a.quick else [(64, "jacobi"), (64, "mg"), (64, "auto"),
+                                             (32, "jacobi"), (32, "mg"), (32, "auto")]
     rows, dev = [], None
     for h in hs:
         for B in a.batch:
@@ -191,6 +194,25 @@ def main() -> None:
     if not ok:
         print("\n没有成功的配置。")
         return
+
+    # auto 是否选对: 对每个 (h, bits) 看 auto 的耗时是否等于 jacobi/mg 中较快的那个
+    checks = {}
+    for r in ok:
+        checks.setdefault((r["h"], r["bits"], r["batch"]), {})[r["precond"]] = r
+    lines = []
+    for key, v in sorted(checks.items()):
+        if not {"auto", "jacobi", "mg"} <= set(v):
+            continue
+        best = min(("jacobi", "mg"), key=lambda k: v[k]["per_frame_ms"])
+        ratio = v[best]["per_frame_ms"] / v["auto"]["per_frame_ms"]
+        lines.append(f"  h={key[0]} fp{key[1]}: auto {v['auto']['per_frame_ms']:7.1f} ms "
+                     f"| 较快的是 {best} {v[best]['per_frame_ms']:7.1f} ms "
+                     f"| {'✅ 选对' if ratio > 0.97 else '❌ 选错'} "
+                     f"(jacobi {v['jacobi']['per_frame_ms']:.1f} / mg {v['mg']['per_frame_ms']:.1f})")
+    if lines:
+        from jaxpbsa.pb.energy import MG_NODE_THRESHOLD
+        print(f"\n=== precond=\"auto\" 的判断（阈值 {MG_NODE_THRESHOLD:,} 节点）===")
+        print("\n".join(lines))
 
     print(f"\n设备: {ok[0]['device']} ({ok[0]['backend']})   "
           f"体系: {ok[0]['n_atoms']} 原子   tol={a.tol} (真残差)")

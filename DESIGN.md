@@ -319,17 +319,50 @@ carry **整个 `φ[3B, ...]`**——第 k 条 lane 用上一个 chunk 第 k 条 
 因此 M7 的 benchmark **必须把 B 作为一个轴扫**（B ∈ {1, 4, 16} × {cold, warm}），
 只报一个 B 下的「迭代数下降 30%」没有意义。
 
-### 3.10 `sa/`
+### 3.10 `sa/` —— 两段式：zsasa 替补 → JAX 重写
 
-v1 直接 JAX 实现 **Shrake–Rupley**（golden-spiral 点集，static；复用 surface.py 的 cell-list gather 找 rᵢ+R_p 邻居），不引入 zsasa 依赖。
+```
+G_SA = γ·SASA + β        ΔG_SA = γ·(A_C − A_R − A_L) + β·(1 − 1 − 1) = γ·ΔSASA − β
+```
 
-**验收（阈值已放宽，原 0.1% 逐原子不可达）**：mdtraj 的球面采样点生成方式和本实现的 golden spiral
-不是同一套，逐原子做不到 0.1%。改成：两边都用 `n_points=4000` 的**收敛值**，对比**总 SASA，
-容差 1%**；半径表必须显式传同一份（不要用 mdtraj 的默认 Bondi），探针半径同为 1.4 Å。
+**β 不抵消**：三个 species 各有一份常数项，差分后剩 `−β`。Amber `pbsa` 的 **INP=1**
+默认 β=0 会掩盖这一点，换 INP=2（γ=0.0378, β=−0.5692）就会差 0.57 kcal/mol。
+默认取 INP=1 的 (0.005, 0.0)，**论文里必须写明用的是哪一档**——γ 直接平移 ΔG_SA。
+测试 `test_beta_does_not_cancel_in_the_difference` 专门卡这条。
 
-`G_SA = γ·SASA + β`，C/R/L 各算再差分。默认 γ=0.005 kcal/mol/Å²、β=0.0 —— 这是 Amber `pbsa`
-**INP=1** 的默认，不是 MMPBSA.py 通用默认（INP=2 是 0.0378 / −0.5692）。**文档和论文里必须写明用的是哪一档**，
-因为 γ 的选择直接平移 ΔG_SA。
+#### stage 1（已实现）：zsasa 作为临时替补
+
+[zsasa](https://github.com/N283T/zsasa) 是 Zig 写的独立 CLI（Shrake–Rupley / Lee–Richards，
+SIMD + 多线程），**不是 Python 库，进不了 JIT 图**。但 SA 也不需要进图：
+
+```
+ΔG_MM/PBSA = ΔE_MM + ΔG_PB + ΔG_SA     三项独立相加，SA 从不回馈 PB
+```
+
+所以它是一个**独立的 host 侧阶段**，藏在 `jaxpbsa/sa/` 的接口后面。
+
+**走 JSON 而不是 PDB**：`calc` 的 JSON 输入有 `r` 字段（逐原子半径 Å），可以把我们的
+mbondi2 **原样**喂进去——SA 与 PB 用同一套半径是自洽的前提。走 PDB 则半径由 zsasa 的
+分类器决定：实测 S4 上 `CCD: 882 atoms classified, 953 fallback`，近半数原子是猜的，
+且 CCD 是联合原子半径。
+
+**替补的第二职责：它是 stage 2 的验收基准。** zsasa 已对着解析解验过
+（孤立球 2e-16、两球重叠 9e-6），所以 JAX 版写完直接拿它对拍，不用另找参照物。
+`tests/test_sa.py` 的 `BACKENDS` 是参数化的，stage 2 落地后加上 `"jax"`，
+同一批断言自动同时跑在两个后端上。
+
+#### stage 2（待做）：JAX Shrake–Rupley
+
+golden-spiral 点集（static），复用 surface.py 的 cell-list gather 找 rᵢ+R_p 邻居。
+
+**动机已有实测数据**：zsasa 逐帧起子进程，S4 上 1835 原子含进程启动 41 ms/帧，
+三个 species 就是 **131 ms/帧**，而 PB 是 222 ms/帧 —— **SA 让每帧多 59%**。
+更要紧的是它在 host 侧，进不了 `lax.scan`，吃不到 warm start 和批处理。
+
+**验收**：与 stage-1 的 zsasa 对拍（同半径、同探针、同 n_points），
+以及同一批解析解断言。注意**不要**拿 mdtraj 当基准——它的球面采样点生成方式与
+golden spiral 不同，逐原子对不上，且它不接受逐原子自定义半径（只有元素级的
+`change_radii`），无法表达 mbondi2 对氢的成键依赖。
 
 ### 3.11 `analysis/`
 

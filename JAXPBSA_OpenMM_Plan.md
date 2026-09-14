@@ -756,12 +756,20 @@ Amber pbsa INP=2 : γ=0.0378 β=-0.5692
 常见 MM-PBSA     : γ=0.00542 β=0.92
 ```
 
-backend 设计（**简化**：v1 直接自实现 JAX Shrake–Rupley，不引 zsasa 依赖，见 DESIGN.md §3.10）：
+backend 设计（**两段式**，见 DESIGN.md §3.10）：
 
 ```text
-SA backend
-└── jax_backend (Shrake-Rupley)
+jaxpbsa/sa/
+├── __init__.py   接口: sasa / g_sa / delta_g_sa,  backend="zsasa"|"jax"
+├── zsasa.py      stage 1 (已实现): 外部 CLI, host 侧, 临时替补
+└── jax_backend   stage 2 (待做):   JAX Shrake-Rupley, 进图, 可 vmap/scan
 ```
+
+接口**收数组不收文件**，就是为了 stage 1 → stage 2 的替换对调用点无感。
+替补的第二职责是**充当 stage 2 的验收基准**（它已对着解析解验过）。
+
+实测（S4，1835 原子）：zsasa 三个 species **131 ms/帧**，PB 是 222 ms/帧 ——
+SA 让每帧多 59%，且它在 host 侧进不了 `lax.scan`。这就是 stage 2 的动机。
 
 计算：
 

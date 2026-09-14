@@ -214,9 +214,18 @@ def make_frame_solver(
         return jax.lax.scan(step, state, coords_traj)
 
     def _scan_cold(coords_traj, q, radii, state):
+        """冷启动: **每帧都从零势出发**, 既不用上一帧的解, 也不用 initial_state。
+
+        原先这里把 carry 传给了 `_frame_impl` 当 u_prev —— 那是"每帧从同一个给定初值
+        出发", 不是冷启动。作为 warm start 的对照组, 它必须不含任何来自其他帧或调用方
+        的信息, 否则 cold/warm 的比较不公平(实测两者能量差 ~2e-6 相对)。
+        """
+        zero = jnp.zeros(shape, dt)
+
         def step(carry, x):
-            out, _, _ = _frame_impl(x, q, radii, carry)
+            out, _, _ = _frame_impl(x, q, radii, zero)
             return carry, out
+
         return jax.lax.scan(step, state, coords_traj)
 
     # **工厂里建一次、jit 一次**。原先每次调用 solve_trajectory 都重新定义 step,
@@ -232,6 +241,13 @@ def make_frame_solver(
         `initial_state` / 返回的 `final_state` 是**上一帧的内部势, 留在设备上**。
         长轨迹分块调用时把它传下去, 否则每一块都从零势冷启动 —— warm start 的
         收益会在块边界上全部丢掉。
+
+        `warm=False` 时**每帧都从零势出发**, initial_state 既不作初值也不参与递推 ——
+        冷启动的定义是"不含任何来自其他帧或调用方的信息", 否则它作为 warm start 的
+        对照组就不公平。返回的 final_state 等于传入值, 仅为接口对称。
+
+        每帧的 `converged` 保留在输出里。**失败帧的势不会传给下一帧**, 否则一个坏帧
+        会污染其后所有帧的初值。
 
         势场只作为 scan 的 carry, 不进输出: T=10000 时单 species 的势场是 268 GiB。
         """
