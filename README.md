@@ -33,6 +33,16 @@ h = 0.5 Å, fp32):
 | **ΔG_SA** | **−5.74** |
 | **ΔG_MM/PBSA** | **−67.54** |
 
+> **⚠ ΔG_PB is under review — a fix is measured but not yet the default.**
+> Because `δG_C ≈ δG_R` cancels, the *entire* discretization error of ΔG_PB is the
+> isolated-ligand solve, and that solve is far from converged at h = 0.5 Å.
+> A per-species grid (C/R at h = 0.75, ligand in a tight box at h = 0.25) gives
+> **ΔG_PB = 851.7 instead of 885.4** — closing the gap to Amber `pbsa` (842.9) from
+> **5.0% to 1.0%** — and is **18% faster** (162 vs 197 ms/frame), because the current
+> code spends its grid on C and R where the error cancels anyway.
+> Measured on one S4 frame; see [RESULTS §15](./RESULTS.md). The table below is the
+> current code's output, not a converged result.
+
 The electrostatic cancellation is the sharpest check on the PB result: two numbers of
 order 890 cancel to **−9.4 (1.1%)**. A 5% error in ΔG_PB would leave tens of kcal/mol
 of residue and change the answer entirely.
@@ -216,3 +226,13 @@ nothing.
 See [`CHANGELOG.md`](./CHANGELOG.md) for the 13 correctness bugs found (all silent — no
 error, just a plausible wrong number), 8 measurement-methodology lessons, and 6 design
 predictions that measurement overturned.
+
+---
+
+## License
+
+Copyright © 2026 Cedrus810. This project is licensed under the
+[GNU Affero General Public License v3.0](./LICENSE) (**AGPL-3.0-only**).
+
+The license is applied as a temporary protective measure; the copyright holder
+reserves the right to relicense future versions.
