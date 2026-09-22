@@ -10,6 +10,7 @@ R–L 交叉项。溶剂方程的介电图三者不同（配体在场时受体�
 import os, sys, time
 os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
 import jaxpbsa
+jaxpbsa.enable_compilation_cache()  # 编译 36.5 -> 5.9 s
 
 h = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
 jaxpbsa.set_precision(int(sys.argv[2]) if len(sys.argv) > 2 else 32)

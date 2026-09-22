@@ -65,6 +65,11 @@ class PBParams:
     precond: str = "auto"  # "auto" | "mg" | "jacobi"
     mg_nu: int = 2       # 每层 pre/post 光滑次数; 实测 V(3,3) 略优于 V(2,2)
     mg_coarse_sweeps: int = 50  # 最粗层 Jacobi 轮数
+    # 粗化到哪一层为止(`build_levels` 的 min_n): 循环在 min(shape) <= min_n 时停。
+    # 生产网格 161x161x193 -> 81x81x97 -> 41x41x49 -> 21x21x25 -> 11x11x13 -> 6x6x7,
+    # 所以 min_n = 7 / 11 / 21 / 41 分别把终层定在最后四档。
+    # **终层变大后 coarse_sweeps 必须重调** —— 「252 点上 4 次够用」不能外推。
+    mg_min_n: int = 7
     # 参考边界的原子分块大小。实测 S4/h=0.5: ab=1 12.9ms -> ab=128 3.1ms -> ab=256 2.4ms;
     # 中间量 S×ab, ab=128 时 113 MB。默认取 128 兼顾速度与显存。
     boundary_atom_block: int = 128
@@ -148,7 +153,7 @@ def make_frame_solver(
         pre = None
         if use_mg:
             levels = build_levels(maps["eps_x"], maps["eps_y"], maps["eps_z"],
-                                  maps["kbar2"], grid.h)
+                                  maps["kbar2"], grid.h, min_n=params.mg_min_n)
             pre = make_preconditioner(levels, nu1=params.mg_nu, nu2=params.mg_nu,
                                       coarse_sweeps=params.mg_coarse_sweeps)
         u_solv, it_s, rr_s, ok_s = pcg_solve(apply_solv, b, u0, diag_s, mask,

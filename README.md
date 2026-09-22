@@ -62,10 +62,14 @@ RTX 2080 Ti, S4, h = 0.5 Å, fp32, true-residual tol = 1e-5. Single-species PB s
 | + fp32 arrays (fp64 reductions) | 149 | 12.1× |
 | + rectangular grid | ~100 | 18.0× |
 | + blocked reference boundary | 96 | 18.8× |
-| + static-slice morphology | **76.8** | **23.4×** |
+| + static-slice morphology | 76.8 | 23.4× |
+| + unrolled MG smoother (host-constant trip count) | **68.3** | **26.4×** |
 
-Full ΔG_PB (three species: complex, receptor, ligand) — **222.5 ms/frame** on a
-2080 Ti, **88.4 ms/frame** on a 5080.
+Full ΔG_PB (three species: complex, receptor, ligand) — **197.5 ms/frame** on a
+2080 Ti. Truncating the MG hierarchy at 41×41×49 (`PBParams.mg_min_n=41`) gives
+**177.0 ms/frame**; not the default yet, measured on S4 only (RESULTS §14.4).
+The 5080 figure (88.4 ms/frame) predates the unrolled smoother and has not been
+re-measured on that card.
 
 **Cross-device validation.** Two GPUs, same canonical structure, identical results:
 
@@ -128,12 +132,15 @@ jaxpbsa/
   sa/        nonpolar term — JAX Shrake-Rupley (zsasa is a test-only reference)
   openmm_io/ parameter extraction, radii, load_canonical
   benchmark/ stage-resolved timing helpers
+  online.py  online entry: fixed grid + per-frame COM recentring, OpenMM reporter
 scripts/
   prep_s4.py        converter: PDB → canonical artifact
   benchmark.py      cross-device benchmark matrix
   profile_stages.py per-stage timing
   crl.py            ΔG_PB = G_C − G_R − G_L
   warm_start.py     cold vs warm, three-way comparison
+  online_overhead.py  MD + online PBSA on one GPU: contention measurement
+  fit_grid.py       size the fixed online grid from a pilot trajectory
 data/prepared/
   S4_complex.cif    topology + coordinates   ← canonical starting point
   S4_system.xml     serialised openmm.System
@@ -184,8 +191,45 @@ single compilation.
 python scripts/benchmark.py --csv out.csv    # h × {fp32,fp64} × {jacobi,mg,auto}
 python scripts/crl.py 0.5 32                 # ΔG_PB
 python scripts/profile_stages.py 0.5 32      # per-stage timing
-pytest -q                                    # 29 tests
+pytest -q                                    # 40 tests
 ```
+
+### Online: ΔG_MM/PBSA(t) from a running simulation
+
+Offline builds the grid from the whole trajectory. Online has only frame 0, so the grid
+is **fixed up front** and every frame is recentred into it — translating coordinates does
+not recompile, moving `grid.origin` does (2.59 s, measured). See
+[`ONLINE_PLAN.md`](./ONLINE_PLAN.md).
+
+```python
+import jaxpbsa
+from jaxpbsa.online import OnlineMMPBSA, PBSAReporter
+
+jaxpbsa.enable_compilation_cache()
+
+az = OnlineMMPBSA(system, topology,
+                  solute_idx,        # global indices into the solvated system
+                  ligand_local_idx,  # local indices, [0, N_solute) after the slice
+                  ref_coords_A,      # builds the grid + runs the warm-up self-check
+                  h=0.5, padding=30.0)
+
+sim.reporters.append(PBSAReporter(az, interval_steps=10000, solute_idx=solute_idx,
+                                  out_csv="pbsa.csv", margin_min=12.0))
+```
+
+```bash
+export XLA_PYTHON_CLIENT_PREALLOCATE=false   # required when MD shares the GPU:
+                                             # JAX otherwise grabs 75% of VRAM and
+                                             # OpenMM's CUDA context fails to start
+python scripts/online_overhead.py --steps 50000
+```
+
+Recentring uses the **mass-weighted centroid**, not the bounding-box midpoint: the midpoint
+is set by six extremal atoms, so one side chain swinging 1 Å shifts the solute by half a
+grid spacing, and the placement sensitivity of ΔG_PB is **8.39 kcal/mol peak-to-peak**
+(`RESULTS.md` §15.4) — the same order as what an online sampling monitor is meant to
+measure. Each frame also reports `margin_A` (distance left to the grid boundary; negative
+means atoms are being silently dropped) and `sa_ok`.
 
 ---
 
@@ -213,9 +257,22 @@ surface/dielectric construction, C/R/L triplet with reference-field reuse
 R–L cross terms), trajectory interface with warm start and cross-chunk state, SA via
 zsasa, canonical artifact, cross-device validation.
 
-**Not done** — SA in JAX (stage 2), external validation against Amber `pbsa`,
-production MD trajectory, solver memory-access efficiency (82–85% of runtime, and a
-larger share on faster cards).
+**Not done** — solver memory-access efficiency (82–85% of runtime, and a larger share on
+faster cards), asymmetric grids (measured faster *and* closer to Amber, not yet the
+default), the online contention measurement (`scripts/online_overhead.py` is written, the
+numbers in plan §21.5 are still extrapolated), and the same COM recentring on the offline
+path (`ONLINE_PLAN.md` §7 — required before any online-vs-offline per-frame comparison).
+
+Since the last revision of this section: SA in JAX (stage 2), external validation against
+Amber `pbsa` (`RESULTS.md` §12), the 10 ns production trajectory, and the online entry
+(`jaxpbsa/online.py`) all landed.
+
+**Deferred with a measurement behind it** — BinaryCIF. The canonical CIF quantises
+coordinates at 1e-4 Å; measured effect on ΔG_PB is **1e-4 kcal/mol**, four orders of
+magnitude under the discretisation error. BinaryCIF would not help anyway: its standard
+coordinate encoding is fixed-point with the same quantisation, so it compresses the
+representation rather than improving precision. Revisit if systems reach 10⁵–10⁶ atoms;
+for trajectories the answer is DCD/XTC, not BCIF. See `RESULTS.md` §9.6.
 
 **Ruled out by measurement**, with numbers in `RESULTS.md` §10: batching (a net loss on
 both GPUs at production grid size), warm start as a headline claim (1.07×), multigrid

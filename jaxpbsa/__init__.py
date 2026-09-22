@@ -40,3 +40,26 @@ def set_precision(bits: int = 32) -> None:
 
 def dtype() -> "jnp.dtype":
     return DTYPE
+
+
+def enable_compilation_cache(path: str | None = None) -> str:
+    """打开 XLA 持久编译缓存, 返回缓存目录。
+
+    **实测(S4, h=0.5, MG)**: 首次编译 36.5 s -> 命中 5.9 s(6.2x),
+    总冷启动 42.1 -> 10.7 s。缓存 3.5 MB。稳态速度不变 —— 这只省编译。
+
+    **不在 import 时自动打开**: 修改 `jax.config` 是进程全局的, 库不该替调用方
+    做这个决定。脚本入口显式调用, 或自己设 `jax_compilation_cache_dir`。
+
+    剩下的 10.7 s 里约 3.7 s 是 Python import —— 那部分只有 AOT 导出(jax.export ->
+    StableHLO -> PJRT C++)能拿走。**不划算**: 我们的 grid shape 随体系和 h 变
+    (`make_grid` 从 APBS dime 集合里选), 而 `build_levels` 是 host 侧按具体 shape
+    的 Python 循环, 没法符号化 —— 等于每个形状导一份产物。JaxForce 那套成立是因为
+    它形状固定、调用上百万次; 我们两个前提都反过来。
+    """
+    import os
+    import jax
+    path = path or os.path.expanduser("~/.cache/jaxpbsa-xla")
+    jax.config.update("jax_compilation_cache_dir", path)
+    jax.config.update("jax_persistent_cache_min_compile_time_secs", 1.0)
+    return path

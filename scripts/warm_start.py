@@ -19,6 +19,7 @@ tracing，热运行里混着编译时间。本脚本把编译与热运行分开�
 import os, sys, time
 os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
 import jaxpbsa
+jaxpbsa.enable_compilation_cache()  # 编译 36.5 -> 5.9 s
 
 h = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
 amp = float(sys.argv[2]) if len(sys.argv) > 2 else 0.05

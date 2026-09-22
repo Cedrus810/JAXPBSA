@@ -116,9 +116,19 @@ def _apply(lv, u):
 
 
 def _smooth(lv, u, b, sweeps):
-    def body(_, u):
-        return u + OMEGA * (b - _apply(lv, u)) * lv["inv_diag"]
-    return jax.lax.fori_loop(0, sweeps, body, u)
+    """**Python 循环展开, 不用 `fori_loop`。** `sweeps` 是 host 侧常量, 循环次数
+    编译期已知, 所以循环边界是白给的 —— 而 XLA:GPU 的每个循环边界都要把计数器
+    拷回主机、由主机决定是否再启动一轮, 流水线每次排空。
+
+    nsys 实测(S4, h=0.5, min_n=7): GPU 只忙 37%; 空闲的 66% 紧跟在最粗层光滑
+    kernel 之后, 每 triplet 114 个 ~0.87 ms 的洞。16.7 万次 launch 本身是背靠背的
+    (中位空隙 0.5 µs), 所以问题从来不是 launch 开销, 是**控制流回主机**。
+
+    同一个坑 surface.py 的 `dilate` 踩过一次(28.95 -> 4.86 ms, 6.0x)。
+    """
+    for _ in range(int(sweeps)):
+        u = u + OMEGA * (b - _apply(lv, u)) * lv["inv_diag"]
+    return u
 
 
 def v_cycle(levels, u, b, level=0, nu1=2, nu2=2, coarse_sweeps=50):

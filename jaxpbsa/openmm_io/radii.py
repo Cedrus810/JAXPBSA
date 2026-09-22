@@ -17,9 +17,19 @@ BONDI = {
 _MODELS = ("bondi", "mbondi2")
 
 
-def assign_radii(topology: Topology, model: str = "mbondi2") -> np.ndarray:
+def assign_radii(topology: Topology, model: str = "mbondi2",
+                 atom_indices=None) -> np.ndarray:
+    """[N_atoms] Å, N_atoms = topology 的全部原子。
+
+    `atom_indices`: 只给这些原子定半径, 其余留 `NaN`。**溶剂化体系必须用它** ——
+    Na/Cl 不在 Bondi 表(下面按设计 raise), 但它们本来就不进 PB。正确的做法是
+    先切溶质再定半径, 不是放宽表: 表里多一个离子半径, 就等于默许把抗衡离子
+    当溶质的一部分做介电图。返回长度不变, 由调用方自己切。
+    """
     if model not in _MODELS:
         raise ValueError(f"unknown radii model {model!r}; available: {_MODELS}")
+    keep = None if atom_indices is None else set(
+        int(i) for i in np.asarray(atom_indices).reshape(-1))
 
     h_on_nitrogen = set()
     for a1, a2 in topology.bonds():
@@ -28,8 +38,10 @@ def assign_radii(topology: Topology, model: str = "mbondi2") -> np.ndarray:
                 if x.element.symbol == "H" and y.element.symbol == "N":
                     h_on_nitrogen.add(x.index)
 
-    radii = np.empty(topology.getNumAtoms())
+    radii = np.full(topology.getNumAtoms(), np.nan)
     for atom in topology.atoms():
+        if keep is not None and atom.index not in keep:
+            continue
         if atom.element is None:
             raise ValueError(
                 f"atom {atom.index} ({atom.name}) has no element (virtual site?); "

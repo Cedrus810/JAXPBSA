@@ -1318,6 +1318,275 @@ JAXPBSA 不修改 MD Hamiltonian。
 
 ---
 
+# 21.5 OpenMM-native 路线：`jax.export` → StableHLO → PJRT C++ plugin
+
+**不是在 `CustomForce` 里写 JAX，而是把 JAX 编译出的 executable 当 OpenMM kernel 调。**
+
+```text
+Python/JAX 侧 —— 只建一次
+──────────────────────────
+pbsa(coords, params) → jax.jit → jax.export → StableHLO / compiled executable
+
+OpenMM C++ plugin
+──────────────────────────
+PBSAForce → PBSAForceImpl → CudaCalcPBSAForceKernel → PJRT executable
+         → JAXPBSA GPU kernels → ΔG_PBSA
+```
+
+上游正在做同一条路线：[openmm/openmm#5320](https://github.com/openmm/openmm/issues/5320)
+（`JaxForce`，**open 原型**，非稳定标准 Force）。已有 benchmark：ANI2x 水体系上相对
+NNPOps/PythonForce 快 2.3–3.4×。该 issue 自陈两个难点：**OpenMM–PJRT 边界**，
+以及**动态 neighbor list**（"neighbor-list 和模型编译进同一个 executable，
+需要在运行中协调 C++ 与 JAX 之间的重新 export"）。
+
+## 为什么 JAXPBSA 比 ML potential 更适合走这条路
+
+| 上游 `JaxForce` 的痛点 | JAXPBSA 的情况 |
+|---|---|
+| **动态 neighbor list** —— 关键阻碍 | **不存在**。网格、`ball_offsets`、MG 层级序列全是 host 侧常量，形状全程 static |
+| 需要 force / backprop | **只要 energy**。`ForceImpl` 的 `includeForces/includeEnergy` 里直接 `if (!includeEnergy) return 0.0;`，不产生 −∇_R G_PBSA |
+| 编译摊销不确定 | **已实测**：编译 8.5 s、稳态 76.8 ms/帧、**交叉点 ~100 帧**、10,000 帧时编译占 1.1%。正是 `jax.export`/PJRT 最喜欢的「同一个 executable 反复调」 |
+
+**C/R/L 应当 export 成一个 executable，而不是三个 Force。** 这一点在 JAX 层**已经做到了**：
+`solve.triplet` 是单个 jit 函数覆盖三个 species（把 R/L 补齐到 complex 的原子数），
+**一次编译**。导出时原样导出即可，OpenMM 不需要知道内部是 sequential 还是 vmap。
+
+辅助输出建议一并导出：`[G_C, G_R, G_L, ΔG_PB, ΔG_SA, ΔG_PBSA]`。
+
+## Force group 模式
+
+```python
+pbsa_force.setForceGroup(31)
+integrator.setIntegrationForceGroups(all_groups_except_31)   # 不参与积分
+...
+state = context.getState(getEnergy=True, groups={31})        # 需要时单独查询
+```
+
+OpenMM 明确支持「某个 force group 不参与积分但可随时单独查询」，正好对应 §23 的
+PB-derived CV。
+
+## 实测给出的四条约束
+
+### 1. 拷贝**不是**我们的瓶颈 —— 与 ML potential 相反
+
+1835 原子的坐标是 **22 KB**（1835 × 3 × 4 B）。PCIe 4.0 x16 约 25 GB/s → **~1 μs**。
+而我们一次 ΔG_PB 是 **88.4 ms**（5080，三 species）。**拷贝占 1e-5。**
+
+所以「OpenMM positions GPU → CPU copy → JAX GPU 很蠢」这个判断对**逐步调用的
+ML potential** 成立，对我们**不成立**：我们每 N ps 才调一次，单次 88 ms 计算。
+零拷贝仍然值得做（工程上更干净），但**它不该是决定要不要做这条路线的理由**。
+真正的理由是避免 Python callback 的调度开销和 GIL。
+
+> **2026-09-20 实测修正：上面的 `1e-5` 是纸面数，真实是 `1e-3`（RESULTS §16.5）。**
+> 那个估计只算了溶质 fp32 的 22 KB；实测 host 往返是
+> `getState`+`asNumpy` **0.95 ms** + 切片归位 **0.081 ms** ≈ **0.24%** of 431 ms ——
+> 因为 `getState` 搬的是**全体系 fp64**（559 KB）外加同步开销。差 100 倍。
+>
+> 结论方向不变，但这个数把本节的立项论证钉死了：**OpenMM-native 插件能省的性能
+> 上限就是 0.24%**。编译也不是它能省的 —— 编译是每进程一次（缓存命中 9.7 s），
+> 不是每帧，而 PJRT 同样要在 Context 建立时 load executable。同卡争用也已实测
+> 为干净串行（RESULTS §16.1），没有「调度不当」的损失可回收。
+>
+> **所以这条路线只能按 capability 立项**（PB 作为 force group 31 的可查询 CV），
+> 不能按性能立项 —— 按 0.24% 论证，benchmark 一跑就打脸。
+
+### 2. Host 侧的 SA 是硬阻碍 —— 这会改变 stage-2 的优先级
+
+当前 SA 后端 zsasa 是**外部子进程**（§13），**进不了 PJRT executable**。
+所以 **stage-2 的 JAX Shrake–Rupley 不是可选优化，而是这条路线的前置条件**。
+在 RESULTS.md §9 的排序里它本来就是第一位，这里是第二个理由。
+
+### 3. 在线场景：**动坐标，不动网格**
+
+网格根本不需要变 —— 但接口必须把这件事约定死，因为 `grid.origin` 是闭包常量。
+
+**实测**（S4，h=1.0，形状不变只平移原点）：
+
+| 改什么 | 后果 |
+|---|---|
+| `grid.origin` 平移 3 Å | **重编译 2.59 s** |
+| **坐标**平移 3 / 10 Å | **不重编译**，23.5 ms 稳态，G_PB 不变（−1267.6937 / −1267.6944）|
+
+所以在线模式是：
+
+1. **网格定死一次**（形状 + 原点都不动），padding 给足以覆盖构象涨落；
+2. **每帧把坐标平移回盒心** —— 溶质在 MD 里会扩散漂移，但这是运行时操作，
+   不触发重编译；
+3. 接口**不暴露 `make_grid` 给调用方**，避免它在循环里被重新调用。
+
+唯一真正需要改网格的情况是**构象尺度超出 padding**，靠一开始给足 padding 解决，
+不是运行时问题。这也是上游 neighbor-list 问题的同构版本 —— 区别在于我们能靠
+「预先定死」绕开，ML potential 不能。
+
+### 4. 查询频率的定量上限（§22 要的数）—— 已实测
+
+```
+overhead = T_pbsa / (N · t_step)
+```
+
+**`t_step` 实测**（RTX 2080 Ti，S4 溶剂化 **20,637 原子**，PME + 1.0 nm cutoff，
+HBonds 约束 + HMR，**4 fs**）：**247 μs/步 = 1397 ns/day**。
+
+配 `T_pbsa = 222 ms`（同卡，PB 三 species，**尚未含 SA**）：
+
+| 查询间隔 | 模拟时间 | overhead | §22 分档 |
+|---|---|---|---|
+| 每 100 步 | 0.4 ps | **898%** | 只能离线 |
+| 每 200 步 | 0.8 ps | **449%** | 只能离线 |
+| 每 1000 步 | 4 ps | 90% | 只能离线 |
+| 每 2000 步 | 8 ps | 45% | 降低频率 |
+| **每 5000 步** | **20 ps** | **18%** | 接近 practical |
+| **每 10000 步** | **40 ps** | **9%** | **practical hot monitor** |
+| 每 25000 步 | 100 ps | 3.6% | **always-on** |
+
+**结论：PBSA 每 20–40 ps 查一次落在 practical 区间，每 100 ps 可以 always-on。**
+这正好是 MM/PBSA 惯用的取帧频率（通常每 10–100 ps 存一帧），
+所以 **online PB CV 不需要为采样频率做任何妥协**。
+
+> **本表已被同卡实测确认（RESULTS.md §16）。** 上表是推算；2026-09-20 在 2080 Ti 上
+> 真的把 PBSA 挂进 MD 循环跑了 200k 步 × 4 个配置：
+>
+> | 查询间隔 | 实测 overhead | 公式 `T_pbsa/(N·t_step)` |
+> |---|---|---|
+> | 每 10 ps | 30.6% / 31.4% | 31.1% |
+> | 每 20 ps | 16.6% / 16.3% | 15.9% |
+> | 每 50 ps | 9.8% / 7.1% | 6.5% |
+>
+> 差值 ±1–3 个百分点且非系统性（有一档实测**低于**公式），落在 MD 的跑间方差里。
+> **MD 与 PBSA 干净串行，同卡争用没有额外代价** —— 所以 §21 的双 GPU async worker
+> 至今没有证据支持：单卡换调度不改变 GPU 总工作量，能改变的只有换第二张卡。
+>
+> 两处口径要注意，否则会误读：实测是 **2 fs 无 HMR**（每模拟 ps 慢 2.2×）且在线默认
+> `padding=30`（网格 9.77 M 节点，每帧 438 ms 而非 222）。两个 2× 抵消，按**模拟时间**
+> 与上表重合（每 20 ps：18% vs 实测 16%；每 100 ps：3.6% vs 外推 3.2%）。
+> 另：上面写的「20,637 原子」与当前 `data/md/S4_solvated.pdb` 的 **23,847** 对不上，
+> 以文件为准。
+
+> **修正记录 —— 错的是单位换算，不是估计值。**
+>
+> 本节先前写 `t_step ≈ 0.9 μs`，据此得出「每 1–4 ns 才能查一次」。追查如下：
+>
+> | | |
+> |---|---|
+> | 输入假设 | ~30k 原子、2 fs、约 200 ns/day（凭一般 MD 吞吐的印象）|
+> | 这个假设本身 | **偏保守** —— 实测是 1397 ns/day |
+> | 换算 | 步数/天 = 200 ns / 2 fs = 1.0e8；秒/步 = 86400 / 1.0e8 = **8.64e-4 s** |
+> | 错在哪 | **8.64e-4 s = 0.864 毫秒 = 864 微秒**，被写成了 **0.86 微秒** |
+> | 偏差 | **1005 倍，纯单位错误** |
+>
+> 若当时换算正确（864 μs），结论会是「每 1000–2000 步落进 5–10%」，
+> 与实测口径（每 5000 步 18%）同量级，不会得出「每 1–4 ns」。
+>
+> **这个错误不会触发直觉警报**：0.86 μs/步对 GPU MD 听起来"像一台快机器"，
+> 864 μs/步听起来"太慢" —— **错的那个反而更符合预期**。
+> 与本项目其他静默失败同类：不报错，只给一个看起来合理的错数字。
+>
+> 教训不是"别用估计值"，而是：**跨数量级的单位换算必须落到纸面逐步验算**
+> （ns/day → 步/天 → 秒/步 → μs/步 四级跳），
+> 尤其当错误方向恰好符合预期时。
+>
+> 仍待确认：`T_pbsa` 尚未含 SA（stage-2 JAX SA 落地后需重算）；
+> 500 步与 2000 步两次测量差 2 倍（565 vs 247 μs/步），说明还在预热，
+> 长程 MD 的稳态值应更接近后者。
+
+## 设计原则：planning is dynamic; execution is static
+
+**不追求 shape-polymorphic 的 PB execution。** grid construction、multigrid
+hierarchy、morphology stencil 全部视为 **Context specialization**：Context 建立
+时由 host 侧 planner 算出具体 GridSpec 并解析出对应 executable，此后整段模拟
+反复调用这一份 shape-specialized artifact，运行期 MD 帧只换坐标。
+
+这不是偏好，是代码事实决定的：
+
+- `build_levels()` 在 host 侧按具体 `(n_x, n_y, n_z)` 用 Python 循环搭 hierarchy
+  （`multigrid.py`）。不同 shape 不只是某一维长度不同，是 **level 数、每一级
+  shape 都可能不同**。
+- `ball_offsets(radius, h)` 的长度是 `K(h,r) = #{n ∈ Z³ : |n|·h ≤ r}`
+  （`surface.py`），probe/ion/smooth 三组 offsets 的静态长度都跟着 h 变。
+  morphology 的性能正依赖这些 offset 在 host 侧静态展开、被 XLA 融合成
+  `lax.slice` 链（`dilate` 28.95 → 4.86 ms 的教训，DESIGN §3.5）——
+  把这部分改成动态长度等于亲手拆掉已有优化。
+
+### universal artifact 的三条路全部否掉（量化）
+
+| 方案 | 否决依据 |
+|---|---|
+| offsets pad 到 `h_min=0.25` 的最大长度 | m_max = ⌈1.4/0.25⌉ = 6 ⇒ 固定 (2·6+1)³ = **2197** candidate。真球内 K(0.25, 1.4) = **739**（3.0× 浪费）；h=0.5 时 K = **81**（**27×**）。且被 mask 掉的 candidate 破坏静态展开所换来的 XLA fusion |
+| MG 各层 pad 到最大 shape + runtime mask | PB 本来就是 memory-heavy workload（solver 82–85% 时间是访存），把无效 grid volume 纳入 memory traffic 等于放大现有瓶颈 |
+| 预编译 artifact pack | dime 从 APBS 集合取（33…385），三维自由组合本来就多。**更根本的：origin 取决于体系包围盒中点，连 (nx,ny,nz,h) 完全相同的两个体系 origin 都不同 —— origin 烤在 executable 里时，预编译包的命中率天生为零** |
+
+所以缓存策略定为 **on-demand compile + cache**。固定编译成本对 online 不致命：
+~8.5 s/份、~100 帧摊平、10k 帧时 1.1%。放进 OpenMM 就是 Context 建立时多几秒，
+后面几小时到几天的模拟很快摊没。
+
+### artifact cache 的键 —— 两条硬约束
+
+**① 键必须完备，否则是正确性 bug，不只是 cache miss。** 手写结构键当场就能漏：
+
+- **`grid.origin` 当前烤在 executable 里**（实测平移 3 Å → 重编译 2.59 s，
+  本节约束 3）。键里没有 origin ⇒ 同 shape、不同体系的两次 Context 会
+  **错误命中**，拿别人的 origin 沉默地算出一套看起来合理的数 ——
+  与本项目其他静默失败同类：不报错，只给错数字。
+- **手维护的键会腐烂**：`PBParams.mg_min_n` 本周才加，直接改变 level 数。
+  每个 codegen-affecting 字段（`mg_nu` / `mg_coarse_sweeps` /
+  `boundary_atom_block` / `precond` 的解析结果…）都是潜在的漏项，
+  漏一个就是静默错配。
+- batch 维是 vmap 的**静态**维：在线场景恒 B=1，可以写死；离线轨迹按变长分批，
+  共享缓存时 B 必须进键或固定。
+- 跨机器/跨版本复用还要求键含 jaxlib/XLA 版本与 GPU arch（sm_XX）。
+
+**② 查找键从 trace 派生，不手工维护。** PBKernelKey 只作**日志与调试摘要**；
+真正的查找键 = 编译产物（jaxpr/HLO）哈希 + 工具链/硬件标识。分两阶段：
+
+- **现在（Python 路线）**：直接用 JAX 自带 persistent cache ——
+  `enable_compilation_cache()` 已落地（编译 36.5 → 5.9 s，RESULTS §15.6），
+  它的键就是产物哈希，天然完备。**没有自建 artifact store 的必要。**
+- **PJRT plugin 阶段**：显式 artifact store、序列化 executable，查找键同上派生。
+
+**origin 的归宿（必须在导出接口冻结前决定）**：把 origin 从闭包常量改成
+**运行期 buffer 参数**。在线模式本来就约定「坐标归位回盒心」（约束 3），
+origin 出运行期后键变短、跨 Context 复用率上升，预编译 pack 也才从零命中率
+变成可行选项。**若不改，origin 必须进键** —— 二选一，不能都不做。
+
+### 一个 Context = 三份 executable
+
+非对称网格现为优化优先级①（RESULTS §15.7–15.8：又快 18%，与 Amber 差距
+5.0% → 1.0%）且大概率成为默认（C/R 共盒 h=0.75 + 配体紧盒 h=0.25）。
+所以 planner 的输出是 **{species → artifact}**，不是单 artifact；
+编译 ~3×8.5 s，热进程 10k 帧占 1.3%（已实测）。
+
+### 与 OpenMM 生命周期同构
+
+平台层本来就在 Context 创建时做 per-Force kernel 的编译与加载，落点很自然：
+planner + artifact lookup 放 `CudaCalcPBSAForceKernel::initialize()`，
+per-frame 调用只喂坐标。**Context specialization 不是外来概念，
+是 OpenMM 的既有模式。**
+
+### 红线
+
+只有两条不能接受：**每帧重编译**，或 **grid shape 随帧变化**。只要 trajectory
+共用固定 grid，「每个体系 / 每个 h 一份 executable」不是问题 ——
+坐标平移不重编译、G_PB 不变已有实测（约束 3）。
+
+## 落地顺序
+
+```text
+1. stage-2 JAX SA        <- 前置条件, 否则整条流水线有一截在 host
+2. 固定网格的在线接口     <- 预定 padding, 禁止中途改形状
+3. origin 改运行期参数    <- 接口冻结前做; 否则 artifact 键不完备 = 静默错配
+4. jax.export 单 executable  <- [G_C,G_R,G_L,ΔG_PB,ΔG_SA,ΔG_PBSA], 每 species 一份
+5. PJRT C++ plugin       <- 跟随上游 #5320 的 boundary 方案, 不自己发明
+   ^ planner + artifact lookup 放 kernel initialize(), 查找键从产物哈希派生
+6. 零拷贝优化            <- 最后做, 实测只占 1e-5
+```
+
+**第 4 步应当跟随而非领先上游**：#5320 还是 open 原型，OpenMM–PJRT 边界的
+方案没定稿。在它稳定前，Python callback 足够支撑 §23 的 sampling monitor 原型
+（我们每 ns 才调一次，callback 的调度开销相对 88 ms 可以忽略）。
+**Python callback 是原型手段，PJRT plugin 是产品形态** —— 两者不冲突。
+
+---
+
 # 22. Hot-path 性能目标
 
 定义：
@@ -1581,6 +1850,37 @@ delta_g_sa
 delta_g_mmpbsa
 solver_iters               # {species: [B, 2]}，V-cycle / 迭代数
 ```
+
+## 26.1 在线入口（`jaxpbsa.online`，§21 落地第 2 步）
+
+离线三行是「帧管够、网格按整条轨迹建」；在线只有第 0 帧，网格必须**预先定死**，
+每帧只动坐标（§21.5 约束 3）。所以是另一个入口，不是同一个函数加参数：
+
+```python
+import jaxpbsa
+from jaxpbsa.online import OnlineMMPBSA, PBSAReporter
+
+jaxpbsa.enable_compilation_cache()            # 把 __init__ 的预热编译压到 ~6 s
+
+az = OnlineMMPBSA(system, topology,
+                  solute_idx,                 # 溶剂化体系的**全局**索引(切水/离子)
+                  ligand_local_idx,           # 切完之后 [0,N_solute) 的**局部**索引
+                  ref_coords_A,               # 建网格 + 预热自检的参考帧
+                  h=0.5, padding=30.0)        # padding 从轨迹量出来, 不是拍的
+az(coords_A)                                  # [N_solute,3] Å -> 全部字段 + margin_A/sa_ok
+
+sim.reporters.append(PBSAReporter(az, interval_steps=10000, solute_idx=solute_idx,
+                                  out_csv="pbsa.csv", margin_min=12.0))
+```
+
+- **网格建一次**：`make_grid` 只在 `__init__` 里调，不暴露给调用方 —— 在循环里
+  重建网格 = 每帧重编译。
+- **归位用质心**（`recenter_com`），不是包围盒中点：中点由 6 个极端原子决定，
+  远端侧链摆 1 Å 就移半个 h，按 RESULTS §15.4 那是峰峰 8.39 的摆放噪声直接进
+  ΔG(t) —— §23 要测的正是这个量级。
+- **同卡跑 MD 时必须** `XLA_PYTHON_CLIENT_PREALLOCATE=false`，否则 JAX 预占 75%
+  显存，OpenMM 的 CUDA Context 起不来。
+- 字段与守卫语义见 [ONLINE_PLAN.md](./ONLINE_PLAN.md) 与 DESIGN §4。
 
 ---
 

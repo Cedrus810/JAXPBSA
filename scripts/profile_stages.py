@@ -9,6 +9,7 @@ import os, sys
 os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
 
 import jaxpbsa
+jaxpbsa.enable_compilation_cache()  # 编译 36.5 -> 5.9 s
 
 h = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
 jaxpbsa.set_precision(int(sys.argv[2]) if len(sys.argv) > 2 else 32)
