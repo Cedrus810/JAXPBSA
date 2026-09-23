@@ -32,6 +32,9 @@ plan §21.5 说「origin 运行期化 **或** origin 进 artifact 键, 二选一
 
 ## padding=30.0 的来源 (ONLINE_PLAN S0, 2026-09-20, S4 干轨迹 10 ns / 10000 帧)
 
+(2026-09-23 起 C/R 网格默认 h=0.75、配体单独紧盒, 见 `pb.TripletSolver`。padding
+仍以 Å 计, 下面的涨落预算照旧成立; 网格形状与 margin 数字是 h=0.5 时量的, 未重测。)
+
 在线只有第 0 帧, 必须显式补上构象涨落: 每轴包围盒半长的轨迹最大值比制备态
 大 **6.4 Å**(比 frame 0 大 3.5), + 介电/离子膨胀 5.7(r_max 1.8 + probe 1.4 +
 ion 2.0 + swin 0.5) + 边界物理需求 12(RESULTS §15.8: ~1.5κ⁻¹, 0.03 kcal/mol)
@@ -39,6 +42,14 @@ ion 2.0 + swin 0.5) + 边界物理需求 12(RESULTS §15.8: ~1.5κ⁻¹, 0.03 kc
 后, **质心归位**下 10 ns 全部 10000 帧 `margin_A ≥ +16.5`(包围盒归位是 +18.5,
 质心偏离中点最多 4.6 Å 吃掉一截, 由 dime 余量吸收)。**换体系/更长轨迹要重量
 这个数。**
+
+## 配体紧盒 padding_lig=14 的来源 (2026-09-23, 同一条 10 ns 干轨迹)
+
+非对称网格(`TripletSolver`)下配体按**自己的**质心归位到自己的紧盒。离线 8 Å
+(≈1κ⁻¹, 与 20 Å 差 0.09 kcal/mol, RESULTS §15.8) 够用, 因为离线按整条轨迹的
+范围建盒; 在线只有参考帧, 磷酸肽很软: 每轴 max|x−COM_L| 制备态
+[16.0, 7.5, 12.3] → 轨迹最大 [17.8, 12.7, 16.1], **y 轴涨 5.2 Å**(1 ns 前缀只到
++3.8, 又是单调增的 max 统计量)。8 + 6 = **14**。换配体必须重量。
 
 ## 索引约定 (最容易错的地方 —— 两套索引混用不报错, 只给一个错的 ΔG)
 
@@ -62,36 +73,10 @@ from openmm import unit
 
 from .mm import mm_cross_prepared, prepare_cross
 from .openmm_io import MMParams, assign_radii, extract_nonbonded
-from .pb import PBParams, make_frame_solver, make_grid
+from .pb import PBParams, TripletSolver, recenter_com
 from .sa import BETA_INP1, GAMMA_INP1, delta_g_sa
 
 __all__ = ["OnlineMMPBSA", "PBSAReporter", "recenter_com"]
-
-
-def recenter_com(coords: np.ndarray, masses: np.ndarray,
-                 center: np.ndarray) -> np.ndarray:
-    """质量加权质心对齐到 `center`(网格中心), 返回平移后的坐标。
-
-    **为什么不是包围盒中点**(ONLINE_PLAN S2 原案, 已废): 中点由 6 个极端原子
-    决定, 远端侧链摆 1 Å → 中点移 0.5 Å ≈ 一个 h → 溶质相对格点的亚格点相位
-    逐帧扫动。RESULTS §15.4 实测同一构象只挪相位的 ΔG_PB 峰峰值 **8.39**, 比
-    h=0.75→0.5 全局加密的效果(5.49)还大 —— 包围盒归位等于往在线 ΔG(t) 注入
-    一层 ~8 的白噪声, 而 §23 要测的 block drift / ESS 正是这个量级, 监控信号
-    会被自己的归位方式埋掉。质心: 单原子动 1 Å 只挪 mᵢ/M(~1/2000 Å), 相位
-    基本冻结, 摆放噪声从「帧间噪声」退化成「常数系统偏移」。代价是 padding
-    不再对称(S4 上质心偏离包围盒中点最多 4.6 Å), 由 margin 余量吸收(padding=30
-    下 S4 全轨迹 margin 仍 ≥ +16.5, 见模块 docstring)。
-
-    **为什么质量加权**: 氢的热运动幅度最大而质量最小, 不加权的算术平均会把
-    氢的抖动放大约 12 倍进相位。质量从 OpenMM System 取(`dalton`), 与坐标
-    同一批原子。
-
-    **离线对拍注意**: 离线路径(整轨迹共网格、坐标不动)的刚体漂移照样扫相位,
-    §15.4 明说了这一点 —— 在线用质心归位后反而更干净。以后在线 vs 离线逐帧
-    比较, **两边必须用同一套归位**, 否则散点就是这 ±8。
-    """
-    com = (coords * np.asarray(masses)[:, None]).sum(axis=0) / np.sum(masses)
-    return coords - com + center
 
 
 class OnlineMMPBSA:
@@ -110,8 +95,10 @@ class OnlineMMPBSA:
         ligand_local_idx,
         ref_coords_A,
         *,
-        h: float = 0.5,
+        h: float = 0.75,
         padding: float = 30.0,
+        h_lig: float | None = 0.25,
+        padding_lig: float = 14.0,
         pb_params: PBParams | None = None,
         gamma: float = GAMMA_INP1,
         beta: float = BETA_INP1,
@@ -161,11 +148,9 @@ class OnlineMMPBSA:
                 f"溶质净电荷 {q.sum():+.3f} e 与预期的 {net_charge:+.0f} e 不符"
                 " —— 切片索引错位")
 
-        grid = make_grid(ref[None], h=h, padding=padding)
-        solver = make_frame_solver(grid, radii, params)
-
-        self._grid = grid
-        self._solver = solver
+        self._tri = TripletSolver(ref, masses, radii, rec, lig, params, h=h,
+                                  padding=padding, h_lig=h_lig,
+                                  padding_lig=padding_lig)
         self._q = q
         self._radii = radii
         self._masses = masses
@@ -174,13 +159,6 @@ class OnlineMMPBSA:
         self._cross = prepare_cross(solute_mm, lig, rec)
         self._sa_kw = dict(k_neighbors=int(sa_k), n_points=int(sa_points))
         self._gamma, self._beta = float(gamma), float(beta)
-        # 归位目标: 与 make_grid 的 center 同一约定(包围盒中点), float64 host 数组。
-        self._center = (np.asarray(grid.origin, dtype=np.float64)
-                        + 0.5 * (np.asarray(grid.shape) - 1) * grid.h)
-        # margin guard 的常量(ONLINE_PLAN S3): 介电/离子图比原子球多出的膨胀
-        self._half = np.asarray(grid.half_extent(), dtype=np.float64)
-        self._reach = (float(np.max(radii)) + params.probe_radius
-                       + params.ion_radius + max(params.swin, 0.0))
         # reporter 的单位哨兵: 帧的包围盒尺度不应偏离参考帧 3 倍以上
         # (nm/Å 忘 ×10 是 10 倍, 必被抓; ps 级构象变化不会)
         self._ref_extent = float(np.linalg.norm(ref.max(0) - ref.min(0)))
@@ -194,9 +172,10 @@ class OnlineMMPBSA:
         warm = self(ref)
         self.warmup_time_s = time.perf_counter() - t0
         problems = []
-        if warm["margin_A"] < 0:
+        if min(warm["margin_A"], warm["margin_lig_A"]) < 0:  # nan(共用网格) 不触发
             problems.append(
-                f"padding 不足: 预热帧 margin_A = {warm['margin_A']:.2f} Å, "
+                f"padding 不足: 预热帧 margin_A = {warm['margin_A']:.2f} / "
+                f"margin_lig_A = {warm['margin_lig_A']:.2f} Å, "
                 "越界原子已被 clip+权重置零静默丢弃 —— 加大 padding")
         if not warm["converged"]:
             problems.append(f"PB 预热帧未收敛: solver_iters = "
@@ -208,17 +187,6 @@ class OnlineMMPBSA:
                 "OnlineMMPBSA 预热自检失败(配置错误要在 MD 开跑前死, 不等第"
                 "一帧): " + "; ".join(problems))
 
-    # ---- S2: 归位, 见 recenter_com(质心, 不是包围盒中点)。PBC 不需要自己
-    # unwrap: reporter 用 enforcePeriodicBox=False 取坐标, 分子天然完整;
-    # 真跳了 image → 包围盒暴涨 → margin 直接负数 ----
-    def _recenter(self, coords: np.ndarray) -> np.ndarray:
-        return recenter_com(coords, self._masses, self._center)
-
-    def margin_A(self, coords_recentered: np.ndarray) -> float:
-        """溶质膨胀面到网格边界的余量(Å)。负数 = 已经在丢原子(契约 3)。"""
-        reach_ax = np.abs(coords_recentered - self._center).max(axis=0)
-        return float((self._half - reach_ax - self._reach).min())
-
     def __call__(self, coords_A) -> dict:
         """[N_solute,3] Å -> 全部字段(标量 float / bool / list)。一次性同步在返回前。"""
         c = np.asarray(coords_A, dtype=np.float64)
@@ -226,11 +194,12 @@ class OnlineMMPBSA:
             raise ValueError(f"coords 要 [{self._q.size},3], 得到 {c.shape}")
         if not np.isfinite(c).all():
             raise ValueError("坐标含 NaN/Inf")  # sasa 也会抓, 但在这里抓得更早更明确
-        c = self._recenter(c)
-        margin = self.margin_A(c)
-
+        # PB 的归位与 margin 在 TripletSolver 里(C/R 与 L 各按自己的质心、各自的网格)。
+        # MM/SA 平移不变, 但 SA 走 fp32, 远离原点的原坐标会丢精度 —— 也归位到原点
+        pb = self._tri(c, self._q)
+        c = recenter_com(c, self._masses, np.zeros(3))
+        margin = pb["margin_A"]
         mm = mm_cross_prepared(c[None], self._cross)  # [1,N,3] 入口
-        pb = self._solver.triplet(c, self._q, self._rec_local, self._lig_local)
 
         sa_ok, sa_err = True, ""
         try:
@@ -262,6 +231,7 @@ class OnlineMMPBSA:
             "solver_iters": [int(v) for v in np.asarray(pb["iters"])],
             "converged": bool(np.asarray(pb["converged"])),
             "margin_A": margin,
+            "margin_lig_A": pb["margin_lig_A"],
             "sa_ok": sa_ok,
         }
         if not sa_ok:
@@ -270,8 +240,8 @@ class OnlineMMPBSA:
 
     # reporter/测试要看的只读状态
     @property
-    def grid(self):
-        return self._grid
+    def triplet_solver(self) -> TripletSolver:
+        return self._tri
 
     @property
     def ref_extent(self) -> float:
@@ -292,7 +262,7 @@ class PBSAReporter:
                    "g_pb_receptor", "g_pb_ligand", "delta_g_pb", "sasa_complex",
                    "sasa_receptor", "sasa_ligand", "delta_g_sa",
                    "delta_g_mmpbsa", "iter_c", "iter_r", "iter_l", "converged",
-                   "sa_ok", "margin_A")
+                   "sa_ok", "margin_A", "margin_lig_A")
 
     def __init__(self, analyzer: OnlineMMPBSA, interval_steps: int, solute_idx,
                  out_csv: str | None = None, on_violation: str = "flag",
@@ -337,6 +307,10 @@ class PBSAReporter:
                     "边界量(RESULTS §15.8), 本帧 ΔG_PB 的边界误差超标")
         if not out["converged"]:
             return f"PB 未收敛: solver_iters = {out['solver_iters']}"
+        if out["margin_lig_A"] < 0:
+            # 配体紧盒只查丢原子: 它按设计贴近边界, margin_min 不适用(见 TripletSolver)
+            return (f"margin_lig_A = {out['margin_lig_A']:.2f} Å < 0: 配体构象撑出"
+                    "了紧盒, 越界原子被悄悄丢掉, 本帧 G_L 不可用 —— 加大 padding_lig")
         if not out["sa_ok"]:
             return f"SA 失败: {out.get('sa_error', '')}"
         return None
@@ -389,7 +363,7 @@ class PBSAReporter:
                 out["delta_g_pb"], out["sasa_complex"], out["sasa_receptor"],
                 out["sasa_ligand"], out["delta_g_sa"], out["delta_g_mmpbsa"],
                 it[0], it[1], it[2], out["converged"], out["sa_ok"],
-                out["margin_A"]])
+                out["margin_A"], out["margin_lig_A"]])
             self._fh.flush()  # 跑几小时崩了不能丢已算的帧
         self.n_reports += 1
 

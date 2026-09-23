@@ -21,30 +21,28 @@ performance claim in [`RESULTS.md`](./RESULTS.md) is measured, split into
        Coulomb + LJ      solver      γ·SASA + β
 ```
 
-On **S4** (Src SH2 domain + phosphotyrosyl peptide, PDB 1SPS chains C+F, 1835 atoms,
-h = 0.5 Å, fp32):
+On **S4** (Src SH2 domain + phosphotyrosyl peptide, PDB 1SPS chains C+F, 1835 atoms),
+20 frames spread over a 10 ns trajectory, default grids (C/R h = 0.75, ligand h = 0.25),
+fp32, against Amber `MMPBSA.py` on the same frames:
 
-| term | kcal/mol |
-|---|---|
-| ΔE_coul (R–L) | −894.80 |
-| ΔE_LJ (R–L) | −52.41 |
-| **ΔE_MM** | **−947.21** |
-| **ΔG_PB** | **+885.41** |
-| **ΔG_SA** | **−5.74** |
-| **ΔG_MM/PBSA** | **−67.54** |
+| term | MMPBSA.py | jaxpbsa | Δ |
+|---|---|---|---|
+| ΔE_coul (R–L) | −826.83 | −826.86 | 3.5e-5 rel |
+| ΔE_LJ (R–L) | −44.66 | −44.66 | 4.4e-5 rel |
+| **ΔG_PB** | **780.52** | **778.46** | **−2.06 (0.26%)** |
+| **ΔG_SA** | −5.79 | −5.78 | 2.6e-4 rel |
+| **ΔG_MM/PBSA** | **−96.75** | **−98.84** | −2.09 |
 
-> **⚠ ΔG_PB is under review — a fix is measured but not yet the default.**
-> Because `δG_C ≈ δG_R` cancels, the *entire* discretization error of ΔG_PB is the
-> isolated-ligand solve, and that solve is far from converged at h = 0.5 Å.
-> A per-species grid (C/R at h = 0.75, ligand in a tight box at h = 0.25) gives
-> **ΔG_PB = 851.7 instead of 885.4** — closing the gap to Amber `pbsa` (842.9) from
-> **5.0% to 1.0%** — and is **18% faster** (162 vs 197 ms/frame), because the current
-> code spends its grid on C and R where the error cancels anyway.
-> Measured on one S4 frame; see [RESULTS §15](./RESULTS.md). The table below is the
-> current code's output, not a converged result.
+Until 2026-09-23 the default was one h = 0.5 grid shared by all three species, and
+ΔG_PB came out **5% high** (885.4 vs 842.9 on the canonical frame). The cause: the
+C/R discretisation errors cancel, so the *whole* error of ΔG_PB sits in the
+isolated-ligand solve, which carries a ~31 kcal/mol bias at h = 0.5. The default now
+gives the ligand its own tight h = 0.25 box and relaxes C/R to h = 0.75. That's
+~21% faster, and the ΔG_PB gap to Amber drops from 5% to 0.26%
+([RESULTS §17](./RESULTS.md)).
 
 The electrostatic cancellation is the sharpest check on the PB result: two numbers of
-order 890 cancel to **−9.4 (1.1%)**. A 5% error in ΔG_PB would leave tens of kcal/mol
+order 800 cancel to a few percent of either. A 5% error in ΔG_PB would leave tens of kcal/mol
 of residue and change the answer entirely.
 
 ---
@@ -65,8 +63,9 @@ RTX 2080 Ti, S4, h = 0.5 Å, fp32, true-residual tol = 1e-5. Single-species PB s
 | + static-slice morphology | 76.8 | 23.4× |
 | + unrolled MG smoother (host-constant trip count) | **68.3** | **26.4×** |
 
-Full ΔG_PB (three species: complex, receptor, ligand) — **197.5 ms/frame** on a
-2080 Ti. Truncating the MG hierarchy at 41×41×49 (`PBParams.mg_min_n=41`) gives
+Full ΔG_PB (three species: complex, receptor, ligand) — **~210 ms/frame** on a
+2080 Ti with the default asymmetric grids on trajectory frames (old shared h = 0.5
+grid: 197.5 ms on the canonical frame, 285 ms on a trajectory-wide grid). Truncating the MG hierarchy at 41×41×49 (`PBParams.mg_min_n=41`) gives
 **177.0 ms/frame**; not the default yet, measured on S4 only (RESULTS §14.4).
 The 5080 figure (88.4 ms/frame) predates the unrolled smoother and has not been
 re-measured on that card.
@@ -98,10 +97,14 @@ full table: [`RESULTS.md`](./RESULTS.md) §13.
 
 **Linear PB**, discretised on a regular grid, solved matrix-free:
 
-- **One grid shared by complex / receptor / ligand.** G_PB absolute values carry tens
-  of kcal/mol of grid self-energy error; only a common origin/shape/spacing makes it
-  cancel in C − R − L. Measured: refining h 0.75 → 0.5 moves G_C by +31.35 and G_R by
-  **+31.36** — cancelling to 0.01 kcal/mol.
+- **C and R share one grid; the ligand gets its own.** G_PB absolute values carry tens
+  of kcal/mol of grid self-energy error; only a common grid makes it cancel in C − R
+  (placement-averaged, C − R moves 0.8 kcal/mol between h = 0.75 and 0.5). The isolated
+  ligand has nothing to cancel against, so it is solved in a tight h = 0.25 box
+  (`TripletSolver`, `h_lig=None` restores the old single shared grid).
+- **Every frame is recentred on its mass-weighted centroid** — C/R on the complex
+  centroid, L on its own. Rigid-body drift otherwise sweeps the sub-grid phase and moves
+  ΔG_PB by up to ±9 kcal/mol frame to frame (RESULTS §15.4, §17.2).
 - **Multigrid as a CG *preconditioner*, not a solver.** Re-discretised MG *diverges* at
   the production ε jump of 1:80 (convergence factor 1.8 per V-cycle); geometric
   interpolation cannot represent a solution whose normal derivative jumps by 80× across
@@ -115,11 +118,12 @@ full table: [`RESULTS.md`](./RESULTS.md) §13.
   G_PB: a constant **+0.035 kcal/mol**, against a discretisation error of **40**. But
   reductions must stay fp64: the R–L cross energy sums ~10⁶ signed pairs.
 
-**Error budget** at h = 0.5 (Richardson-extrapolated): discretisation **~1.1 kcal/mol**,
-dominated by the *ligand* — the complex's and receptor's errors cancel almost exactly,
-so refinement should be driven by the ligand, not the complex. Do not estimate the
-error bar on ΔG_PB from the relative error on the absolute values: that gives
-28 kcal/mol instead of 1.1, a factor of **25**.
+**Error budget**: the systematic error of ΔG_PB is the ligand's (31 kcal/mol at
+h = 0.5, ~3 left at h = 0.25). What remains per frame is sub-grid placement noise:
+sd ≈ 6 kcal/mol for C − R at h = 0.75, small next to the ~31 kcal/mol conformational
+spread between frames, so it averages out like any other per-frame noise. Do not estimate the
+error bar on ΔG_PB from the relative error on the absolute values: that overstates it
+by an order of magnitude.
 
 ---
 
@@ -171,14 +175,17 @@ G_PB by 54 kcal/mol.
 
 ```python
 from jaxpbsa.openmm_io import load_canonical
-from jaxpbsa.pb import PBParams, make_frame_solver, make_grid
+from jaxpbsa.pb import PBParams, TripletSolver, make_frame_solver, make_grid
 
-d  = load_canonical()
-g  = make_grid(d["positions_A"][None], h=0.5, padding=20.0)   # shared by C/R/L
+d   = load_canonical()
+tri = TripletSolver(traj, masses, d["radii"],        # traj [T,N,3] Å (or one frame):
+                    d["receptor_idx"], d["ligand_idx"])  # grids sized from it, recentred
+tri(coords, q)          # ΔG_PB = G_C − G_R − G_L (+ margin_A), any rigid translation
+
+# single-species building blocks
+g  = make_grid(d["positions_A"][None], h=0.5, padding=20.0)
 sv = make_frame_solver(g, d["radii"], PBParams(precond="auto"))
-
 sv(coords, q, radii)                              # one frame, one species
-sv.triplet(coords, q, rec_idx, lig_idx)           # ΔG_PB = G_C − G_R − G_L
 sv.trajectory(traj, q, radii, warm=True,          # returns (per-frame energies,
               initial_state=state)                #          final_state)
 ```
@@ -189,9 +196,9 @@ single compilation.
 
 ```bash
 python scripts/benchmark.py --csv out.csv    # h × {fp32,fp64} × {jacobi,mg,auto}
-python scripts/crl.py 0.5 32                 # ΔG_PB
+python scripts/crl.py                        # ΔG_PB (C/R 0.75, L 0.25; `0.5 32 shared` = old)
 python scripts/profile_stages.py 0.5 32      # per-stage timing
-pytest -q                                    # 40 tests
+pytest -q                                    # 42 tests
 ```
 
 ### Online: ΔG_MM/PBSA(t) from a running simulation
@@ -211,7 +218,7 @@ az = OnlineMMPBSA(system, topology,
                   solute_idx,        # global indices into the solvated system
                   ligand_local_idx,  # local indices, [0, N_solute) after the slice
                   ref_coords_A,      # builds the grid + runs the warm-up self-check
-                  h=0.5, padding=30.0)
+                  padding=30.0, padding_lig=14.0)   # C/R h=0.75, ligand h=0.25
 
 sim.reporters.append(PBSAReporter(az, interval_steps=10000, solute_idx=solute_idx,
                                   out_csv="pbsa.csv", margin_min=12.0))
@@ -228,7 +235,8 @@ Recentring uses the **mass-weighted centroid**, not the bounding-box midpoint: t
 is set by six extremal atoms, so one side chain swinging 1 Å shifts the solute by half a
 grid spacing, and the placement sensitivity of ΔG_PB is **8.39 kcal/mol peak-to-peak**
 (`RESULTS.md` §15.4) — the same order as what an online sampling monitor is meant to
-measure. Each frame also reports `margin_A` (distance left to the grid boundary; negative
+measure. Each frame also reports `margin_A` (distance left to the boundary of the tighter
+of the two grids; negative
 means atoms are being silently dropped) and `sa_ok`.
 
 ---
@@ -255,17 +263,16 @@ device peak bandwidth, not seconds, when comparing across machines.
 surface/dielectric construction, C/R/L triplet with reference-field reuse
 (`u_ref_C = u_ref_R + u_ref_L`, potentials not energies — the reference energy contains
 R–L cross terms), trajectory interface with warm start and cross-chunk state, SA via
-zsasa, canonical artifact, cross-device validation.
+JAX Shrake–Rupley, canonical artifact, cross-device validation.
 
 **Not done** — solver memory-access efficiency (82–85% of runtime, and a larger share on
-faster cards), asymmetric grids (measured faster *and* closer to Amber, not yet the
-default), the online contention measurement (`scripts/online_overhead.py` is written, the
-numbers in plan §21.5 are still extrapolated), and the same COM recentring on the offline
-path (`ONLINE_PLAN.md` §7 — required before any online-vs-offline per-frame comparison).
+faster cards), re-measuring the online overhead table (§16) on the new default grids,
+and checking the asymmetric-grid result on a second system.
 
 Since the last revision of this section: SA in JAX (stage 2), external validation against
-Amber `pbsa` (`RESULTS.md` §12), the 10 ns production trajectory, and the online entry
-(`jaxpbsa/online.py`) all landed.
+Amber `pbsa` (`RESULTS.md` §12), the 10 ns production trajectory, the online entry
+(`jaxpbsa/online.py`), and — 2026-09-23 — asymmetric grids as the default plus centroid
+recentring on the offline path, both through `TripletSolver` (`RESULTS.md` §17).
 
 **Deferred with a measurement behind it** — BinaryCIF. The canonical CIF quantises
 coordinates at 1e-4 Å; measured effect on ΔG_PB is **1e-4 kcal/mol**, four orders of

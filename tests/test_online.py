@@ -23,7 +23,7 @@ jaxpbsa.enable_compilation_cache()  # 测试 3 独立再建一份相同的 frame
 from jaxpbsa.mm import mm_cross  # noqa: E402
 from jaxpbsa.online import OnlineMMPBSA, PBSAReporter, recenter_com  # noqa: E402
 from jaxpbsa.openmm_io import assign_radii, load_canonical  # noqa: E402
-from jaxpbsa.pb import PBParams, make_grid  # noqa: E402
+from jaxpbsa.pb import PBParams, TripletSolver  # noqa: E402
 from jaxpbsa.sa import BETA_INP1, GAMMA_INP1, delta_g_sa  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,8 +34,8 @@ def _make_analyzer(peptide_system, **kw) -> OnlineMMPBSA:
     lig_local = np.array([a.index for a in topology.atoms()
                           if a.residue.chain.id == "B"])
     solute_idx = np.arange(system.getNumParticles())  # 体系本身就是干的双链
-    kw.setdefault("h", 0.5)
-    kw.setdefault("padding", 12.0)  # 测试不需要 30; 更小的 padding 也躲开 MG 阈值
+    kw.setdefault("padding", 12.0)  # 测试不需要 30
+    kw.setdefault("padding_lig", 8.0)
     return OnlineMMPBSA(system, topology, solute_idx, lig_local, pos, **kw), pos
 
 
@@ -83,7 +83,12 @@ def test_margin_guard(peptide_system, tmp_path):
     out_bad = az(bad)
     assert out_bad["margin_A"] < 0, "越界帧必须报负 margin, 而不是悄悄给偏小的 G_PB"
     out_good = az(pos)
-    assert out_good["margin_A"] > 0
+    assert out_good["margin_A"] > 0 and out_good["margin_lig_A"] > 0
+    # 配体紧盒单独守: 配体原子撑出紧盒(整体仍在 C/R 网格里)也必须报负
+    lig0 = az._lig_local[0]
+    bad_l = pos.copy()
+    bad_l[lig0] += np.array([0.0, 20.0, 0.0])
+    assert az(bad_l)["margin_lig_A"] < 0
 
     class _FakeSim:
         currentStep = 1000
@@ -138,22 +143,22 @@ def test_assembly_matches_manual(peptide_system):
 
     system, topology, _ = peptide_system
     from jaxpbsa.openmm_io import extract_nonbonded
-    from jaxpbsa.pb import make_frame_solver
     mmp = extract_nonbonded(system)
     lig = np.array([a.index for a in topology.atoms() if a.residue.chain.id == "B"])
     rec = np.setdiff1d(np.arange(len(pos)), lig)
 
-    # 手工路径独立地重做归位(质心, 不调 analyzer 的方法; 质量自己从 System 提)
-    g2 = make_grid(pos[None], 0.5, padding=12.0)
-    assert g2 == az.grid
-    center = np.asarray(g2.origin) + 0.5 * (np.asarray(g2.shape) - 1) * g2.h
+    # 手工路径: 质量自己从 System 提, 半径自己定, 独立建一份 TripletSolver
     masses = np.array([system.getParticleMass(i).value_in_unit(unit.dalton)
                        for i in range(system.getNumParticles())])
-    c2 = recenter_com(pos, masses, center)
     radii = assign_radii(topology)
+    tri2 = TripletSolver(pos, masses, radii, rec, lig, PBParams(), h=0.75,
+                         padding=12.0, h_lig=0.25, padding_lig=8.0)
+    assert tri2.grid == az.triplet_solver.grid
+    assert tri2.grid_lig == az.triplet_solver.grid_lig
+    pb2 = tri2(pos, mmp.charge)
+    c2 = recenter_com(pos, masses, np.zeros(3))
 
     mm2 = mm_cross(c2[None], mmp, lig, rec)
-    pb2 = make_frame_solver(g2, radii, PBParams()).triplet(c2, mmp.charge, rec, lig)
     dsa2, areas2 = delta_g_sa(c2, radii, rec, lig,
                               gamma=GAMMA_INP1, beta=BETA_INP1, k_neighbors=192)
     e_coul2 = float(np.asarray(mm2["e_coul_rl"]).reshape(-1)[0])  # 批维 [1]
@@ -185,3 +190,44 @@ def test_s4_canonical_one_time_checks():
     radii = assign_radii(d["topology"], d["meta"]["radii_model"])
     assert np.array_equal(radii, d["radii"]), \
         "assign_radii 在 canonical topology 上的行为漂移 —— rᵢ 单源破了"
+
+
+def test_triplet_shared_grid_matches_frame_solver(peptide_system):
+    """`h_lig=None` 必须就是旧的公共网格 triplet, 只多一步质心归位 ——
+    抓 TripletSolver 的建网格(center=质心)与接线。"""
+    from jaxpbsa.openmm_io import extract_nonbonded
+    from jaxpbsa.pb import make_frame_solver
+    system, topology, pos = peptide_system
+    q = extract_nonbonded(system).charge
+    lig = np.array([a.index for a in topology.atoms() if a.residue.chain.id == "B"])
+    rec = np.setdiff1d(np.arange(len(pos)), lig)
+    masses = np.array([system.getParticleMass(i).value_in_unit(unit.dalton)
+                       for i in range(len(pos))])
+    radii = assign_radii(topology)
+    tri = TripletSolver(pos, masses, radii, rec, lig, h=0.5, padding=12.0, h_lig=None)
+    c = recenter_com(pos, masses, tri.grid.center)
+    assert np.allclose(np.average(c, axis=0, weights=masses), tri.grid.center)
+    ref = make_frame_solver(tri.grid, radii, PBParams()).triplet(c, q, rec, lig)
+    out = tri(pos + 17.0, q)
+    for k in ("g_pb_complex", "g_pb_receptor", "g_pb_ligand", "delta_g_pb"):
+        np.testing.assert_allclose(float(out[k]), float(ref[k]), rtol=1e-5)
+
+
+def test_asym_ligand_uses_its_own_com(peptide_system):
+    """非对称网格下配体按**自己的**质心归位到自己的紧盒: 把配体整体挪离受体,
+    G_L 不变(孤立溶剂化能与它在复合物里的位置无关)。若误用复合物质心, 配体
+    相对紧盒平移 -> 相位变 / 越界, G_L 会动。"""
+    from jaxpbsa.openmm_io import extract_nonbonded
+    system, topology, pos = peptide_system
+    q = extract_nonbonded(system).charge
+    lig = np.array([a.index for a in topology.atoms() if a.residue.chain.id == "B"])
+    rec = np.setdiff1d(np.arange(len(pos)), lig)
+    masses = np.array([system.getParticleMass(i).value_in_unit(unit.dalton)
+                       for i in range(len(pos))])
+    tri = TripletSolver(pos, masses, assign_radii(topology), rec, lig,
+                        padding=12.0, padding_lig=8.0)
+    moved = pos.copy()
+    moved[lig] += np.array([0.0, 3.3, -2.1])
+    a, b = tri(pos, q), tri(moved, q)
+    np.testing.assert_allclose(float(b["g_pb_ligand"]), float(a["g_pb_ligand"]), rtol=1e-5)
+    assert a["margin_A"] > 0 and bool(a["converged"])

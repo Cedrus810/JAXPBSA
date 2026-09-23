@@ -396,3 +396,36 @@ Python 阶段后者已自动满足：`enable_compilation_cache()` 的查找键�
   不自动探测，显式参数 + 每帧硬验。
 - **reporter 不扰动轨迹**，但 OpenMM CUDA 本身不可逐位复现（20 步 2e-5 Å）。
   后果：在线 vs 离线对比必须在**同一批已保存的帧**上做，不能重跑 MD 再比。
+
+---
+
+## 非对称网格设为默认 + 离线质心归位（2026-09-23，RESULTS §17）
+
+**新入口 `jaxpbsa.pb.TripletSolver`**：离线（`crl.py` / `validate_mmpbsa.py`）与在线
+（`OnlineMMPBSA`）共用。C/R 按复合物质心、L 按配体自己的质心归位；C/R 共用 h=0.75，
+配体单独 h=0.25 紧盒（离线 padding 8，在线 14）。`h_lig=None` = 旧的三者共用网格。
+
+| | 旧（共用 h=0.5）| 新默认 |
+|---|---|---|
+| 20 帧 ⟨ΔG_PB⟩ vs MMPBSA.py 780.52 | 816.1（+4.6%）| **778.46（−0.26%）** |
+| ms/帧（轨迹网格）| 285 | **209–225** |
+
+附带改动：`make_grid(center=)`、`GridSpec.center`、`recenter_com` 挪到 `pb/grid.py`
+（`online` 里仍可 import）、`solve.pair`（C/R 共一份编译）、在线新增 `margin_lig_A`
+（CSV 多一列）、`crl.py` / `validate_mmpbsa.py` 新增 `shared` / `--shared`、`--stride`、
+`--pbsa-h`（pbsa 仍 0.5，与我们的 C/R 间距解耦）。
+
+### 又一条被实测推翻的判断
+
+§15.2 的「C−R 在 h=0.75 已收敛（0.75→0.5 只动 0.008）」是**单一摆放的巧合**。
+7 种亚格点相位下 C−R 的 sd：h=0.75 **6.0**、h=0.5 **3.2**；按相位平均两者只差 0.8。
+所以结论「C−R 无系统偏差、偏差全在配体」**成立**，但代价是 C/R 在 0.75 下逐帧噪声翻倍。
+默认仍取 0.75：帧间构象 sd 31.4，摆放噪声只让方差多 2.6%，同样算力多 46% 的帧。
+
+§12.2「与 pbsa 的 5% 是方法差异、不会收敛掉」**撤回**：配体加密后只剩 0.26%。
+
+### 一个差点进去的守卫 bug
+
+第一版把两张网格的 margin 取 min 成一个 `margin_A`。reporter 拿它比 `margin_min=12`
+（C/R 的 Dirichlet 物理阈值），而配体紧盒按设计只剩 ~2–8 Å —— **每帧都会被 flag**。
+拆成 `margin_A`（按 `margin_min`）与 `margin_lig_A`（只判 < 0）。

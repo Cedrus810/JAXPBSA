@@ -34,12 +34,14 @@
   ΔG_SA     **方法比较**。LCPO 解析近似 vs Shrake–Rupley 采样。实测 0.3% ——
             两个毫不相干的算法对到这个程度，是很强的 sanity check，但不是断言。
   ΔG_PB     **方法比较**。pbsa 与我们的离散、表面定义、能量泛函都不同。
-            实测 842.6 vs 885.4（5.1%）。
+            旧的共用 h=0.5 网格：842.6 vs 885.4（5.1%）；非对称网格默认（C/R 0.75、
+            配体 0.25）20 帧：780.5 vs 778.5（**0.26%**，RESULTS §17.3）。
 
 **不要拿 DESIGN §T6 的「ΔG_PB < 2%」卡这里。** 那条是给 APBS 写的 —— APBS 与我们
 同方法族（同方程、同类离散、都是格点 FD），所以才能逐参数对齐到 2%。MMPBSA.py 不是。
 
-而且这 5% **不会随加密收敛掉**，实测过：
+下面这段「5% 不会收敛掉」的判断**已被 RESULTS §17 撤回**：两边的「收敛」都是单一摆放
+下的加密，而我们欠解的是被 C/R 抵消掩盖的配体。保留原文作记录：
 
     pbsa   h=0.5 → 0.25   ΔG_PB 842.60 → 843.14   (0.06%)
     我们   h=0.75 → 0.5   ΔG_PB 变 5.49            (0.62%, RESULTS §0.17)
@@ -180,11 +182,11 @@ def parse_results(path):
     return out
 
 
-def ours(coords_A, d, h, with_pb=True):
+def ours(coords_A, d, h, with_pb=True, shared=False):
     """我们这边的三项，取 frame 平均（与 MMPBSA.py 报告的 Average 对齐）。"""
     from jaxpbsa.mm.cross import mm_cross
     from jaxpbsa.openmm_io.system import extract_nonbonded
-    from jaxpbsa.pb import PBParams, make_frame_solver, make_grid
+    from jaxpbsa.pb import PBParams, TripletSolver
     from jaxpbsa.sa import delta_g_sa
 
     c = np.asarray(coords_A, float)
@@ -196,20 +198,31 @@ def ours(coords_A, d, h, with_pb=True):
            "ENPOLAR": float(np.mean(np.atleast_1d(dg_sa))),
            "_dsasa": float(np.mean(np.atleast_1d(areas["delta_sasa"])))}
     if with_pb:
-        g = make_grid(c, h, padding=20.0)
-        sv = make_frame_solver(g, d["radii"],
-                               PBParams(swin=0.5, tol=1e-5, max_iter=8000,
-                                        precond="mg"))
-        out["EPB"] = float(np.mean([
-            float(sv.triplet(f, d["charge"], d["receptor_idx"],
-                             d["ligand_idx"])["delta_g_pb"]) for f in c]))
+        from openmm import unit
+        m = np.array([d["system"].getParticleMass(i).value_in_unit(unit.dalton)
+                      for i in range(len(d["charge"]))])
+        # 默认非对称网格(C/R h, 配体 h=0.25 紧盒) + 质心归位; --shared 退回旧法
+        sv = TripletSolver(c, m, d["radii"], d["receptor_idx"], d["ligand_idx"],
+                           PBParams(swin=0.5, tol=1e-5, max_iter=8000,
+                                    precond="mg"),
+                           h=h, h_lig=None if shared else 0.25)
+        per = [float(sv(f, d["charge"])["delta_g_pb"]) for f in c]
+        out["EPB"] = float(np.mean(per))
+        out["_epb_frames"] = per
     return out
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--frames", type=int, default=1)
-    ap.add_argument("--h", type=float, default=0.5)
+    ap.add_argument("--h", type=float, default=0.75,
+                    help="我们的 C/R 网格间距(配体固定 0.25 紧盒)")
+    ap.add_argument("--pbsa-h", type=float, default=0.5,
+                    help="pbsa 的网格间距(0.5 → 0.25 只动 0.06%%, 已收敛)")
+    ap.add_argument("--shared", action="store_true",
+                    help="旧法: C/R/L 共用一张 h 网格")
+    ap.add_argument("--stride", type=int, default=1,
+                    help="--frames>1 时每隔多少帧取一帧")
     ap.add_argument("--keep", action="store_true")
     ap.add_argument("--workdir", default=None)
     ap.add_argument("--pbopt", action="append", default=[], metavar="k=v",
@@ -230,7 +243,7 @@ def main():
         import mdtraj as md
         t = md.load(os.path.join(ROOT, "data/md/S4_dry.dcd"),
                     top=os.path.join(ROOT, "data/prepared/S4_complex.pdb"))
-        coords = (t.xyz[:a.frames] * 10.0).astype(np.float64)
+        coords = (t.xyz[::a.stride][:a.frames] * 10.0).astype(np.float64)
 
     rec, lig = np.asarray(d["receptor_idx"]), np.asarray(d["ligand_idx"])
     if not (np.all(np.diff(rec) == 1) and np.all(np.diff(lig) == 1)):
@@ -238,14 +251,15 @@ def main():
 
     wd = a.workdir or tempfile.mkdtemp(prefix="jaxpbsa_mmpbsa_")
     os.makedirs(wd, exist_ok=True)
-    print(f"工作目录 {wd}\nAMBERHOME {AMBERHOME}\n{len(coords)} 帧, h={a.h}\n")
+    print(f"工作目录 {wd}\nAMBERHOME {AMBERHOME}\n{len(coords)} 帧, 我们 h={a.h}"
+          f"{' 共用网格' if a.shared else ' / 配体 0.25'}, pbsa h={a.pbsa_h}\n")
 
     parms = build_parms(wd, d["radii"], d["topology"], d["system"],
                         coords[0], rec, lig)
     traj = write_traj(wd, coords)
     # **istrng 单位是 M**, MMPBSA.py 内部再 ×1000 写成 pbsa 的 mM。
     # 传 150.0 会变成 150 M —— 比 0.15 M 高 1000 倍, 而且不报错。
-    inp = write_input(wd, a.h, pb.eps_in, pb.eps_out, pb.ionic_strength_M,
+    inp = write_input(wd, a.pbsa_h, pb.eps_in, pb.eps_out, pb.ionic_strength_M,
                       GAMMA_INP1, BETA_INP1, pb.probe_radius, a.pbopt)
 
     env = dict(os.environ, AMBERHOME=AMBERHOME)
@@ -274,7 +288,7 @@ def main():
             print(f"!! 这些 --pbopt 被 MMPBSA.py 丢弃了(没进 mdin): {dropped}")
     print()
     ref = parse_results(res_path)
-    us = ours(coords, d, a.h, with_pb=not a.no_pb)
+    us = ours(coords, d, a.h, with_pb=not a.no_pb, shared=a.shared)
     rows = [("ΔE_coul", "EEL", "EEL", "同一套力场参数 —— **必须**近似逐位一致"),
             ("ΔE_LJ", "VDWAALS", "VDWAALS", "同上"),
             ("ΔG_PB", "EPB", "EPB", "方法比较，**不是断言**：离散/表面/泛函都不同"),

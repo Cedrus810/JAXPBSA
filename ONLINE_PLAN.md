@@ -253,7 +253,12 @@ S1–S4 之间不要并行写：S4 的测试 3 是唯一能抓住前三步组合
 
 ---
 
-## 7. 待办：离线路径的归位（**未做**，做对比实验前必须补）
+## 7. 离线路径的归位 —— **已做**（2026-09-23，RESULTS §17）
+
+`jaxpbsa.pb.TripletSolver` 把归位与网格收进同一个类，离线脚本（`crl.py` /
+`validate_mmpbsa.py`）与 `OnlineMMPBSA` 都走它，两边自动同一套归位。
+`solve.trajectory`（单 species）与 `benchmark.py` 等纯性能脚本**没改**。
+下面是原来的待办说明，留作记录。
 
 `recenter_com` 只在在线路径生效。离线侧 —— `pb/energy.py` 的 `solve.trajectory`，
 以及喂它原始 MD 帧的 `scripts/crl.py` / `validate_mmpbsa.py` / `benchmark.py` ——
@@ -276,7 +281,7 @@ S1–S4 之间不要并行写：S4 的测试 3 是唯一能抓住前三步组合
 | 1 | **网格定尺改成算出来的**（`scripts/fit_grid.py` 已经在做这件事，把它搬进 `__init__`）：`fluctuation_allowance` / `pilot_coords` 替代魔数 `padding=30`，内部 `need_half = max\|x−COM\| + allowance + reach + margin_min` → 选最小 dime | §16.8：白多两档 dime，省 26.9% 时间且 ΔG 不变。每个 overhead 档位上移一格 | ~15 行 |
 | 2 | **`margin_min` 从 κ 算**，不再钉死 12（= S4 在 0.15 M 下的 1.5κ⁻¹）。0.05 M 下该是 ~20 —— 换体系时钉死的 12 是错的 | §16.9 | ~3 行 |
 | 3 | 两者都不给时**报错而不是拿单帧猜**（单帧欠 3.79 Å，实测）。抄 `sasa()` 的 `k_neighbors` 判决 | §16.9 / §11.2 | 合在 1 里 |
-| 4 | 离线路径补质心归位（§7）—— 且对比**必须用同一批已保存的帧**，不能重跑 MD | §16.6：单条轨迹不可逐位复现 | 见 §7 |
+| 4 | ~~离线路径补质心归位（§7）~~ **已做**（RESULTS §17）。对比仍**必须用同一批已保存的帧**，不能重跑 MD | §16.6：单条轨迹不可逐位复现 | — |
 | 5 | 生产脚本改用 `mdtraj.reporters.DCDReporter(..., atomSubset=solute_idx)` | §16.7：DCD@1 ps 比 PBSA@50 ps 还贵，只写溶质少 13× | 1 行 |
 
 **不做**（实测后更确定）：双 GPU async worker（§16.1 争用干净，无损失可回收）、

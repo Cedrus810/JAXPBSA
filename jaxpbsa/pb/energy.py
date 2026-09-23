@@ -22,7 +22,7 @@ import numpy as np
 from .. import ACCUM_DTYPE, dtype as _dtype
 from ..constants import KT_TO_KCAL, PROBE_RADIUS, debye_kappa2
 from .charges import assign_density, interpolate, source_term
-from .grid import GridSpec
+from .grid import GridSpec, make_grid, recenter_com
 from .operator import (
     apply_operator,
     coulomb_boundary_values,
@@ -326,10 +326,117 @@ def make_frame_solver(
         return _triplet(jnp.asarray(coords, dt), jnp.asarray(q, dt),
                         jnp.asarray(r, dt), jnp.asarray(kr), jnp.asarray(kl))
 
+    @jax.jit
+    def _pair(coords, q, radii, keep_r):
+        """G_C 与 G_R, 共用一份编译(R 补齐到 complex 的原子数, 同 `_triplet`)。
+        非对称网格下配体在另一张网格上, 参考势无法组合, C 自己解参考方程。"""
+        out_c, _, _ = _frame_impl(coords, q, radii)
+        out_r, _, _ = _frame_impl(*_species(coords, q, radii, keep_r))
+        return {
+            "g_pb_complex": out_c["g_pb"],
+            "g_pb_receptor": out_r["g_pb"],
+            "iters": jnp.stack([out_c["iters_solvent"], out_r["iters_solvent"]]),
+            "relres": jnp.stack([out_c["relres_solvent"], out_r["relres_solvent"]]),
+            "converged": out_c["converged"] & out_r["converged"],
+        }
+
+    def solve_pair(coords, q, receptor_idx, radii_arrays=None):
+        n = int(np.asarray(coords).shape[0])
+        kr = np.zeros(n, bool); kr[np.asarray(receptor_idx)] = True
+        r = radii_arrays if radii_arrays is not None else radii
+        return _pair(jnp.asarray(coords, dt), jnp.asarray(q, dt),
+                     jnp.asarray(r, dt), jnp.asarray(kr))
+
     solve.jitted = frame_fn  # 供 vmap/scan 直接复用同一份编译产物
     solve.trajectory = solve_trajectory
     solve.triplet = solve_triplet
+    solve.pair = solve_pair
     return solve
+
+
+class TripletSolver:
+    """ΔG_PB = G_C − G_R − G_L 的**默认入口**: 质心归位 + 按 species 定网格。
+
+    `tri = TripletSolver(ref_coords, masses, radii, rec_idx, lig_idx)`
+    `tri(coords, q) -> dict`(同 `solve.triplet` 的字段, 外加 `margin_A`)
+
+    **非对称网格(默认, RESULTS §15)**: `δG_C ≈ δG_R` 抵消, 所以 ΔG_PB 的离散误差
+    全在孤立配体那一次求解上(`δΔG_PB ≈ −δG_L`)。C/R 共用 h=0.75 的大盒(C−R 在
+    0.75 已收敛到 0.008), 配体单独一张 h=0.25 的紧盒。S4 实测: 与 Amber pbsa 的差
+    5.0% → 1.0%, 且快 18%。`h_lig=None` 退回旧的三者共用一张网格(对照用)。
+
+    **质心归位(C/R 与 L 各按自己的质心)**: 每帧都把溶质质心放回网格中心, 刚体
+    漂移不再扫亚格点相位(RESULTS §15.4 的 8.39 峰峰值)。配体的孤立溶剂化能与
+    它在复合物里的位置无关, 所以它有自己的质心和自己的网格。
+
+    `ref_coords` 是 [N,3] 或 [T,N,3]: 离线给整条轨迹(网格按归位后的共同范围建),
+    在线只有参考帧, 构象涨落要靠 padding 显式补(见 `online.py`)。
+    `margin_A` / `margin_lig_A` = C/R 网格 / 配体紧盒上「膨胀面到边界」的余量(Å),
+    负数 = 已在丢原子(`pb/charges.py` 的 clip + 权重置零, 不报错)。分开报是因为
+    阈值不同: C/R 的 Dirichlet 边界要 ~1.5κ⁻¹, 配体紧盒按设计贴得很近(padding 8
+    时余量只剩 ~2 Å, 实测与 padding 20 差 0.09 kcal/mol, RESULTS §15.8)。
+    """
+
+    def __init__(self, ref_coords, masses, radii, receptor_idx, ligand_idx,
+                 params: PBParams | None = None, *, h: float = 0.75,
+                 padding: float = 20.0, h_lig: float | None = 0.25,
+                 padding_lig: float = 8.0):
+        # padding_lig=8 ≈ 1κ⁻¹(0.15 M): 与 20 Å 差 0.090 kcal/mol, 远小于摆放噪声
+        # 8.39; 12 差 0.029 但配体盒节点 4.0 → 7.0 M(RESULTS §15.8)。
+        # padding=20 对 C/R: 20 → 40 只动 0.003。**换离子强度要跟着 κ⁻¹ 改。**
+        self.params = params if params is not None else PBParams()
+        radii = np.asarray(radii, dtype=np.float64)
+        self._m = np.asarray(masses, dtype=np.float64)
+        self._rec = np.asarray(receptor_idx, dtype=int)
+        self._lig = np.asarray(ligand_idx, dtype=int)
+        n = radii.size
+        kr = np.zeros(n, bool); kr[self._rec] = True
+        kl = np.zeros(n, bool); kl[self._lig] = True
+        if (kr & kl).any() or not (kr | kl).all():
+            raise ValueError("receptor/ligand 必须互补且覆盖全部原子")
+        ref = recenter_com(ref_coords, self._m, np.zeros(3))
+        self.grid = make_grid(ref, h, padding=padding, center=np.zeros(3))
+        self._sv = make_frame_solver(self.grid, radii, self.params)
+        self.grid_lig = None
+        if h_lig is not None:
+            ref_l = recenter_com(np.asarray(ref_coords)[..., self._lig, :],
+                                 self._m[self._lig], np.zeros(3))
+            self.grid_lig = make_grid(ref_l, h_lig, padding=padding_lig,
+                                      center=np.zeros(3))
+            self._radii_l = radii[self._lig]
+            self._sv_l = make_frame_solver(self.grid_lig, self._radii_l, self.params)
+        p = self.params
+        self._reach = float(radii.max()) + p.probe_radius + p.ion_radius + max(p.swin, 0.0)
+
+    def _margin(self, c, grid):
+        return float((np.asarray(grid.half_extent())
+                      - np.abs(c - grid.center).max(axis=0) - self._reach).min())
+
+    def __call__(self, coords, q):
+        """单帧 [N,3] Å。坐标可以是任意平移(内部归位)。"""
+        q = np.asarray(q)
+        c = recenter_com(coords, self._m, self.grid.center)
+        margin, margin_l = self._margin(c, self.grid), float("nan")
+        if self.grid_lig is None:
+            out = dict(self._sv.triplet(c, q, self._rec, self._lig))
+        else:
+            cl = recenter_com(np.asarray(coords)[self._lig], self._m[self._lig],
+                              self.grid_lig.center)
+            margin_l = self._margin(cl, self.grid_lig)
+            pr = self._sv.pair(c, q, self._rec)
+            ol = self._sv_l(cl, q[self._lig], self._radii_l)
+            out = {
+                "g_pb_complex": pr["g_pb_complex"],
+                "g_pb_receptor": pr["g_pb_receptor"],
+                "g_pb_ligand": ol["g_pb"],
+                "delta_g_pb": pr["g_pb_complex"] - pr["g_pb_receptor"] - ol["g_pb"],
+                "iters": jnp.concatenate([pr["iters"], ol["iters_solvent"][None]]),
+                "relres": jnp.concatenate([pr["relres"], ol["relres_solvent"][None]]),
+                "converged": pr["converged"] & ol["converged"],
+            }
+        out["margin_A"] = margin
+        out["margin_lig_A"] = margin_l
+        return out
 
 
 def _reference_field_is_additive_note() -> str:
