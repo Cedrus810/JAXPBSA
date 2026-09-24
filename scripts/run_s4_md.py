@@ -2,6 +2,7 @@
 """M0: solvated MD for S4 (Src SH2 + phosphotyrosyl peptide). Run on GPU:
 
     python scripts/run_s4_md.py --device CUDA --length-ns 10
+    python scripts/run_s4_md.py --name 1YCR          # 其他体系: data/prepared/{name}_complex.pdb
 
 Pipeline: solvate (TIP3P, 0.15 M NaCl, 1.2 nm padding) -> minimise -> NVT 100 ps
 -> NPT 1 ns -> production N ns (DCD every 1 ps -> 10,000 frames for 10 ns,
@@ -53,7 +54,8 @@ def run_stage(simulation: app.Simulation, n_steps: int, label: str, report_every
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--pdb", default=os.path.join(ROOT, "data", "prepared", "S4_complex.pdb"))
+    ap.add_argument("--name", default="S4", help="体系名, 决定输入与全部输出文件名")
+    ap.add_argument("--pdb", default=None, help="默认 data/prepared/{name}_complex.pdb")
     ap.add_argument("--out", default=os.path.join(ROOT, "data", "md"))
     ap.add_argument("--device", default="auto", choices=["auto", "CUDA", "CPU", "OpenCL"])
     ap.add_argument("--length-ns", type=float, default=10.0)
@@ -64,6 +66,8 @@ def main() -> None:
     args = ap.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
+    n = args.name
+    args.pdb = args.pdb or os.path.join(ROOT, "data", "prepared", f"{n}_complex.pdb")
     if args.smoke:  # 缩到分钟级: 溶剂化+短最小化+千步动力学
         args.nvt_ps, args.npt_ps, args.length_ns, args.dcd_interval_ps = 1.0, 1.0, 0.002, 0.1
 
@@ -76,7 +80,7 @@ def main() -> None:
         ff, model="tip3p", padding=1.2 * unit.nanometer,
         ionicStrength=0.15 * unit.molar, neutralize=True,
     )
-    solvated_pdb = os.path.join(args.out, "S4_solvated.pdb")
+    solvated_pdb = os.path.join(args.out, f"{n}_solvated.pdb")
     with open(solvated_pdb, "w") as fh:
         app.PDBFile.writeFile(modeller.topology, modeller.positions, fh)
     print(f"[1/5] solvated: {modeller.topology.getNumAtoms()} atoms -> {solvated_pdb}", flush=True)
@@ -106,15 +110,15 @@ def main() -> None:
     print("[4/5] NPT...", flush=True)
     run_stage(simulation, int(args.npt_ps / DT_PS), "NPT", 250 if args.smoke else 50_000)
 
-    dcd = app.DCDReporter(os.path.join(args.out, "S4_prod.dcd"), int(args.dcd_interval_ps / DT_PS))
-    log_fh = open(os.path.join(args.out, "S4_prod.log"), "w")
+    dcd = app.DCDReporter(os.path.join(args.out, f"{n}_prod.dcd"), int(args.dcd_interval_ps / DT_PS))
+    log_fh = open(os.path.join(args.out, f"{n}_prod.log"), "w")
     simulation.reporters = [
         dcd,
         app.StateDataReporter(
             log_fh, 50_000, step=True, time=True, potentialEnergy=True,
             temperature=True, density=True, speed=True,
         ),
-        app.CheckpointReporter(os.path.join(args.out, "S4_prod.chk"), 250_000),
+        app.CheckpointReporter(os.path.join(args.out, f"{n}_prod.chk"), 250_000),
     ]
     n_prod = int(args.length_ns * 1000 / DT_PS)
     print(f"[5/5] production {args.length_ns} ns ({n_prod} steps, "
@@ -125,9 +129,9 @@ def main() -> None:
     log_fh.close()
 
     state = simulation.context.getState(getPositions=True, getVelocities=True)
-    with open(os.path.join(args.out, "S4_prod_final.xml"), "w") as fh:
+    with open(os.path.join(args.out, f"{n}_prod_final.xml"), "w") as fh:
         fh.write(mm.XmlSerializer.serialize(state))
-    print(f"done: {args.out}/S4_prod.dcd | .log | .chk | S4_prod_final.xml", flush=True)
+    print(f"done: {args.out}/{n}_prod.dcd | .log | .chk | {n}_prod_final.xml", flush=True)
 
 
 if __name__ == "__main__":

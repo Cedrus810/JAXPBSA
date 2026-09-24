@@ -32,8 +32,8 @@ plan §21.5 说「origin 运行期化 **或** origin 进 artifact 键, 二选一
 
 ## padding=30.0 的来源 (ONLINE_PLAN S0, 2026-09-20, S4 干轨迹 10 ns / 10000 帧)
 
-(2026-09-23 起 C/R 网格默认 h=0.75、配体单独紧盒, 见 `pb.TripletSolver`。padding
-仍以 Å 计, 下面的涨落预算照旧成立; 网格形状与 margin 数字是 h=0.5 时量的, 未重测。)
+(2026-09-24 起 C/R 网格默认 h=0.5(0.75 有 −7~−11 的真离散偏差, RESULTS §18.8)、配体单独紧盒, 见 `pb.TripletSolver`。padding
+仍以 Å 计, 下面的涨落预算照旧成立; 网格形状与 margin 数字正是 h=0.5 时量的。)
 
 在线只有第 0 帧, 必须显式补上构象涨落: 每轴包围盒半长的轨迹最大值比制备态
 大 **6.4 Å**(比 frame 0 大 3.5), + 介电/离子膨胀 5.7(r_max 1.8 + probe 1.4 +
@@ -95,7 +95,7 @@ class OnlineMMPBSA:
         ligand_local_idx,
         ref_coords_A,
         *,
-        h: float = 0.75,
+        h: float = 0.5,
         padding: float = 30.0,
         h_lig: float | None = 0.25,
         padding_lig: float = 14.0,

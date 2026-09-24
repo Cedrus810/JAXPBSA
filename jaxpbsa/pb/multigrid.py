@@ -67,17 +67,23 @@ def _coarsen_faces(eps_f: jnp.ndarray, axis: int) -> jnp.ndarray:
     Along the flux direction the two fine faces are resistors *in series*, so the
     series (harmonic) combination is the right one -- arithmetic averaging here
     smears sharp ε jumps and is the usual reason re-discretised MG stalls on
-    dielectric interfaces. Transverse directions are injected.
+    dielectric interfaces. Transverse directions are resistors *in parallel*:
+    [1,2,1]/4 full-weighting, not injection. Injection keeps one fine face in
+    three and drops the interface information in the other two; 1YCR canonical,
+    tol 1e-5, ΔG unchanged: CG iterations C/R/L 11/11/9 → 8/9/8 (binary, h=0.5),
+    15/15/16 → 11/11/11 (surface="fraction", h=0.5).
     """
     e = _to_last(eps_f, axis)
     a, b = e[..., 0::2], e[..., 1::2]
     k = min(a.shape[-1], b.shape[-1])
     a, b = a[..., :k], b[..., :k]
-    ser = 2.0 * a * b / (a + b)
-    ser = jnp.moveaxis(ser, -1, axis)
+    ser = jnp.moveaxis(2.0 * a * b / (a + b), -1, axis)
     for tax in (-3, -2, -1):
         if tax != axis and tax - 3 != axis and tax + 3 != axis:
-            ser = jnp.moveaxis(jnp.moveaxis(ser, tax, -1)[..., ::2], -1, tax)
+            x = jnp.moveaxis(ser, tax, -1)
+            p = jnp.concatenate([x[..., :1], x, x[..., -1:]], -1)  # 端点复制
+            x = 0.25 * p[..., 0:-2:2] + 0.5 * p[..., 1:-1:2] + 0.25 * p[..., 2::2]
+            ser = jnp.moveaxis(x, -1, tax)
     return ser
 
 

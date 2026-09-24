@@ -51,6 +51,9 @@ class PBParams:
     probe_radius: float = PROBE_RADIUS  # Å, 单源见 constants.py
     ion_radius: float = 2.0  # Å
     swin: float = 0.5  # ε/κ̄² 调和平滑半径, Å (≤0 关闭)
+    # "binary": 二值 SES(形态学) + 节点调和平均 + swin; "fraction": 连续水平集 + 面上按
+    # 溶质占边长比例的调和混合(pbsa smoothopt=1 同类), swin 不用。见 surface.ses_level。
+    surface: str = "binary"
     ref_solver: str = "dst"  # "dst" (精确直解, 默认) | "pcg" (对照用)
     # 溶剂方程的预处理器。MG = V-cycle 预处理的 CG(不能独立求解: ε 跳变 1:80 会发散,
     # 见 multigrid.py)。"auto" 按网格规模选 —— **MG 在粗网格上是负收益**:
@@ -101,6 +104,13 @@ def make_frame_solver(
     smooth_offsets = (
         ball_offsets(params.swin, grid.h) if params.swin > 0 else ball_offsets(0.0, grid.h)
     )
+    level_offsets = None
+    if params.surface == "fraction":
+        reach = params.probe_radius + 2 * grid.h
+        level_offsets = (ball_offsets(r_max + params.probe_radius + reach, grid.h),
+                         ball_offsets(reach, grid.h), reach)
+    elif params.surface != "binary":
+        raise ValueError(f'surface 必须是 "binary"/"fraction", 得到 {params.surface!r}')
     kappa2_phys = debye_kappa2(
         params.ionic_strength_M, params.eps_out, params.temperature_K
     )
@@ -130,7 +140,7 @@ def make_frame_solver(
             params.probe_radius, params.ion_radius, kappa2_phys,
             smooth_offsets=smooth_offsets,
             raster_offsets=raster_offsets, probe_offsets=probe_offsets,
-            ion_offsets=ion_offsets,
+            ion_offsets=ion_offsets, level_offsets=level_offsets,
         )
         q_net = q.sum()
         # a 只在**有效原子**上取: 被屏蔽的原子会被挪到盒外(见 make_triplet_solver),
@@ -361,9 +371,10 @@ class TripletSolver:
     `tri(coords, q) -> dict`(同 `solve.triplet` 的字段, 外加 `margin_A`)
 
     **非对称网格(默认, RESULTS §15)**: `δG_C ≈ δG_R` 抵消, 所以 ΔG_PB 的离散误差
-    全在孤立配体那一次求解上(`δΔG_PB ≈ −δG_L`)。C/R 共用 h=0.75 的大盒(C−R 在
-    0.75 已收敛到 0.008), 配体单独一张 h=0.25 的紧盒。S4 实测: 与 Amber pbsa 的差
-    5.0% → 1.0%, 且快 18%。`h_lig=None` 退回旧的三者共用一张网格(对照用)。
+    主要在孤立配体那一次求解上(`δΔG_PB ≈ −δG_L`)。C/R 共用 h=0.5 的大盒, 配体单独
+    一张 h=0.25 的紧盒。**C/R 不能放到 0.75**: 20 帧 × 随机相位实测 C−R 比 0.5 低
+    6.8(S4)/ 11.1(1YCR), 是真离散偏差, 不是相位冻结(RESULTS §18.8)。
+    `h_lig=None` 退回旧的三者共用一张网格(对照用)。
 
     **质心归位(C/R 与 L 各按自己的质心)**: 每帧都把溶质质心放回网格中心, 刚体
     漂移不再扫亚格点相位(RESULTS §15.4 的 8.39 峰峰值)。配体的孤立溶剂化能与
@@ -378,7 +389,7 @@ class TripletSolver:
     """
 
     def __init__(self, ref_coords, masses, radii, receptor_idx, ligand_idx,
-                 params: PBParams | None = None, *, h: float = 0.75,
+                 params: PBParams | None = None, *, h: float = 0.5,
                  padding: float = 20.0, h_lig: float | None = 0.25,
                  padding_lig: float = 8.0):
         # padding_lig=8 ≈ 1κ⁻¹(0.15 M): 与 20 Å 差 0.090 kcal/mol, 远小于摆放噪声
@@ -412,10 +423,15 @@ class TripletSolver:
         return float((np.asarray(grid.half_extent())
                       - np.abs(c - grid.center).max(axis=0) - self._reach).min())
 
-    def __call__(self, coords, q):
-        """单帧 [N,3] Å。坐标可以是任意平移(内部归位)。"""
+    def __call__(self, coords, q, shift=None):
+        """单帧 [N,3] Å。坐标可以是任意平移(内部归位)。
+
+        `shift`(Å, [3]): 归位后再给 C/R 叠加的平移, 用来解冻亚格点相位(RESULTS §18.6 ②)。
+        配体网格不动。"""
         q = np.asarray(q)
         c = recenter_com(coords, self._m, self.grid.center)
+        if shift is not None:
+            c = c + np.asarray(shift, dtype=np.float64)
         margin, margin_l = self._margin(c, self.grid), float("nan")
         if self.grid_lig is None:
             out = dict(self._sv.triplet(c, q, self._rec, self._lig))

@@ -2,6 +2,7 @@
 """对 AmberTools MMPBSA.py 端到端对拍（T6 的参照物）。
 
     python scripts/validate_mmpbsa.py                 # S4 canonical 单帧
+    python scripts/validate_mmpbsa.py --name 1YCR --frames 20 --stride 500
     python scripts/validate_mmpbsa.py --frames 5      # 取 MD 轨迹前 5 帧
     python scripts/validate_mmpbsa.py --keep          # 保留中间文件
 
@@ -214,8 +215,9 @@ def ours(coords_A, d, h, with_pb=True, shared=False):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--name", default="S4", help="体系: data/prepared/{name}_meta.json")
     ap.add_argument("--frames", type=int, default=1)
-    ap.add_argument("--h", type=float, default=0.75,
+    ap.add_argument("--h", type=float, default=0.5,
                     help="我们的 C/R 网格间距(配体固定 0.25 紧盒)")
     ap.add_argument("--pbsa-h", type=float, default=0.5,
                     help="pbsa 的网格间距(0.5 → 0.25 只动 0.06%%, 已收敛)")
@@ -235,14 +237,14 @@ def main():
     from jaxpbsa.pb.energy import PBParams
     from jaxpbsa.sa import BETA_INP1, GAMMA_INP1
 
-    d = load_canonical()
+    d = load_canonical(a.name)
     pb = PBParams()
     coords = np.asarray(d["positions_A"], float)
     coords = coords[None] if coords.ndim == 2 else coords
     if a.frames > 1:
         import mdtraj as md
-        t = md.load(os.path.join(ROOT, "data/md/S4_dry.dcd"),
-                    top=os.path.join(ROOT, "data/prepared/S4_complex.pdb"))
+        t = md.load(os.path.join(ROOT, f"data/md/{a.name}_dry.dcd"),
+                    top=os.path.join(ROOT, f"data/prepared/{a.name}_complex.pdb"))
         coords = (t.xyz[::a.stride][:a.frames] * 10.0).astype(np.float64)
 
     rec, lig = np.asarray(d["receptor_idx"]), np.asarray(d["ligand_idx"])

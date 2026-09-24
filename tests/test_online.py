@@ -151,7 +151,7 @@ def test_assembly_matches_manual(peptide_system):
     masses = np.array([system.getParticleMass(i).value_in_unit(unit.dalton)
                        for i in range(system.getNumParticles())])
     radii = assign_radii(topology)
-    tri2 = TripletSolver(pos, masses, radii, rec, lig, PBParams(), h=0.75,
+    tri2 = TripletSolver(pos, masses, radii, rec, lig, PBParams(), h=0.5,
                          padding=12.0, h_lig=0.25, padding_lig=8.0)
     assert tri2.grid == az.triplet_solver.grid
     assert tri2.grid_lig == az.triplet_solver.grid_lig

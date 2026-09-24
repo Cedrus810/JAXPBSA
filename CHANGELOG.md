@@ -429,3 +429,43 @@ Python 阶段后者已自动满足：`enable_compilation_cache()` 的查找键�
 第一版把两张网格的 margin 取 min 成一个 `margin_A`。reporter 拿它比 `margin_min=12`
 （C/R 的 Dirichlet 物理阈值），而配体紧盒按设计只剩 ~2–8 Å —— **每帧都会被 flag**。
 拆成 `margin_A`（按 `margin_min`）与 `margin_lig_A`（只判 < 0）。
+
+---
+
+## 1YCR（MDM2–p53）接入，以及一条被第二个体系推翻的判断（2026-09-23，RESULTS §18）
+
+新增：`scripts/prep_1ycr.py`（ACE/NME 双帽，产物同 S4 格式、两次运行 sha256 逐位相同）、
+`scripts/grid_check.py --name`（摆放扫描 + 20 帧非对称 vs 共用）、`load_canonical(name=)`、
+`run_s4_md.py` / `strip_unwrap.py` / `validate_mmpbsa.py` 的 `--name`。`strip_unwrap.py`
+的溶质选择从 `"protein or resname PTR"` 改成前 `n_atoms` 个原子（ACE/NME 是否算
+protein 取决于 mdtraj 的残基表）。
+
+**推翻**：§17.2「C/R 取 0.75，摆放噪声随帧平均掉」。质心归位把相位冻住，摆放误差成了
+逐帧一致的 ~+10 kcal/mol 偏差（1YCR +10.6，sd 1.70；S4 扫描里同一相位 +10.1）。
+S4 与 Amber 的 0.26% 因此不是一般性结论（1YCR −5.9%）。**默认值未改，两个修法待定。**
+
+**又一条错的预言**：「p53 只带 −2，配体网格偏差会小得多」—— 实测 24.6（S4 31）。
+误差来自每个原子部分电荷的自能，不是净电荷。
+
+**确认在 1YCR 上也成立**：padding 已收敛（0.004）、pbsa 已收敛（0.06%）、配体 h=0.25
+已收敛（→0.2 动 1.2）、ΔE_MM 逐位级（5e-5 / 1.7e-6）。
+
+---
+
+## C/R 默认 h 0.75 → 0.5（2026-09-24，RESULTS §18.8）
+
+`TripletSolver` / `OnlineMMPBSA` / `crl.py` / `validate_mmpbsa.py --h` 的 C/R 默认改为 0.5，
+配体仍 0.25。新增 `TripletSolver.__call__(..., shift=)`（归位后给 C/R 叠加平移，诊断用）与
+`scripts/phase_jitter_check.py`。
+
+**又推翻一条**：§18.5 的「冻结相位」机制。每帧随机相位后 0.75 相对 0.5 仍低 6.8（S4）/ 11.1（1YCR），
+与不打散几乎一样 —— 是 C−R 在 0.75 的真离散偏差，单构象 7 相位扫描（0.8 / 2.9）没测出来。
+修法 ②（保持 0.75 + 随机相位）因此作废。代价：C/R 每帧 ~205 → ~327 ms（2080 Ti）。
+对 MMPBSA.py：S4 +0.55%、1YCR −2.9%，剩余差异来源未测。
+
+## 分数面 ε（实验，默认关）+ MG 横向并联粗化（2026-09-24，RESULTS §18.9）
+
+- `PBParams.surface`：`"binary"`（默认，原行为）| `"fraction"`（`surface.ses_level` 连续 SES 水平集 +
+  面上按溶质边长比例调和混合）。Born 误差 h=0.75 5.7% → 1.6%，相位 sd 1/4；1YCR 0.75−0.5 −11.1 → +5.1（仍未过 < 2）。
+- `multigrid._coarsen_faces` 横向 注入 → [1,2,1]/4：迭代 −20~30%，ΔG 逐位不变，默认每帧 326 → 284 ms。
+- `phase_jitter_check.py --surface`。

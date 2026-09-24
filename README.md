@@ -22,24 +22,29 @@ performance claim in [`RESULTS.md`](./RESULTS.md) is measured, split into
 ```
 
 On **S4** (Src SH2 domain + phosphotyrosyl peptide, PDB 1SPS chains C+F, 1835 atoms),
-20 frames spread over a 10 ns trajectory, default grids (C/R h = 0.75, ligand h = 0.25),
+20 frames spread over a 10 ns trajectory, default grids (C/R h = 0.5, ligand h = 0.25),
 fp32, against Amber `MMPBSA.py` on the same frames:
 
 | term | MMPBSA.py | jaxpbsa | Δ |
 |---|---|---|---|
 | ΔE_coul (R–L) | −826.83 | −826.86 | 3.5e-5 rel |
 | ΔE_LJ (R–L) | −44.66 | −44.66 | 4.4e-5 rel |
-| **ΔG_PB** | **780.52** | **778.46** | **−2.06 (0.26%)** |
+| **ΔG_PB** | **780.52** | **784.85** | **+4.33 (0.55%)** |
 | **ΔG_SA** | −5.79 | −5.78 | 2.6e-4 rel |
-| **ΔG_MM/PBSA** | **−96.75** | **−98.84** | −2.09 |
+| **ΔG_MM/PBSA** | **−96.75** | **−92.45** | +4.30 |
+
+> On a second system (1YCR, MDM2–p53) the same default gives ΔG_PB **284.25 vs 292.66
+> (−2.9%)**; the source of the remaining few percent is not yet measured (RESULTS §18.8).
+> The earlier S4 figure of 0.26% came from C/R at h = 0.75, which carries a real
+> −7 to −11 kcal/mol discretisation bias that happened to offset the rest.
 
 Until 2026-09-23 the default was one h = 0.5 grid shared by all three species, and
 ΔG_PB came out **5% high** (885.4 vs 842.9 on the canonical frame). The cause: the
 C/R discretisation errors cancel, so the *whole* error of ΔG_PB sits in the
-isolated-ligand solve, which carries a ~31 kcal/mol bias at h = 0.5. The default now
-gives the ligand its own tight h = 0.25 box and relaxes C/R to h = 0.75. That's
-~21% faster, and the ΔG_PB gap to Amber drops from 5% to 0.26%
-([RESULTS §17](./RESULTS.md)).
+isolated-ligand solve, which carries a ~31 kcal/mol bias at h = 0.5 (S4; 24.6 on 1YCR).
+The default now gives the ligand its own tight h = 0.25 box and keeps C/R at h = 0.5.
+C/R at h = 0.75 takes ~37% less time but is biased low by 6.8 (S4) / 11.1 (1YCR) kcal/mol even
+with the sub-grid phase randomised per frame ([RESULTS §17–18](./RESULTS.md)).
 
 The electrostatic cancellation is the sharpest check on the PB result: two numbers of
 order 800 cancel to a few percent of either. A 5% error in ΔG_PB would leave tens of kcal/mol
@@ -99,7 +104,8 @@ full table: [`RESULTS.md`](./RESULTS.md) §13.
 
 - **C and R share one grid; the ligand gets its own.** G_PB absolute values carry tens
   of kcal/mol of grid self-energy error; only a common grid makes it cancel in C − R
-  (placement-averaged, C − R moves 0.8 kcal/mol between h = 0.75 and 0.5). The isolated
+  (but not fully at h = 0.75: 20 frames × random phase put C − R 7–11 below h = 0.5,
+  so C/R stays at 0.5). The isolated
   ligand has nothing to cancel against, so it is solved in a tight h = 0.25 box
   (`TripletSolver`, `h_lig=None` restores the old single shared grid).
 - **Every frame is recentred on its mass-weighted centroid** — C/R on the complex
@@ -118,10 +124,9 @@ full table: [`RESULTS.md`](./RESULTS.md) §13.
   G_PB: a constant **+0.035 kcal/mol**, against a discretisation error of **40**. But
   reductions must stay fp64: the R–L cross energy sums ~10⁶ signed pairs.
 
-**Error budget**: the systematic error of ΔG_PB is the ligand's (31 kcal/mol at
-h = 0.5, ~3 left at h = 0.25). What remains per frame is sub-grid placement noise:
-sd ≈ 6 kcal/mol for C − R at h = 0.75, small next to the ~31 kcal/mol conformational
-spread between frames, so it averages out like any other per-frame noise. Do not estimate the
+**Error budget**: the ligand's discretisation bias (31 / 24.6 kcal/mol at h = 0.5 on
+S4 / 1YCR, ~1–3 left at h = 0.25) and the C/R bias at h = 0.75 (−6.8 / −11.1, real
+discretisation error, not placement: RESULTS §18.8) — hence C/R at h = 0.5. Padding is converged on both systems (40/20 vs 20/8: 0.004). Do not estimate the
 error bar on ΔG_PB from the relative error on the absolute values: that overstates it
 by an order of magnitude.
 
@@ -196,7 +201,7 @@ single compilation.
 
 ```bash
 python scripts/benchmark.py --csv out.csv    # h × {fp32,fp64} × {jacobi,mg,auto}
-python scripts/crl.py                        # ΔG_PB (C/R 0.75, L 0.25; `0.5 32 shared` = old)
+python scripts/crl.py                        # ΔG_PB (C/R 0.5, L 0.25; `0.5 32 shared` = old)
 python scripts/profile_stages.py 0.5 32      # per-stage timing
 pytest -q                                    # 42 tests
 ```
@@ -218,7 +223,7 @@ az = OnlineMMPBSA(system, topology,
                   solute_idx,        # global indices into the solvated system
                   ligand_local_idx,  # local indices, [0, N_solute) after the slice
                   ref_coords_A,      # builds the grid + runs the warm-up self-check
-                  padding=30.0, padding_lig=14.0)   # C/R h=0.75, ligand h=0.25
+                  padding=30.0, padding_lig=14.0)   # C/R h=0.5, ligand h=0.25
 
 sim.reporters.append(PBSAReporter(az, interval_steps=10000, solute_idx=solute_idx,
                                   out_csv="pbsa.csv", margin_min=12.0))

@@ -125,6 +125,65 @@ def harmonic_smooth(
     return offsets.shape[0] / inv_sum
 
 
+def ses_level(
+    coords: jnp.ndarray,  # [N,3] Å
+    radii: jnp.ndarray,  # [N] Å
+    grid: GridSpec,
+    probe_radius: float,
+    sas_offsets: jnp.ndarray,  # 半径 ≥ r_max + probe + reach, host 静态
+    reach_offsets: jnp.ndarray,  # 半径 reach, host 静态
+    reach: float,  # Å, ≥ probe + 2h
+) -> jnp.ndarray:
+    """SES 的连续水平集 G(p), **G ≥ 0 = 溶剂**, 界面附近 ≈ 到 SES 的有符号距离。
+
+    d(c) = min_a(|c − x_a| − r_a − R_p) 在 SAS 外侧是**精确**欧氏距离, 所以自由探针
+    中心 c 周围 d(c) 以内全是自由中心, ball(c, R_p + d(c)) ⊂ 溶剂(无假阳性):
+
+        G(p) = max_{格点 c: d(c) ≥ 0, |p − c| ≤ reach} (R_p + d(c) − |p − c|)
+
+    二值的 erode(dilate(vdw)) 用格点球采样探针: h=0.75 时沿轴只够到 0.75 Å
+    (R_p=1.4), 表面按方向偏最多 ~0.65 Å。这里接触面上误差是 O(l²/s) (~0.1 Å)。
+    盒内没被任何原子覆盖的格点 d 取下界 `reach`, 只会低估 G, 不改符号。
+    """
+    origin = jnp.asarray(grid.origin, coords.dtype)
+    n = jnp.asarray(grid.shape)
+    cell = jnp.rint((coords - origin) / grid.h).astype(jnp.int32)
+    cand = cell[:, None, :] + sas_offsets[None, :, :]  # [N,K,3]
+    nodes = origin + cand.astype(coords.dtype) * grid.h
+    d = jnp.sqrt(((coords[:, None, :] - nodes) ** 2).sum(-1)) - (radii[:, None] + probe_radius)
+    inb = jnp.all((cand >= 0) & (cand < n), axis=-1)
+    cap = jnp.asarray(reach, coords.dtype)
+    d = jnp.where(inb, jnp.minimum(d, cap), cap)
+    cand = jnp.clip(cand, 0, n - 1)
+    dsas = jnp.full(grid.shape, cap, coords.dtype).at[
+        (cand[:, :, 0], cand[:, :, 1], cand[:, :, 2])].min(d)
+
+    neg = jnp.asarray(-(reach + probe_radius), coords.dtype)  # 深处的下限, 保持有限
+    src = jnp.where(dsas >= 0, dsas + probe_radius, neg)
+    offs = np.asarray(reach_offsets)
+    lens = np.sqrt((offs.astype(np.float64) ** 2).sum(-1)) * grid.h
+    pad = int(np.abs(offs).max())
+    padded = jnp.pad(src, pad, mode="constant", constant_values=reach + probe_radius)
+    nx, ny, nz = grid.shape
+    acc = jnp.full(grid.shape, neg, coords.dtype)
+    for o, ln in zip(offs, lens):  # 静态起点, 同 dilate: XLA 融合整条链
+        sx, sy, sz = int(pad - o[0]), int(pad - o[1]), int(pad - o[2])
+        acc = jnp.maximum(acc, jax.lax.slice(
+            padded, [sx, sy, sz], [sx + nx, sy + ny, sz + nz]) - float(ln))
+    return acc
+
+
+def _fraction_faces(g: jnp.ndarray, eps_in: float, eps_out: float, axis: int):
+    """面上 ε: 按水平集线性插值求边上溶质(G<0)占的比例 θ, 串联(调和)混合。"""
+    gi = jax.lax.slice_in_dim(g, 0, g.shape[axis] - 1, axis=axis)
+    gj = jax.lax.slice_in_dim(g, 1, g.shape[axis], axis=axis)
+    ini, inj = gi < 0, gj < 0
+    t = gi / jnp.where(ini != inj, gi - gj, 1.0)  # 穿越点距 i 的比例
+    theta = jnp.where(ini & inj, 1.0, jnp.where(ini == inj, 0.0, jnp.where(ini, t, 1.0 - t)))
+    theta = jnp.clip(theta, 0.0, 1.0)
+    return 1.0 / (theta / eps_in + (1.0 - theta) / eps_out)
+
+
 def build_maps(
     coords: jnp.ndarray,  # [N,3] Å
     radii: jnp.ndarray,  # [N] Å
@@ -139,8 +198,23 @@ def build_maps(
     probe_offsets: jnp.ndarray | None = None,
     ion_offsets: jnp.ndarray | None = None,
     smooth_offsets: jnp.ndarray | None = None,
+    level_offsets: tuple | None = None,  # (sas_offsets, reach_offsets, reach) -> 分数面 ε
 ) -> dict:
-    """Returns eps [nx,ny,nz], face maps (eps_x/y/z), kbar2, ses."""
+    """Returns eps [nx,ny,nz], face maps (eps_x/y/z), kbar2, ses.
+
+    `level_offsets` 给定时走分数面 ε(`ses_level` + `_fraction_faces`, swin 不用);
+    否则是二值 SES + 节点调和平均。"""
+    if level_offsets is not None:
+        sas_o, reach_o, reach = level_offsets
+        if ion_offsets is None:
+            ion_offsets = ball_offsets(ion_radius, grid.h)
+        g = ses_level(coords, radii, grid, probe_radius, sas_o, reach_o, reach)
+        ses = g < 0
+        eps = jnp.where(ses, eps_in, eps_out).astype(coords.dtype)
+        kbar2 = eps * kappa2_phys * (~dilate(ses, ion_offsets))
+        return {"eps": eps, "kbar2": kbar2, "ses": ses,
+                **{k: _fraction_faces(g, eps_in, eps_out, a).astype(coords.dtype)
+                   for a, k in enumerate(("eps_x", "eps_y", "eps_z"))}}
     if raster_offsets is None:
         raster_offsets = ball_offsets(float(np.max(np.asarray(radii))) + grid.h, grid.h)
     if probe_offsets is None:

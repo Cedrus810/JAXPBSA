@@ -11,8 +11,8 @@ __all__ = [
 ]
 
 
-def load_canonical(root=None, check_hash=True):
-    """加载规范的 S4 起点: **拓扑 + 坐标 + 已序列化的 System**, 不碰任何力场。
+def load_canonical(name="S4", root=None, check_hash=True):
+    """加载规范起点(`name`: "S4" | "1YCR", 对应 data/prepared/{name}_meta.json): **拓扑 + 坐标 + 已序列化的 System**, 不碰任何力场。
 
     返回 `dict(topology, positions_A, system, charge, sigma, epsilon, radii,
     receptor_idx, ligand_idx, meta)`。
@@ -43,7 +43,7 @@ def load_canonical(root=None, check_hash=True):
     root = root or os.path.dirname(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     d = os.path.join(root, "data", "prepared")
-    meta = json.load(open(os.path.join(d, "S4_meta.json")))
+    meta = json.load(open(os.path.join(d, f"{name}_meta.json")))
     cif = os.path.join(d, meta["canonical_structure"])
     sysx = os.path.join(d, meta["canonical_system"])
     if check_hash:
@@ -51,7 +51,7 @@ def load_canonical(root=None, check_hash=True):
             got = hashlib.sha256(open(path, "rb").read()).hexdigest()
             if got != meta[key]:
                 raise RuntimeError(
-                    f"{os.path.basename(path)} 的 sha256 与 S4_meta.json 不符\n"
+                    f"{os.path.basename(path)} 的 sha256 与 {name}_meta.json 不符\n"
                     f"  记录 {meta[key]}\n  实际 {got}\n"
                     "产物已漂移 —— 不要在此基础上比较能量。"
                     "重跑 scripts/prep_s4.py, 或取回原文件。")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """ΔG_PB = G_C − G_R − G_L，跑在规范产物上 (RESULTS.md)。
 
-    python scripts/crl.py [h] [32|64] [h_lig|shared]      # 默认 0.75 32 0.25
+    python scripts/crl.py [h] [32|64] [h_lig|shared]      # 默认 0.5 32 0.25
 
 默认走 `TripletSolver` 的非对称网格：C/R 共用 h 的大盒，配体单独 h_lig 的紧盒
 （RESULTS §15：ΔG_PB 的离散误差全在配体上）。`shared` = 旧的三者共用一张网格
@@ -13,7 +13,7 @@ os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
 import jaxpbsa
 jaxpbsa.enable_compilation_cache()  # 编译 36.5 -> 5.9 s
 
-h = float(sys.argv[1]) if len(sys.argv) > 1 else 0.75
+h = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
 jaxpbsa.set_precision(int(sys.argv[2]) if len(sys.argv) > 2 else 32)
 h_lig = sys.argv[3] if len(sys.argv) > 3 else "0.25"
 h_lig = None if h_lig == "shared" else float(h_lig)
