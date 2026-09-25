@@ -469,3 +469,24 @@ S4 与 Amber 的 0.26% 因此不是一般性结论（1YCR −5.9%）。**默认�
   面上按溶质边长比例调和混合）。Born 误差 h=0.75 5.7% → 1.6%，相位 sd 1/4；1YCR 0.75−0.5 −11.1 → +5.1（仍未过 < 2）。
 - `multigrid._coarsen_faces` 横向 注入 → [1,2,1]/4：迭代 −20~30%，ΔG 逐位不变，默认每帧 326 → 284 ms。
 - `phase_jitter_check.py --surface`。
+
+## `ses_level` 修正：凹面一阶误差、盒外假溶剂、截断下界（2026-09-24，RESULTS §18.10）
+
+- `pb/surface.py` `ses_level`：新增交线圆探针中心候选（`crease=True` 默认），双球凹面误差 h=0.5
+  −0.10 → −0.0005 Å；改在外扩 reach 的网格上计算再裁回（盒外不再当溶剂）；截断值 reach → reach − h，
+  G 成为严格下界。只影响 `surface="fraction"`，默认 binary 路径逐位不变。
+- `tests/test_pb.py`：`test_ses_level_two_spheres`（双球解析，含盒面切球）。
+- 1YCR：修正后 fraction 的 C−R 在 h=0.5 已收敛（0.5→0.35 差 0.17）。收益对用户不明显，就此停手，默认不改。
+- 路线 A（平滑介电）试过不成立：DelPhi 高斯连续能量有限但比锐界面大 15×，网格一阶极慢收敛（与求解器无关，面中点取 ε 也一样）；三次样条收敛但粗网格不胜 binary。
+  代码未留，见 RESULTS §18.11。
+
+## 高斯 ε + 亚网格自项修正（2026-09-24/25，RESULTS §18.12–18.13）
+
+- `PBParams(surface="gaussian", gauss_sigma=0.93, gauss_selfcorr=True)`：`pb/surface.gaussian_density`（DelPhi
+  高斯密度，JAX scatter，3σR 截断），ε = ρ ε_in + (1−ρ) ε_out，面上调和平均。
+- `pb/gauss_selfcorr.py`：电荷中心 ~0.2 Å 内层使 h=0.5 自项欠解析 ~60%；按等效孤立原子 b_i = σR_i/√C_i 离线
+  打表 T(b/h, 相位)（`pb/_tables/`，h=1 打一次，尺度不变），运行时加到 `g_pb`（`g_pb_raw` 保留）。开销 ~0。
+- 1YCR：修正后 ΔG_PB 在 C/R h 0.4–0.3 平台 ~455；h=0.5 低 8%，0.75 低 30% → 生产 h≈0.4。盐不影响修正。
+- 外部基准：漫射界面 Kirkwood 球 LPB（J. Comput. Phys. 545 (2026) 114452）复现到 +0.001%（h=0.2）。
+- 注意：该文献的 Gaussian PB 是 ε_gap=8 + 光滑面 S(r) 的另一模型，我们的实现不是它。默认 surface 仍 binary。
+- `tests/test_pb.py::test_gauss_selfcorr_pair`；`pyproject.toml` 加 package-data（表文件）。

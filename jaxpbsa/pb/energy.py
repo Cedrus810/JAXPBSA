@@ -35,6 +35,7 @@ from .dst import solve_reference
 from .multigrid import build_levels, make_preconditioner
 from .solver import pcg_solve
 from .surface import ball_offsets, build_maps
+from .gauss_selfcorr import load_table, self_correction
 
 
 #: "auto" 模式下启用 MG 的节点数下限。实测交叉点在 0.9–2.1 M 之间(两张卡一致),
@@ -54,6 +55,10 @@ class PBParams:
     # "binary": 二值 SES(形态学) + 节点调和平均 + swin; "fraction": 连续水平集 + 面上按
     # 溶质占边长比例的调和混合(pbsa smoothopt=1 同类), swin 不用。见 surface.ses_level。
     surface: str = "binary"
+    # surface="gaussian": DelPhi 高斯 ε(Li–Alexov 2013), 无探针; 见 surface.gaussian_density
+    gauss_sigma: float = 0.93
+    # 高斯 ε 的亚网格自项修正(gauss_selfcorr.py, RESULTS §18.12)。g_pb_raw 保留未修正值
+    gauss_selfcorr: bool = True
     ref_solver: str = "dst"  # "dst" (精确直解, 默认) | "pcg" (对照用)
     # 溶剂方程的预处理器。MG = V-cycle 预处理的 CG(不能独立求解: ε 跳变 1:80 会发散,
     # 见 multigrid.py)。"auto" 按网格规模选 —— **MG 在粗网格上是负收益**:
@@ -109,8 +114,14 @@ def make_frame_solver(
         reach = params.probe_radius + 2 * grid.h
         level_offsets = (ball_offsets(r_max + params.probe_radius + reach, grid.h),
                          ball_offsets(reach, grid.h), reach)
-    elif params.surface != "binary":
-        raise ValueError(f'surface 必须是 "binary"/"fraction", 得到 {params.surface!r}')
+    gauss = None
+    selfcorr_table = None
+    if params.surface == "gaussian":
+        gauss = (ball_offsets(3.0 * params.gauss_sigma * r_max + grid.h, grid.h), params.gauss_sigma)
+        if params.gauss_selfcorr:
+            selfcorr_table = load_table(params.eps_in, params.eps_out)
+    elif params.surface not in ("binary", "fraction"):
+        raise ValueError(f'surface 必须是 "binary"/"fraction"/"gaussian", 得到 {params.surface!r}')
     kappa2_phys = debye_kappa2(
         params.ionic_strength_M, params.eps_out, params.temperature_K
     )
@@ -140,7 +151,7 @@ def make_frame_solver(
             params.probe_radius, params.ion_radius, kappa2_phys,
             smooth_offsets=smooth_offsets,
             raster_offsets=raster_offsets, probe_offsets=probe_offsets,
-            ion_offsets=ion_offsets, level_offsets=level_offsets,
+            ion_offsets=ion_offsets, level_offsets=level_offsets, gauss=gauss,
         )
         q_net = q.sum()
         # a 只在**有效原子**上取: 被屏蔽的原子会被挪到盒外(见 make_triplet_solver),
@@ -184,7 +195,7 @@ def make_frame_solver(
             u_ref = u_ref_given
             it_r, rr_r = jnp.asarray(0, jnp.int32), jnp.zeros((), dt)
             ok_r = jnp.asarray(True)
-            return _finish(u_solv, u_ref, coords, q, it_s, rr_s, ok_s, it_r, rr_r, ok_r)
+            return _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r)
         ubr = coulomb_boundary_values(shell_xyz, coords, q, params.eps_in,
                                       atom_block=params.boundary_atom_block)
         u0r = jnp.zeros(shape, dt).reshape(-1).at[shell_flat].set(ubr).reshape(shape)
@@ -200,13 +211,21 @@ def make_frame_solver(
                                                 tol=params.tol,
                                                 max_iter=params.max_iter)
 
-        return _finish(u_solv, u_ref, coords, q, it_s, rr_s, ok_s, it_r, rr_r, ok_r)
+        return _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r)
 
-    def _finish(u_solv, u_ref, coords, q, it_s, rr_s, ok_s, it_r, rr_r, ok_r):
+    def _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r):
         u_reac = interpolate(u_solv, coords, grid) - interpolate(u_ref, coords, grid)
+        # 归约走 fp64: u_reac 是两个自能量级势的差, 逐原子求和会放大抵消误差
+        g_raw = 0.5 * jnp.sum(q * u_reac, dtype=ACCUM_DTYPE) * KT_TO_KCAL
+        extra = {}
+        if selfcorr_table is not None:
+            corr = self_correction(coords.astype(ACCUM_DTYPE), q.astype(ACCUM_DTYPE),
+                                   radii.astype(ACCUM_DTYPE), grid, params.gauss_sigma,
+                                   selfcorr_table)
+            extra = {"g_pb_raw": g_raw, "g_pb_selfcorr": corr}
+            g_raw = g_raw + corr
         return ({
-            # 归约走 fp64: u_reac 是两个自能量级势的差, 逐原子求和会放大抵消误差
-            "g_pb": 0.5 * jnp.sum(q * u_reac, dtype=ACCUM_DTYPE) * KT_TO_KCAL,
+            "g_pb": g_raw, **extra,
             "iters_solvent": it_s,
             "iters_ref": it_r,
             "relres_solvent": rr_s,

@@ -262,3 +262,72 @@ def test_zero_charges_give_zero_energy_and_success():
     assert np.isfinite(float(out["relres_solvent"]))
     assert np.isfinite(float(out["relres_ref"]))
     assert abs(float(out["g_pb"])) < 1e-9, f"零电荷的 G_PB 应为零, 得到 {out['g_pb']}"
+
+
+def _two_sphere_G(P, xa, xb, r, rp):
+    """双球 SES 精确水平集: G = R_p − dist(p, F)(SAS 内), R_p + d(p)(外)。另返回 reentrant 掩码。"""
+    Ra = r + rp
+    d = np.minimum(np.linalg.norm(P - xa, axis=1), np.linalg.norm(P - xb, axis=1)) - Ra
+    ax = (xb - xa) / np.linalg.norm(xb - xa)
+    mid = 0.5 * (xa + xb)
+    rho = np.sqrt(Ra ** 2 - (0.5 * np.linalg.norm(xb - xa)) ** 2)
+    exits = []
+    for x, other in ((xa, xb), (xb, xa)):
+        u = P - x
+        n = np.linalg.norm(u, axis=1, keepdims=True)
+        ok = np.linalg.norm(x + Ra * u / np.maximum(n, 1e-12) - other, axis=1) >= Ra - 1e-9
+        exits.append(np.where(ok, Ra - n[:, 0], np.inf))
+    v = (P - mid) - ((P - mid) @ ax)[:, None] * ax
+    c = mid + rho * v / np.maximum(np.linalg.norm(v, axis=1, keepdims=True), 1e-12)
+    dc = np.linalg.norm(P - c, axis=1)
+    ex = np.minimum(*exits)
+    return np.where(d >= 0, rp + d, rp - np.minimum(ex, dc)), (d < 0) & (dc <= ex)
+
+
+@pytest.mark.parametrize("cut_box", [False, True])
+def test_ses_level_two_spheres(cut_box):
+    """`ses_level` 对双球解析 SES: 严格下界(无假溶剂), 凹面(reentrant)误差 O(h²)。
+
+    修正前: 凹面只靠格点探针中心, h=0.5 平均 −0.10 Å(恒偏溶质); 盒外被当自由溶剂,
+    盒面切过溶质时凭空造出假溶剂层。`cut_box=True` 让盒面 x=0 穿过球 a 的球心。
+    """
+    from jaxpbsa.pb.grid import GridSpec
+    from jaxpbsa.pb.surface import ball_offsets, ses_level
+
+    h, rp, r = 0.5, 1.4, 1.7
+    c0 = np.random.default_rng(3).uniform(0, h, 3)
+    xa, xb = c0 + [-2.0, 0, 0], c0 + [2.0, 0, 0]
+    k = 37
+    origin = (float(xa[0]) if cut_box else -9.0, -9.0, -9.0)
+    grid = GridSpec(origin=origin, shape=(k, k, k), h=h)
+    reach = rp + 2 * h
+    g = np.asarray(ses_level(jnp.asarray(np.stack([xa, xb])), jnp.asarray([r, r]), grid, rp,
+                             ball_offsets(r + rp + reach, h), ball_offsets(reach, h), reach))
+    ax = [origin[i] + np.arange(k) * h for i in range(3)]
+    P = np.stack(np.meshgrid(*ax, indexing="ij"), -1).reshape(-1, 3)
+    Gt, re = _two_sphere_G(P, xa, xb, r, rp)
+    e = g.reshape(-1) - Gt
+    assert e.max() <= 1e-9  # 下界: 没有假溶剂
+    band = np.abs(Gt) < h
+    assert (band & re).sum() > 50
+    assert abs(e[band & re].mean()) < 0.01  # 修正前 −0.10
+    assert abs(e[band & ~re].mean()) < 0.01
+
+
+def test_gauss_selfcorr_pair():
+    """高斯 ε 的亚网格自项修正(gauss_selfcorr, RESULTS §18.12–18.13): 双原子(R 1.7/1.2, 间距 1.1 Å)
+    原子 0 的单位电荷自项。未修正时随 h/相位差近 2 倍(−718 … −1482); 修正后与 h/相位无关。"""
+    from jaxpbsa.pb.grid import make_grid
+    X0 = np.array([[0.0, 0, 0], [1.1, 0, 0]]); R = np.array([1.7, 1.2]); q = np.array([1.0, 0.0])
+    raw, cor = [], []
+    for h in (0.5, 0.35):
+        for s in range(2):
+            X = X0 + np.random.default_rng(300 + s).uniform(0, h, 3)
+            g = make_grid(X, h, padding=8, center=np.zeros(3))
+            P = PBParams(surface="gaussian", ionic_strength_M=0.0, tol=1e-7)
+            o = make_frame_solver(g, R, P)(jnp.asarray(X), jnp.asarray(q), jnp.asarray(R))
+            raw.append(float(o["g_pb_raw"])); cor.append(float(o["g_pb"]))
+    spread = lambda v: (max(v) - min(v)) / abs(np.mean(v))
+    assert spread(raw) > 0.3
+    assert spread(cor) < 0.015
+    assert abs(2 * np.mean(cor) - (-2281.0)) < 0.01 * 2281.0  # 修正后单位电荷 G_ii ≈ −2281(§18.13)

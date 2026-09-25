@@ -22,5 +22,8 @@ test = ["pytest"]
 [tool.setuptools.packages.find]
 include = ["jaxpbsa*"]
 
+[tool.setuptools.package-data]
+"jaxpbsa.pb" = ["_tables/*.npz"]  # 高斯自项修正表(pb/gauss_selfcorr.py)
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

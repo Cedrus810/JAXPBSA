@@ -132,45 +132,121 @@ def ses_level(
     probe_radius: float,
     sas_offsets: jnp.ndarray,  # 半径 ≥ r_max + probe + reach, host 静态
     reach_offsets: jnp.ndarray,  # 半径 reach, host 静态
-    reach: float,  # Å, ≥ probe + 2h
+    reach: float,  # Å, = probe + 2h
+    crease: bool = True,
 ) -> jnp.ndarray:
     """SES 的连续水平集 G(p), **G ≥ 0 = 溶剂**, 界面附近 ≈ 到 SES 的有符号距离。
 
-    d(c) = min_a(|c − x_a| − r_a − R_p) 在 SAS 外侧是**精确**欧氏距离, 所以自由探针
-    中心 c 周围 d(c) 以内全是自由中心, ball(c, R_p + d(c)) ⊂ 溶剂(无假阳性):
+    精确定义: F = 自由探针中心区, G(p) = R_p − dist(p, F)(p 在 SAS 内), R_p + d(p)(p 在外),
+    d(c) = min_a(|c − x_a| − r_a − R_p)。任何已知的自由中心 y 与半径 R_p + d(y) 给出下界
+    R_p + d(y) − |p − y| —— 只要 y 真的自由, 就**没有假阳性**。两类候选:
 
-        G(p) = max_{格点 c: d(c) ≥ 0, |p − c| ≤ reach} (R_p + d(c) − |p − c|)
+    1. 格点 c(d(c) ≥ 0)。接触面(最近自由点在单个 SAS 球面上)误差 O(h²)。
+    2. `crease=True`: 每个格点取 SAS 意义下最近的两个原子, 解析求它们 SAS 交线圆上离该点
+       最近的点 y*, 再对其余原子精确检查 y* 自由。凹面(reentrant, 最近自由点在交线圆上)
+       只靠格点时是 O(h) 且恒偏溶质 —— 双球解析对照 h=0.5 平均 −0.10 Å, 0.25 −0.047 Å
+       (`data/md/ses_level_audit.py`); 结合界面的缝隙几乎全是这种面。三球顶点处 y* 可能被
+       第三球挡住而作废, 退回格点候选(仍是下界)。
 
-    二值的 erode(dilate(vdw)) 用格点球采样探针: h=0.75 时沿轴只够到 0.75 Å
-    (R_p=1.4), 表面按方向偏最多 ~0.65 Å。这里接触面上误差是 O(l²/s) (~0.1 Å)。
-    盒内没被任何原子覆盖的格点 d 取下界 `reach`, 只会低估 G, 不改符号。
+    **盒外不是溶剂**: 在向外扩 pad = ceil(reach/h) 的网格上算完再裁回。原先用常数把盒外
+    填成自由中心, 盒面切过溶质时(focusing 细盒)会凭空造出 R_p + reach 厚的假溶剂层。
     """
-    origin = jnp.asarray(grid.origin, coords.dtype)
+    dt = coords.dtype
+    h = grid.h
+    offs = np.asarray(reach_offsets)
+    pad = int(np.abs(offs).max())
+    ext_shape = tuple(int(k) + 2 * pad for k in grid.shape)
+    origin = jnp.asarray([o - pad * h for o in grid.origin], dt)
+    n = jnp.asarray(ext_shape)
+    R = radii + probe_radius
+    cell = jnp.rint((coords - origin) / h).astype(jnp.int32)
+    cand = cell[:, None, :] + sas_offsets[None, :, :]  # [N,K,3]
+    nodes = origin + cand.astype(dt) * h
+    inb = jnp.all((cand >= 0) & (cand < n), axis=-1)
+    # 截断到 reach − h 而不是 reach: 候选球以 rint 格心为心, 边缘节点可能漏掉(真 d 低至
+    # reach − 0.87h), 截断值必须 ≤ 真 d 才保持下界。d > reach − h 的中心只影响 G > R_p − h 的
+    # 深溶剂节点, 不碰界面带。
+    cap = jnp.asarray(reach - h, dt)
+    d = jnp.where(inb, jnp.minimum(jnp.sqrt(((coords[:, None, :] - nodes) ** 2).sum(-1))
+                                   - R[:, None], cap), cap)
+    cand = jnp.clip(cand, 0, n - 1)
+    ix = (cand[:, :, 0], cand[:, :, 1], cand[:, :, 2])
+    d1 = jnp.full(ext_shape, cap, dt).at[ix].min(d)
+
+    neg = jnp.asarray(-(reach + probe_radius), dt)  # 深处的下限, 保持有限
+    src = jnp.where(d1 >= 0, d1 + probe_radius, neg)
+
+    if crease:
+        aid = jnp.arange(coords.shape[0], dtype=jnp.int32)[:, None]
+        none = jnp.full(ext_shape, -1, jnp.int32)
+        a1 = none.at[ix].max(jnp.where(inb & (d < cap) & (d == d1[ix]), aid, -1))
+        dx = jnp.where(aid == a1[ix], cap, d)
+        d2 = jnp.full(ext_shape, cap, dt).at[ix].min(dx)
+        a2 = none.at[ix].max(jnp.where(inb & (dx < cap) & (dx == d2[ix]), aid, -1))
+        i1, i2 = jnp.maximum(a1, 0), jnp.maximum(a2, 0)
+        x1, x2, r1, r2 = coords[i1], coords[i2], R[i1], R[i2]
+        axes = [jnp.arange(k, dtype=dt) * h for k in ext_shape]
+        q = origin + jnp.stack(jnp.meshgrid(*axes, indexing="ij"), -1)
+        u = x2 - x1
+        dd = jnp.sqrt((u ** 2).sum(-1))
+        nv = u / jnp.maximum(dd, 1e-6)[..., None]
+        t = (dd ** 2 + r1 ** 2 - r2 ** 2) / (2 * jnp.maximum(dd, 1e-6))
+        rho2 = r1 ** 2 - t ** 2
+        m = x1 + t[..., None] * nv
+        w = q - m
+        v = w - (w * nv).sum(-1, keepdims=True) * nv
+        vn = jnp.sqrt((v ** 2).sum(-1))
+        y = m + (jnp.sqrt(jnp.maximum(rho2, 0.0)) / jnp.maximum(vn, 1e-6))[..., None] * v
+        # |q − y| ≤ 2h: 采样够密(沿圆间距 ≤ h), 且任何盖住 y 的原子一定在 q 的候选球里
+        ok = ((a1 >= 0) & (a2 >= 0) & (rho2 > 0) & (vn > 1e-6)
+              & (((q - y) ** 2).sum(-1) <= (2 * h) ** 2))
+        de = jnp.sqrt(((coords[:, None, :] - y[ix]) ** 2).sum(-1)) - R[:, None]
+        de = jnp.where(inb & (aid != a1[ix]) & (aid != a2[ix]), de, cap)
+        ok = ok & (jnp.full(ext_shape, cap, dt).at[ix].min(de) >= 0)
+        yx, yy, yz = (jnp.where(ok, y[..., k], jnp.asarray(1e4, dt)) for k in range(3))
+        px, py, pz = jnp.meshgrid(*[grid.origin[k] + jnp.arange(grid.shape[k], dtype=dt) * h
+                                    for k in range(3)], indexing="ij")
+
+    lens = np.sqrt((offs.astype(np.float64) ** 2).sum(-1)) * h
+    nx, ny, nz = grid.shape
+    acc = jnp.full(grid.shape, neg, dt)
+    for o, ln in zip(offs, lens):  # 静态起点, 同 dilate: XLA 融合整条链
+        st = [int(pad + o[0]), int(pad + o[1]), int(pad + o[2])]
+        sl = lambda a: jax.lax.slice(a, st, [st[0] + nx, st[1] + ny, st[2] + nz])
+        acc = jnp.maximum(acc, sl(src) - float(ln))
+        if crease:
+            dist = jnp.sqrt((px - sl(yx)) ** 2 + (py - sl(yy)) ** 2 + (pz - sl(yz)) ** 2)
+            acc = jnp.maximum(acc, probe_radius - dist)
+    return acc
+
+
+def gaussian_density(
+    coords: jnp.ndarray,  # [N,3] Å
+    radii: jnp.ndarray,  # [N] Å, 0 = 屏蔽原子
+    grid: GridSpec,
+    sigma: float,
+    offsets: jnp.ndarray,  # 半径 ≥ 3σ·r_max + h, host 静态
+) -> jnp.ndarray:
+    """DelPhi 高斯溶质密度 ρ = 1 − Π_i (1 − g_i), g_i = exp(−|r − r_i|² / (σR_i)²)。
+
+    Li, Li, Zhang, Alexov, JCTC 9, 2126 (2013); σ = 0.93。逐原子截断在 3σR_i(同 DelPhi),
+    Π 在 log 空间 scatter-add。**电荷中心附近 ε 按 r² 升高, 内层 ~σR·√(ε_in/Δε) ≈ 0.2 Å,
+    h=0.5 下自项严重欠解析** —— 见 `gauss_selfcorr` 与 RESULTS §18.11–18.12。
+    """
+    dt = coords.dtype
+    origin = jnp.asarray(grid.origin, dt)
     n = jnp.asarray(grid.shape)
     cell = jnp.rint((coords - origin) / grid.h).astype(jnp.int32)
-    cand = cell[:, None, :] + sas_offsets[None, :, :]  # [N,K,3]
-    nodes = origin + cand.astype(coords.dtype) * grid.h
-    d = jnp.sqrt(((coords[:, None, :] - nodes) ** 2).sum(-1)) - (radii[:, None] + probe_radius)
-    inb = jnp.all((cand >= 0) & (cand < n), axis=-1)
-    cap = jnp.asarray(reach, coords.dtype)
-    d = jnp.where(inb, jnp.minimum(d, cap), cap)
+    cand = cell[:, None, :] + offsets[None, :, :]  # [N,K,3]
+    nodes = origin + cand.astype(dt) * grid.h
+    r2 = ((coords[:, None, :] - nodes) ** 2).sum(-1)
+    s2 = (sigma * radii[:, None]) ** 2
+    live = jnp.all((cand >= 0) & (cand < n), axis=-1) & (radii[:, None] > 0) & (r2 <= 9.0 * s2)
+    g = jnp.exp(-r2 / jnp.where(live, s2, 1.0))
+    lg = jnp.where(live, jnp.log(jnp.maximum(1.0 - g, 1e-30)), 0.0)
     cand = jnp.clip(cand, 0, n - 1)
-    dsas = jnp.full(grid.shape, cap, coords.dtype).at[
-        (cand[:, :, 0], cand[:, :, 1], cand[:, :, 2])].min(d)
-
-    neg = jnp.asarray(-(reach + probe_radius), coords.dtype)  # 深处的下限, 保持有限
-    src = jnp.where(dsas >= 0, dsas + probe_radius, neg)
-    offs = np.asarray(reach_offsets)
-    lens = np.sqrt((offs.astype(np.float64) ** 2).sum(-1)) * grid.h
-    pad = int(np.abs(offs).max())
-    padded = jnp.pad(src, pad, mode="constant", constant_values=reach + probe_radius)
-    nx, ny, nz = grid.shape
-    acc = jnp.full(grid.shape, neg, coords.dtype)
-    for o, ln in zip(offs, lens):  # 静态起点, 同 dilate: XLA 融合整条链
-        sx, sy, sz = int(pad - o[0]), int(pad - o[1]), int(pad - o[2])
-        acc = jnp.maximum(acc, jax.lax.slice(
-            padded, [sx, sy, sz], [sx + nx, sy + ny, sz + nz]) - float(ln))
-    return acc
+    acc = jnp.zeros(grid.shape, dt).at[(cand[:, :, 0], cand[:, :, 1], cand[:, :, 2])].add(lg)
+    return 1.0 - jnp.exp(acc)
 
 
 def _fraction_faces(g: jnp.ndarray, eps_in: float, eps_out: float, axis: int):
@@ -199,11 +275,23 @@ def build_maps(
     ion_offsets: jnp.ndarray | None = None,
     smooth_offsets: jnp.ndarray | None = None,
     level_offsets: tuple | None = None,  # (sas_offsets, reach_offsets, reach) -> 分数面 ε
+    gauss: tuple | None = None,  # (offsets, sigma) -> DelPhi 高斯 ε
 ) -> dict:
     """Returns eps [nx,ny,nz], face maps (eps_x/y/z), kbar2, ses.
 
     `level_offsets` 给定时走分数面 ε(`ses_level` + `_fraction_faces`, swin 不用);
     否则是二值 SES + 节点调和平均。"""
+    if gauss is not None:
+        # ε = ρ ε_in + (1 − ρ) ε_out 在节点上, 面上调和平均(同 binary)。离子可及度直接用 1 − ρ。
+        g_off, sigma = gauss
+        rho = gaussian_density(coords, radii, grid, sigma, g_off)
+        eps = (rho * eps_in + (1.0 - rho) * eps_out).astype(coords.dtype)
+        kbar2 = (eps_out * kappa2_phys * (1.0 - rho)).astype(coords.dtype)
+        sl = lambda a, lo, hi, ax: jax.lax.slice_in_dim(a, lo, hi, axis=ax)
+        faces = {k: 2 * sl(eps, 0, eps.shape[a] - 1, a) * sl(eps, 1, eps.shape[a], a)
+                 / (sl(eps, 0, eps.shape[a] - 1, a) + sl(eps, 1, eps.shape[a], a))
+                 for a, k in enumerate(("eps_x", "eps_y", "eps_z"))}
+        return {"eps": eps, "kbar2": kbar2, "ses": rho > 0.5, **faces}
     if level_offsets is not None:
         sas_o, reach_o, reach = level_offsets
         if ion_offsets is None:
