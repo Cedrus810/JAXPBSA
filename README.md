@@ -222,12 +222,20 @@ jaxpbsa.enable_compilation_cache()
 az = OnlineMMPBSA(system, topology,
                   solute_idx,        # global indices into the solvated system
                   ligand_local_idx,  # local indices, [0, N_solute) after the slice
-                  ref_coords_A,      # builds the grid + runs the warm-up self-check
-                  padding=30.0, padding_lig=14.0)   # C/R h=0.5, ligand h=0.25
+                  ref_coords_A,      # warm-up frame (runs the self-check)
+                  pilot_coords_A=pilot)  # [T,N_solute,3] Å trial trajectory: sizes the grid
 
 sim.reporters.append(PBSAReporter(az, interval_steps=10000, solute_idx=solute_idx,
-                                  out_csv="pbsa.csv", margin_min=12.0))
+                                  out_csv="pbsa.csv"))   # margin_min defaults to 1.5·κ⁻¹
 ```
+
+The grid is **sized from data, not a magic padding**: per axis, half-extent =
+max|x − COM| over the pilot frames + reach (r_max + probe + ion + swin) + 1.5·κ⁻¹, rounded up
+to the next APBS dime (ligand box: + 1.0·κ⁻¹). Conformational fluctuation does not
+generalise, so either a pilot trajectory or an explicit `fluctuation_allowance=` (Å) is
+**required** — a single frame under-sizes S4 by 3.79 Å (`RESULTS.md` §16.9), and the old
+fixed `padding=30` cost 26.9% extra time for identical ΔG (§16.8). On S4, a 1 ns pilot is
+enough. The chosen sizes are in `az.sizing`.
 
 ```bash
 export XLA_PYTHON_CLIENT_PREALLOCATE=false   # required when MD shares the GPU:

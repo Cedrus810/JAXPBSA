@@ -387,6 +387,8 @@ class TripletSolver:
     """ΔG_PB = G_C − G_R − G_L 的**默认入口**: 质心归位 + 按 species 定网格。
 
     `tri = TripletSolver(ref_coords, masses, radii, rec_idx, lig_idx)`
+    (`ref_coords` 可以是 [T,N,3] 试跑轨迹: 每帧各自质心归位后, 网格取遍全部帧 ——
+    在线定尺就是这么用的, 见 `online.OnlineMMPBSA`)
     `tri(coords, q) -> dict`(同 `solve.triplet` 的字段, 外加 `margin_A`)
 
     **非对称网格(默认, RESULTS §15)**: `δG_C ≈ δG_R` 抵消, 所以 ΔG_PB 的离散误差

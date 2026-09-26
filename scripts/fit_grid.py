@@ -45,7 +45,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--traj", required=True, help="试跑轨迹 (mdtraj 能读的任何格式)")
     ap.add_argument("--top", required=True, help="拓扑 (pdb/cif)，原子序须与轨迹一致")
-    ap.add_argument("--h", type=float, default=0.75, help="C/R 网格间距(默认同 TripletSolver)")
+    ap.add_argument("--h", type=float, default=0.5, help="C/R 网格间距(默认同 TripletSolver)")
     ap.add_argument("--ionic", type=float, default=PBParams.ionic_strength_M)
     ap.add_argument("--radii-model", default="mbondi2")
     ap.add_argument("--margin-min", type=float, default=None,
@@ -87,11 +87,8 @@ def main() -> None:
     print(f"\n  -> 网格 {dims}  {np.prod(dims)/1e6:.2f} M 节点  "
           f"半长 {got}  全轨迹最小 margin {worst:+.2f} Å")
 
-    # 给现行接口用的等价 padding: TripletSolver 以质心为中心, 按参考帧 max|x−COM| 算 need
-    pad = float(np.max(need - half[0]))
-    print(f"  -> 现行接口: OnlineMMPBSA(..., h={a.h}, padding={pad:.2f})  (只管 C/R 网格; "
-          "配体紧盒另见 RESULTS §17.4)  "
-          f"(以轨迹第 0 帧为 ref_coords_A 时等价)")
+    print(f"  -> 在线接口: OnlineMMPBSA(..., h={a.h}, pilot_coords_A=<这段轨迹>) 按同一规则"
+          "自动定尺(C/R 与配体紧盒都管); 本脚本的前缀扫描用来判断试跑够不够长")
 
     print("\n前缀扫描 —— 你的试跑够长吗（需求是 max 统计量，单调增）:")
     print(f"  {'用多少帧':>10}  {'所需半长':>8}  {'欠全轨迹':>8}  {'定出的网格':>16}  "

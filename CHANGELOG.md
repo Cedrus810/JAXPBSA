@@ -490,3 +490,15 @@ S4 与 Amber 的 0.26% 因此不是一般性结论（1YCR −5.9%）。**默认�
 - 外部基准：漫射界面 Kirkwood 球 LPB（J. Comput. Phys. 545 (2026) 114452）复现到 +0.001%（h=0.2）。
 - 注意：该文献的 Gaussian PB 是 ε_gap=8 + 光滑面 S(r) 的另一模型，我们的实现不是它。默认 surface 仍 binary。
 - `tests/test_pb.py::test_gauss_selfcorr_pair`；`pyproject.toml` 加 package-data（表文件）。
+
+## 在线网格定尺改成算出来的（2026-09-25，ONLINE_PLAN §8 待办 1–3，RESULTS §18.15）
+
+- `OnlineMMPBSA`：去掉魔数 `padding=30`/`padding_lig=14`；新增 `pilot_coords_A`（试跑轨迹 [T,N,3]，推荐）/
+  `fluctuation_allowance`（Å）/ `margin_min`（默认 1.5κ⁻¹）。两者都不给、或 pilot 只有 1 帧 → `ValueError`。
+  显式 `padding`/`padding_lig` 仍可覆盖。`analyzer.sizing` 记录定尺结果。
+- `online.boundary_margin_min(params)`；`PBSAReporter(margin_min=None)` 默认取 analyzer 的值（原默认 0）。
+- **行为变化**：旧调用（只给 ref_coords_A）现在会报错，需补 `pilot_coords_A` 或 `fluctuation_allowance`。
+- S4：1 ns pilot → 193³ + 配体 (225,161,193)，496.5 → 288.3 ms/帧（−42%），ΔG_PB 差 0.02。
+- `scripts/online_overhead.py` 用 S4 干轨迹前 1 ns 作 pilot；`scripts/fit_grid.py` 默认 h 0.75 → 0.5。
+- 测试：`test_sizing_requires_fluctuation_info` / `test_boundary_margin_min_from_ionic_strength` /
+  `test_pilot_sizing_covers_every_pilot_frame`。

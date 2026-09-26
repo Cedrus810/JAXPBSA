@@ -40,6 +40,15 @@ T_K, DT_PS, FRICTION = 298.15, 0.002, 1.0
 INTERVALS = (5000, 10000, 25000)
 
 
+
+def _pilot():
+    """网格定尺用的试跑轨迹: S4 干轨迹前 1 ns(1000 帧)。RESULTS §16.9: 1 ns 前缀定出的
+    193³ 在全 10 ns 上最小 margin +15.4; 0.1 ns 不够。"""
+    import mdtraj as md
+    t = md.load(os.path.join(ROOT, "data", "md", "S4_dry.dcd"),
+                top=os.path.join(ROOT, "data", "prepared", "S4_complex.pdb"))
+    return (t.xyz[:1000] * 10.0).astype(np.float64)
+
 def _worker(cfg: str, steps: int, order: str) -> None:
     os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
 
@@ -72,10 +81,9 @@ def _worker(cfg: str, steps: int, order: str) -> None:
         jaxpbsa.enable_compilation_cache()
         from jaxpbsa.online import OnlineMMPBSA, PBSAReporter
         analyzer = OnlineMMPBSA(system, pdb.topology, solute_idx, lig_local,
-                                 pos_A[solute_idx])
-        # margin_min=12: S4 的 1.5κ⁻¹(RESULTS §15.8) —— 只查丢原子(0)不够,
-        # 边界贴脸的帧数值上不丢原子, ΔG_PB 的边界误差已超标
-        reporter = PBSAReporter(analyzer, int(cfg), solute_idx, margin_min=12.0)
+                                 pos_A[solute_idx], pilot_coords_A=_pilot())
+        # margin_min 默认取 analyzer 的 1.5κ⁻¹(0.15 M: 11.8, RESULTS §15.8)
+        reporter = PBSAReporter(analyzer, int(cfg), solute_idx)
 
     integrator = mm.LangevinMiddleIntegrator(
         T_K, FRICTION / unit.picosecond, DT_PS * unit.picoseconds)
@@ -88,10 +96,9 @@ def _worker(cfg: str, steps: int, order: str) -> None:
         jaxpbsa.enable_compilation_cache()
         from jaxpbsa.online import OnlineMMPBSA, PBSAReporter
         analyzer = OnlineMMPBSA(system, pdb.topology, solute_idx, lig_local,
-                                 pos_A[solute_idx])
-        # margin_min=12: S4 的 1.5κ⁻¹(RESULTS §15.8) —— 只查丢原子(0)不够,
-        # 边界贴脸的帧数值上不丢原子, ΔG_PB 的边界误差已超标
-        reporter = PBSAReporter(analyzer, int(cfg), solute_idx, margin_min=12.0)
+                                 pos_A[solute_idx], pilot_coords_A=_pilot())
+        # margin_min 默认取 analyzer 的 1.5κ⁻¹(0.15 M: 11.8, RESULTS §15.8)
+        reporter = PBSAReporter(analyzer, int(cfg), solute_idx)
     if reporter is not None:
         sim.reporters.append(reporter)
 

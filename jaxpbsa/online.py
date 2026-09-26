@@ -17,7 +17,7 @@ MD 循环经 `PBSAReporter` 逐帧调用, analysis 与 MD 同卡分时 —— as
    只给一个偏小的 `G_PB`。所以每帧输出 `margin_A`, 由 reporter 按
    `on_violation` 策略处理(在线跑几小时, 一帧异常不能杀 MD, 但必须留下标记)。
    注意 `margin_A ≥ 0` 只保证没丢原子; Dirichlet 边界够不够远是另一回事,
-   由 reporter 的 `margin_min` 管(S4 传 12 ≈ 1.5κ⁻¹, RESULTS §15.8)。
+   由 reporter 的 `margin_min` 管(默认取 analyzer 的 1.5κ⁻¹, RESULTS §15.8)。
 
 ## origin 为什么**不**改成运行期参数 (ONLINE_PLAN §1)
 
@@ -30,26 +30,28 @@ plan §21.5 说「origin 运行期化 **或** origin 进 artifact 键, 二选一
 把 origin 改成运行期 buffer 参数(它有 5 处使用点, 其中 `shell_indices` 是 host
 侧 numpy) —— 那时它是 PJRT 阶段的前置项, 不是现在。
 
-## padding=30.0 的来源 (ONLINE_PLAN S0, 2026-09-20, S4 干轨迹 10 ns / 10000 帧)
+## 网格定尺: 算出来, 不拍 padding (ONLINE_PLAN §8 待办 1–3, RESULTS §16.8–16.9)
 
-(2026-09-24 起 C/R 网格默认 h=0.5(0.75 有 −7~−11 的真离散偏差, RESULTS §18.8)、配体单独紧盒, 见 `pb.TripletSolver`。padding
-仍以 Å 计, 下面的涨落预算照旧成立; 网格形状与 margin 数字正是 h=0.5 时量的。)
+网格全程固定(契约 1), 尺寸必须一次定对: 多一档 dime 白损失 27–35% 吞吐(S4 实测
+`padding=30` 比恰好够用的 193³ 慢 26.9%, ΔG 到小数点后两位相同), 少一档整条轨迹边界贴脸。
+C/R 网格每轴半长 = max|x − COM| + padding, 其中
 
-在线只有第 0 帧, 必须显式补上构象涨落: 每轴包围盒半长的轨迹最大值比制备态
-大 **6.4 Å**(比 frame 0 大 3.5), + 介电/离子膨胀 5.7(r_max 1.8 + probe 1.4 +
-ion 2.0 + swin 0.5) + 边界物理需求 12(RESULTS §15.8: ~1.5κ⁻¹, 0.03 kcal/mol)
-⇒ **需要 ≈24 Å**。实测 padding=30 建网格(225×193×225, dime 取整额外送 5–13 Å)
-后, **质心归位**下 10 ns 全部 10000 帧 `margin_A ≥ +16.5`(包围盒归位是 +18.5,
-质心偏离中点最多 4.6 Å 吃掉一截, 由 dime 余量吸收)。**换体系/更长轨迹要重量
-这个数。**
+    padding     = fluctuation_allowance + reach + margin_min
+    reach       = r_max + probe + ion + swin          从体系半径现算
+    margin_min  = 1.5·κ⁻¹(`boundary_margin_min`)      从离子强度现算(0.15 M: 11.8; 0.05 M: 20.4)
 
-## 配体紧盒 padding_lig=14 的来源 (2026-09-23, 同一条 10 ns 干轨迹)
+配体紧盒 padding_lig = fluctuation_allowance + 1.0·κ⁻¹(离线 8 Å ≈ 1κ⁻¹ 与 20 Å 只差
+0.09 kcal/mol, RESULTS §15.8)。构象涨落**不泛化**, 只能从轨迹量, 两种给法:
 
-非对称网格(`TripletSolver`)下配体按**自己的**质心归位到自己的紧盒。离线 8 Å
-(≈1κ⁻¹, 与 20 Å 差 0.09 kcal/mol, RESULTS §15.8) 够用, 因为离线按整条轨迹的
-范围建盒; 在线只有参考帧, 磷酸肽很软: 每轴 max|x−COM_L| 制备态
-[16.0, 7.5, 12.3] → 轨迹最大 [17.8, 12.7, 16.1], **y 轴涨 5.2 Å**(1 ns 前缀只到
-+3.8, 又是单调增的 max 统计量)。8 + 6 = **14**。换配体必须重量。
+- `pilot_coords_A=[T,N,3]`(推荐): 试跑轨迹, max 取遍全部帧; `fluctuation_allowance`
+  此时是额外保险(默认 0)。S4 上 1 ns 前缀定出的 193³ 在全 10 ns 上最小 margin +15.4;
+  0.1 ns 不够(+7.4 < 12)。需求是 max 统计量, 单调增、不收敛 —— 定尺是优化, 每帧
+  margin guard 才是正确性。
+- `fluctuation_allowance=Å`: 只有参考帧时显式给涨落余量(S4 C/R 需 ~9, 配体 y 轴 +5.2)。
+
+**两者都不给就报错**, 不拿单帧猜: 单帧比 10 ns 轨迹欠 3.79 Å(RESULTS §16.9)——与 SA 的
+`k_neighbors` 同一个判决(§11.2): 不自动探测, 显式给 + 每帧硬验。显式 `padding`/
+`padding_lig` 仍可覆盖(专家模式)。定尺结果在 `analyzer.sizing`。
 
 ## 索引约定 (最容易错的地方 —— 两套索引混用不报错, 只给一个错的 ΔG)
 
@@ -73,10 +75,25 @@ from openmm import unit
 
 from .mm import mm_cross_prepared, prepare_cross
 from .openmm_io import MMParams, assign_radii, extract_nonbonded
+from .constants import debye_kappa2
 from .pb import PBParams, TripletSolver, recenter_com
 from .sa import BETA_INP1, GAMMA_INP1, delta_g_sa
 
-__all__ = ["OnlineMMPBSA", "PBSAReporter", "recenter_com"]
+__all__ = ["OnlineMMPBSA", "PBSAReporter", "boundary_margin_min", "recenter_com"]
+
+
+def _debye_length(params: PBParams) -> float:
+    k2 = debye_kappa2(params.ionic_strength_M, params.eps_out, params.temperature_K)
+    return float(1.0 / np.sqrt(k2)) if k2 > 0 else float("inf")
+
+
+def boundary_margin_min(params: PBParams) -> float:
+    """C/R 网格边界的物理余量 1.5·κ⁻¹(Å)。S4 / 0.15 M 下 padding 20→40 只动 0.003
+    kcal/mol(RESULTS §15.8), 对应 ~1.5κ⁻¹ = 11.8。无盐时 κ⁻¹ 无界, 必须显式给。"""
+    kinv = _debye_length(params)
+    if not np.isfinite(kinv):
+        raise ValueError("离子强度为 0: 1.5·κ⁻¹ 无界, margin_min 必须显式给")
+    return 1.5 * kinv
 
 
 class OnlineMMPBSA:
@@ -96,9 +113,12 @@ class OnlineMMPBSA:
         ref_coords_A,
         *,
         h: float = 0.5,
-        padding: float = 30.0,
+        pilot_coords_A=None,
+        fluctuation_allowance: float | None = None,
+        margin_min: float | None = None,
+        padding: float | None = None,
         h_lig: float | None = 0.25,
-        padding_lig: float = 14.0,
+        padding_lig: float | None = None,
         pb_params: PBParams | None = None,
         gamma: float = GAMMA_INP1,
         beta: float = BETA_INP1,
@@ -148,9 +168,64 @@ class OnlineMMPBSA:
                 f"溶质净电荷 {q.sum():+.3f} e 与预期的 {net_charge:+.0f} e 不符"
                 " —— 切片索引错位")
 
-        self._tri = TripletSolver(ref, masses, radii, rec, lig, params, h=h,
-                                  padding=padding, h_lig=h_lig,
-                                  padding_lig=padding_lig)
+        # ---- 网格定尺(见模块 docstring「网格定尺」) ----
+        pilot = None
+        if pilot_coords_A is not None:
+            pilot = np.asarray(pilot_coords_A, dtype=np.float64)
+            if pilot.ndim != 3 or pilot.shape[1:] != ref.shape:
+                raise ValueError(f"pilot_coords_A 要 [T,{ref.shape[0]},3] Å, 得到 {pilot.shape}")
+            if pilot.shape[0] < 2:
+                raise ValueError(
+                    "pilot_coords_A 只有 1 帧 —— 单帧看不见构象涨落(S4 上欠 3.79 Å, "
+                    "RESULTS §16.9), 给一段试跑轨迹(S4 上 1 ns 够)或 fluctuation_allowance")
+            if not np.isfinite(pilot).all():
+                raise ValueError("pilot_coords_A 含 NaN/Inf")
+        if fluctuation_allowance is not None and fluctuation_allowance < 0:
+            raise ValueError("fluctuation_allowance 不能为负")
+        need_fit = padding is None or (h_lig is not None and padding_lig is None)
+        if need_fit and pilot is None and fluctuation_allowance is None:
+            raise ValueError(
+                "网格定尺缺构象涨落信息: 给 pilot_coords_A(试跑轨迹 [T,N,3] Å, 推荐)或 "
+                "fluctuation_allowance(Å); 不拿单帧猜 —— S4 上单帧比 10 ns 轨迹欠 3.79 Å"
+                "(RESULTS §16.9)。确知尺寸时也可显式给 padding/padding_lig")
+        if margin_min is None:
+            if need_fit or np.isfinite(_debye_length(params)):
+                margin_min = boundary_margin_min(params)
+            else:
+                margin_min = 0.0  # 无盐 + 显式 padding: 只查丢原子
+        self.margin_min = float(margin_min)
+        allow = 0.0 if fluctuation_allowance is None else float(fluctuation_allowance)
+        reach = float(radii.max()) + params.probe_radius + params.ion_radius + max(params.swin, 0.0)
+        pad = float(padding) if padding is not None else allow + reach + self.margin_min
+        pad_lig = None
+        if h_lig is not None:
+            if padding_lig is not None:
+                pad_lig = float(padding_lig)
+            else:
+                kinv = _debye_length(params)
+                if not np.isfinite(kinv):
+                    raise ValueError("离子强度为 0: 配体紧盒的 1.0·κ⁻¹ 无界, padding_lig 必须显式给")
+                pad_lig = allow + kinv
+        grid_ref = pilot if pilot is not None else ref[None]
+        self._tri = TripletSolver(grid_ref, masses, radii, rec, lig, params, h=h,
+                                  padding=pad, h_lig=h_lig,
+                                  padding_lig=pad_lig if pad_lig is not None else 8.0)
+        # 定尺结果留档: 试跑帧上的最小 margin 按构造 ≥ allowance + margin_min(dime 只会往上取)
+        frames = grid_ref
+        tri = self._tri
+        m_cr = min(tri._margin(recenter_com(f, masses, tri.grid.center), tri.grid) for f in frames)
+        m_l = float("nan")
+        if tri.grid_lig is not None:
+            m_l = min(tri._margin(recenter_com(f[lig], masses[lig], tri.grid_lig.center),
+                                  tri.grid_lig) for f in frames)
+        self.sizing = {
+            "source": (f"pilot {len(frames)} 帧" if pilot is not None else
+                       ("参考帧 + fluctuation_allowance" if need_fit else "显式 padding")),
+            "fluctuation_allowance": allow, "reach": reach, "margin_min": self.margin_min,
+            "padding": pad, "padding_lig": pad_lig,
+            "grid": tri.grid.shape, "grid_lig": None if tri.grid_lig is None else tri.grid_lig.shape,
+            "min_margin_on_sizing_frames": m_cr, "min_margin_lig_on_sizing_frames": m_l,
+        }
         self._q = q
         self._radii = radii
         self._masses = masses
@@ -266,7 +341,7 @@ class PBSAReporter:
 
     def __init__(self, analyzer: OnlineMMPBSA, interval_steps: int, solute_idx,
                  out_csv: str | None = None, on_violation: str = "flag",
-                 margin_min: float = 0.0):
+                 margin_min: float | None = None):
         if on_violation not in ("flag", "raise"):
             raise ValueError('on_violation 必须是 "flag"/"raise"')
         self.analyzer = analyzer
@@ -274,9 +349,9 @@ class PBSAReporter:
         self.solute_idx = np.asarray(solute_idx, dtype=int)
         self.on_violation = on_violation
         # margin_A ≥ 0 只保证没丢原子; margin_min 是 **Dirichlet 边界的物理
-        # 余量**(padding 预算里那 12 Å, RESULTS §15.8 的 ~1.5κ⁻¹)—— margin=+1
-        # 的帧数值上不丢原子, 边界已经贴脸。S4 传 12; 0 只查丢原子。
-        self.margin_min = float(margin_min)
+        # 余量**(RESULTS §15.8 的 ~1.5κ⁻¹)—— margin=+1 的帧数值上不丢原子, 边界
+        # 已经贴脸。默认取 analyzer 定尺用的那个值(按离子强度算); 0 只查丢原子。
+        self.margin_min = float(analyzer.margin_min if margin_min is None else margin_min)
         self._fh = open(out_csv, "w", buffering=1) if out_csv else None
         self._csv = None
         self.n_reports = 0

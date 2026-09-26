@@ -231,3 +231,56 @@ def test_asym_ligand_uses_its_own_com(peptide_system):
     a, b = tri(pos, q), tri(moved, q)
     np.testing.assert_allclose(float(b["g_pb_ligand"]), float(a["g_pb_ligand"]), rtol=1e-5)
     assert a["margin_A"] > 0 and bool(a["converged"])
+
+
+def _pep_args(peptide_system):
+    system, topology, pos = peptide_system
+    lig_local = np.array([a.index for a in topology.atoms() if a.residue.chain.id == "B"])
+    return system, topology, np.arange(system.getNumParticles()), lig_local, pos
+
+
+def test_sizing_requires_fluctuation_info(peptide_system):
+    """ONLINE_PLAN §8 待办 3: 没有构象涨落信息时报错, 不拿单帧猜(S4 单帧欠 3.79 Å,
+    RESULTS §16.9)。两个错误都必须在编译之前抛。"""
+    system, topology, sidx, lig, pos = _pep_args(peptide_system)
+    with pytest.raises(ValueError, match="定尺缺构象涨落"):
+        OnlineMMPBSA(system, topology, sidx, lig, pos)
+    with pytest.raises(ValueError, match="只有 1 帧"):
+        OnlineMMPBSA(system, topology, sidx, lig, pos, pilot_coords_A=pos[None])
+
+
+def test_boundary_margin_min_from_ionic_strength():
+    """ONLINE_PLAN §8 待办 2: margin_min = 1.5·κ⁻¹ 随离子强度走, 不再钉死 12。"""
+    from jaxpbsa.constants import debye_kappa2
+    from jaxpbsa.online import boundary_margin_min
+    for I, approx in ((0.15, 11.8), (0.05, 20.4)):
+        p = PBParams(ionic_strength_M=I)
+        kinv = 1.0 / np.sqrt(debye_kappa2(I, p.eps_out, p.temperature_K))
+        assert boundary_margin_min(p) == pytest.approx(1.5 * kinv)
+        assert boundary_margin_min(p) == pytest.approx(approx, abs=0.2)
+    with pytest.raises(ValueError, match="离子强度为 0"):
+        boundary_margin_min(PBParams(ionic_strength_M=0.0))
+
+
+def test_pilot_sizing_covers_every_pilot_frame(peptide_system):
+    """ONLINE_PLAN §8 待办 1: 网格从试跑轨迹算出。每个试跑帧 margin ≥ margin_min(按构造),
+    网格不小于只看参考帧定出的; reporter 的 margin_min 默认跟 analyzer 走。"""
+    system, topology, sidx, lig, pos = _pep_args(peptide_system)
+    rec0 = int(np.setdiff1d(np.arange(len(pos)), lig)[0])
+    f1, f2 = pos.copy(), pos.copy()
+    f1[lig[0]] += np.array([0.0, 4.0, 0.0])   # 配体端伸出
+    f2[rec0] += np.array([-4.0, 0.0, 0.0])    # 受体端伸出
+    pilot = np.stack([pos, f1, f2])
+    az = OnlineMMPBSA(system, topology, sidx, lig, pos, pilot_coords_A=pilot)
+    s = az.sizing
+    assert s["source"].startswith("pilot 3")
+    assert s["margin_min"] == pytest.approx(11.8, abs=0.2)
+    assert s["min_margin_on_sizing_frames"] >= s["margin_min"] - 1e-9
+    assert s["min_margin_lig_on_sizing_frames"] >= 0.0
+    for f in pilot:
+        out = az(f)
+        assert out["margin_A"] >= az.margin_min - 1e-6 and out["margin_lig_A"] >= 0
+    ref_only = TripletSolver(pos, az._masses, az._radii, az._rec_local, lig,
+                             h=0.5, padding=s["padding"], padding_lig=s["padding_lig"])
+    assert all(a >= b for a, b in zip(az.triplet_solver.grid.shape, ref_only.grid.shape))
+    assert PBSAReporter(az, 500, sidx).margin_min == az.margin_min
