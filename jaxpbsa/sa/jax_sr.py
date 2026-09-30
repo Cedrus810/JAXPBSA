@@ -87,7 +87,11 @@ def _frame(coords, R, u, k, chunk):
         neg, idx = jax.lax.top_k(-d2, k)    # top_k 取最大 -> -d2 最大 = d2 最小
         disp = x_i - coords[idx]            # [k,3]
         rhs = R[idx] ** 2 - R_i ** 2 + neg  # neg = -d², padding/远邻居自动 -> -inf
-        exposed = ~jnp.any(2.0 * R_i * (u @ disp.T) < rhs, axis=-1)  # [P]
+        # precision=HIGHEST 不是装饰: Ampere 以后的卡(5080/5090 实测)上 fp32 matmul 默认走 TF32
+        # (10 位尾数), 贴边的采样点会被判反 —— 5090 上 test_burial_identity 差 1.6e-4 = 约一个点。
+        # 内维只有 3, 代价可忽略。2080 Ti(无 TF32)上结果逐位不变。
+        uv = jnp.matmul(u, disp.T, precision=jax.lax.Precision.HIGHEST)
+        exposed = ~jnp.any(2.0 * R_i * uv < rhs, axis=-1)  # [P]
         # 所需 k 就在同一张 d2 上多一次归约, 不额外访存
         return jnp.count_nonzero(exposed), jnp.count_nonzero(d2 < (R_i + rmax) ** 2)
 

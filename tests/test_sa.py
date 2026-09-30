@@ -26,12 +26,21 @@ PROBE = PROBE_RADIUS
 
 
 def _zsasa_available():
-    """zsasa 是外部参照物, 不是依赖 —— 缺二进制跳过, 不算失败。"""
+    """zsasa 是外部参照物, 不是依赖 —— 缺二进制跳过, 不算失败。
+
+    二进制在但**本机 CPU 跑不了**(被信号杀掉, rc < 0; fulda 上实测 rc=−4 = SIGILL, 多半是在别的
+    机器上按 -march=native 编的)同样算不可用。普通的非零退出码仍然是失败。"""
     try:
         zsasa_ref.find_binary()
-        return True
     except FileNotFoundError:
         return False
+    try:
+        zsasa_ref.sasa_frame(np.zeros((1, 3)), np.array([1.5]), n_points=100)
+    except RuntimeError as e:
+        if "rc=-" in str(e):
+            return False
+        raise
+    return True
 
 
 def test_isolated_sphere_matches_analytic():
