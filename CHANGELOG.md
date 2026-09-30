@@ -502,3 +502,55 @@ S4 与 Amber 的 0.26% 因此不是一般性结论（1YCR −5.9%）。**默认�
 - `scripts/online_overhead.py` 用 S4 干轨迹前 1 ns 作 pilot；`scripts/fit_grid.py` 默认 h 0.75 → 0.5。
 - 测试：`test_sizing_requires_fluctuation_info` / `test_boundary_margin_min_from_ionic_strength` /
   `test_pilot_sizing_covers_every_pilot_frame`。
+
+## fraction 在 RTX 5090 上 OOM 修复（2026-09-29，RESULTS §18.16）
+
+- `pb/surface.ses_level`：max 链每 8 个偏移插 `jax.lax.optimization_barrier`（数学不变，逐位相同）。
+  5090 上 1YCR 配体紧盒临时显存 16.06 → 0.50 GiB（2080 Ti 0.52，不受影响）。只影响 `surface="fraction"`。
+- `OnlineMMPBSA`：曾试「给了 pilot 就默认再加 3.5 Å」，5090 全轨迹检验后撤回（1YCR C/R 不升档、S4 配体盒
+  白涨 60%；3.19 Å 的依据算错，真实撑开 ≥ 6.7 Å）。`fluctuation_allowance` 默认 0，不替调用方猜涨落；
+  正确性由每帧 margin 守卫保证。
+
+## margin_min 默认 1.5κ⁻¹ → 1.0κ⁻¹（2026-09-29，RESULTS §18.17）
+
+- `online.boundary_margin_min` 返回 1.0·κ⁻¹（0.15 M：7.85 Å）。依据：1YCR 全轨迹最差 3 帧、相位固定只改盒子，
+  1.0κ⁻¹ 相对 3.0κ⁻¹ 的 ΔG_PB 差 ≤ 0.010 kcal/mol（0.75κ⁻¹ ≤ 0.018）。在线定尺与 `PBSAReporter` 守卫同用，
+  网格会相应变小。`scripts/fit_grid.py`、README、测试同步。新增 `data/md/boundary_conv.py`（gitignored）。
+
+## 定尺目标与逐帧 flag 阈值分开（2026-09-29，RESULTS §18.17）
+
+- 新增 `online.boundary_margin_flag(params)` = 0.1·κ⁻¹（无盐时 0）；`OnlineMMPBSA(margin_flag=None)` 默认取它，
+  记入 `sizing`。`PBSAReporter(margin_min=None)` 默认改为 `analyzer.margin_flag`（原为定尺目标 margin_min）。
+- 依据：1YCR 最差 3 帧相位固定只改盒子，0.1κ⁻¹（~0.9 Å）处 ΔG_PB 边界误差 ≤ 0.073 kcal/mol，平滑无悬崖；
+  定尺目标 1.0κ⁻¹ 保留（兼作 pilot 未见涨落的缓冲）。1.0κ⁻¹ 下 1YCR 有 47% 帧 < 7.85 Å，但误差都 ≤ ~0.07。
+
+## `surface="gaussian_gap"`：异质高斯 PB（JCP 545 (2026) 114452）（2026-09-29，RESULTS §18.18）
+
+- `pb/surface.py`：`gaussian_density(..., m=)`（super-Gaussian）；`gcs_kernel` / `gcs_surface`（Gaussian convolution
+  surface，MBE 18 (2021) 1370 §3，离散核归一化）；`gap_config`；`build_maps(gap=...)` 另出真空态面 ε_v。
+- `pb/energy.py`：`PBParams(surface="gaussian_gap", gauss_m, eps_gap=8, gcs_probe=1.5, gcs_sigma2=1, gcs_tau=0.0025,
+  eps_vacuum=1)`；参考解改为真空态 ε_v 的 MG-PCG（该 surface 下不用 DST），共用网格 triplet 里 C 单独解参考。
+- 测试：`test_gaussian_gap_maps_bounds`、`test_gaussian_gap_vacuum_identity`。
+- S4 / 1YCR：h=0.75 已收敛（相对 0.25 差 0.24% / 0.01%），摆放噪声 sd ≤0.3，每帧 28 / 25 ms（5090）；
+  ΔG_PB 是 SES 的 0.59× / 0.72×（不同模型）。默认 surface 仍 binary。
+
+## SA 在 Ampere+ 卡上的 TF32 精度 + zsasa 在跑不了的 CPU 上跳过（2026-09-29）
+
+- `sa/jax_sr.py`：埋藏判据那次 `u @ disp.T` 改 `jnp.matmul(..., precision=HIGHEST)`。Ampere 以后的卡（5090 实测）上
+  fp32 matmul 默认 TF32（10 位尾数），贴边采样点判反：`test_burial_identity_against_brute_force` 在 5090 上
+  612.758 vs 612.663（1.6e-4 ≈ 一个点）。内维 3，代价可忽略；2080 Ti 上逐位不变。PB/MM 无 matmul（DST 走 FFT），不受影响。
+- `tests/test_sa.py::_zsasa_available`：zsasa 二进制在、但被信号杀掉（rc < 0；fulda 上 rc=−4 = SIGILL，二进制按别的 CPU 编）
+  时视为不可用而跳过；普通非零退出仍是失败。
+
+## 非线性 PB + JCP26 Table 4 对照（2026-09-29/30，RESULTS §18.20–18.21）
+
+- `pb/energy.py`：`PBParams(nonlinear=True, newton_max_iter=60, newton_inner_tol=1e-3)`；`npb_newton`（阻尼 Newton，
+  J = κ̄² cosh u 的 LPB 算子，内层 PCG+MG fp32，外层 u / F / Φ fp64；凸能量 Armijo，试探点非有限减半，线搜索失败即停，
+  验收 ‖F‖ ≤ tol·‖b‖）；有界双曲 `_bsinh/_bcosh/_bcosh_m1`（|u| > 30 一阶延拓，能量与导数一致）；`npb_ion_energy`
+  （式 13 离子项，输出 `g_pb_ion`）。`PBParams.gcs_normalize`（默认 True；False = 原文不归一化核，仅对照用）。
+- 测试：`test_npb_kappa0_equals_lpb[binary, gaussian_gap]`、`test_npb_weak_potential_limit`、`test_npb_strong_charge_converges`。
+- `scripts/prep_pdb25.py`：Table 4 的 25 个蛋白制备；`VARIANTS`（`1C75_cym`：C32/C35 取 CYM；`1TQG_altB`）。
+- `data/md/pdb25_conv.py`（gitignored）：逐 h / 逐相位记录（失败只记 status 不丢行），`--sigma= --gcs_raw --radii= --tag=`。
+- 结论：σ = 1.0 时 22/25 个蛋白对原文中位差 1.7%（r = 0.9989）。
+- `PBParams.gap_sigma = 1.0`（新，gaussian_gap 专用；为复现 JCP26 反推，正文没写 σ）；`gauss_sigma = 0.93` 只管
+  `surface="gaussian"`。**行为变化**：gaussian_gap 的默认 σ 0.93 → 1.0（§18.18 的 S4 / 1YCR 数字是 0.93 下的）。
