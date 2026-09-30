@@ -27,5 +27,4 @@ pytest
 
 ## 许可证
 
-Copyright © 2026 Cedrus810。本项目以 [GNU Affero General Public License v3.0](./LICENSE)
-（**AGPL-3.0-only**）发布。当前挂 AGPL 属临时保护性质；版权所有者保留对未来版本更换许可证的权利。
+Copyright © 2026 Cedrus810。本项目以 [MIT License](./LICENSE) 发布。
