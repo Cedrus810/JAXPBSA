@@ -17,7 +17,7 @@ MD 循环经 `PBSAReporter` 逐帧调用, analysis 与 MD 同卡分时 —— as
    只给一个偏小的 `G_PB`。所以每帧输出 `margin_A`, 由 reporter 按
    `on_violation` 策略处理(在线跑几小时, 一帧异常不能杀 MD, 但必须留下标记)。
    注意 `margin_A ≥ 0` 只保证没丢原子; Dirichlet 边界够不够远是另一回事,
-   由 reporter 的 `margin_min` 管(默认取 analyzer 的 1.5κ⁻¹, RESULTS §15.8)。
+   由 reporter 的 `margin_min` 管(默认取 analyzer 的 1.0κ⁻¹, RESULTS §18.17)。
 
 ## origin 为什么**不**改成运行期参数 (ONLINE_PLAN §1)
 
@@ -38,13 +38,16 @@ C/R 网格每轴半长 = max|x − COM| + padding, 其中
 
     padding     = fluctuation_allowance + reach + margin_min
     reach       = r_max + probe + ion + swin          从体系半径现算
-    margin_min  = 1.5·κ⁻¹(`boundary_margin_min`)      从离子强度现算(0.15 M: 11.8; 0.05 M: 20.4)
+    margin_min  = 1.0·κ⁻¹(`boundary_margin_min`)      从离子强度现算(0.15 M: 7.85; 0.05 M: 13.6)
 
 配体紧盒 padding_lig = fluctuation_allowance + 1.0·κ⁻¹(离线 8 Å ≈ 1κ⁻¹ 与 20 Å 只差
 0.09 kcal/mol, RESULTS §15.8)。构象涨落**不泛化**, 只能从轨迹量, 两种给法:
 
 - `pilot_coords_A=[T,N,3]`(推荐): 试跑轨迹, max 取遍全部帧; `fluctuation_allowance`
-  此时是额外保险(默认 0)。S4 上 1 ns 前缀定出的 193³ 在全 10 ns 上最小 margin +15.4;
+  此时是试跑之外的额外保险, **默认 0, 不替调用方猜**。`fluctuation_allowance`(轨迹涨落的
+  不确定性预算, 体系相关)与 `margin_min`(PB 边界误差条件, 看 κ⁻¹)是两回事: 试过的固定
+  3.5 Å 默认对 1YCR 没让 C/R 升档(试跑后真实撑开 ≥ 6.7 Å)、却让 S4 配体盒白涨 60%
+  (RESULTS §18.16), 已撤。S4 上 1 ns 前缀定出的 193³ 在全 10 ns 上最小 margin +15.4;
   0.1 ns 不够(+7.4 < 12)。需求是 max 统计量, 单调增、不收敛 —— 定尺是优化, 每帧
   margin guard 才是正确性。
 - `fluctuation_allowance=Å`: 只有参考帧时显式给涨落余量(S4 C/R 需 ~9, 配体 y 轴 +5.2)。
@@ -79,7 +82,7 @@ from .constants import debye_kappa2
 from .pb import PBParams, TripletSolver, recenter_com
 from .sa import BETA_INP1, GAMMA_INP1, delta_g_sa
 
-__all__ = ["OnlineMMPBSA", "PBSAReporter", "boundary_margin_min", "recenter_com"]
+__all__ = ["OnlineMMPBSA", "PBSAReporter", "boundary_margin_flag", "boundary_margin_min", "recenter_com"]
 
 
 def _debye_length(params: PBParams) -> float:
@@ -88,12 +91,23 @@ def _debye_length(params: PBParams) -> float:
 
 
 def boundary_margin_min(params: PBParams) -> float:
-    """C/R 网格边界的物理余量 1.5·κ⁻¹(Å)。S4 / 0.15 M 下 padding 20→40 只动 0.003
-    kcal/mol(RESULTS §15.8), 对应 ~1.5κ⁻¹ = 11.8。无盐时 κ⁻¹ 无界, 必须显式给。"""
+    """C/R 网格边界的物理余量 1.0·κ⁻¹(Å)。1YCR 全轨迹最差 3 帧, 相位固定只改盒子
+    (RESULTS §18.17, `data/md/boundary_conv.py`): 1.0κ⁻¹ 相对 3.0κ⁻¹ 的 ΔG_PB 差 ≤ 0.010,
+    0.75κ⁻¹ ≤ 0.018 kcal/mol —— 比 binary 的摆放噪声小三个量级。原先的 1.5κ⁻¹(§15.8)偏保守。
+    无盐时 κ⁻¹ 无界, 必须显式给。"""
     kinv = _debye_length(params)
     if not np.isfinite(kinv):
-        raise ValueError("离子强度为 0: 1.5·κ⁻¹ 无界, margin_min 必须显式给")
-    return 1.5 * kinv
+        raise ValueError("离子强度为 0: κ⁻¹ 无界, margin_min 必须显式给")
+    return 1.0 * kinv
+
+
+def boundary_margin_flag(params: PBParams) -> float:
+    """逐帧 flag 阈值 0.1·κ⁻¹(Å): margin 低于它的帧才标记。与 `boundary_margin_min`(定尺目标)
+    分开 —— 定尺目标还兼作 pilot 没见过的涨落的缓冲, flag 只该看物理误差。1YCR 最差 3 帧、相位
+    固定只改盒子(RESULTS §18.17): 0.1κ⁻¹(~0.9 Å)相对 3.0κ⁻¹ 的 ΔG_PB 差 ≤ 0.073 kcal/mol,
+    随 m 平滑增长、无悬崖; 更小的 m 没有数据, 且已贴近丢原子。无盐时返回 0(只查丢原子)。"""
+    kinv = _debye_length(params)
+    return 0.1 * kinv if np.isfinite(kinv) else 0.0
 
 
 class OnlineMMPBSA:
@@ -116,6 +130,7 @@ class OnlineMMPBSA:
         pilot_coords_A=None,
         fluctuation_allowance: float | None = None,
         margin_min: float | None = None,
+        margin_flag: float | None = None,
         padding: float | None = None,
         h_lig: float | None = 0.25,
         padding_lig: float | None = None,
@@ -194,6 +209,8 @@ class OnlineMMPBSA:
             else:
                 margin_min = 0.0  # 无盐 + 显式 padding: 只查丢原子
         self.margin_min = float(margin_min)
+        # 逐帧 flag 阈值(reporter 默认用它), 与定尺目标 margin_min 分开, 见 boundary_margin_flag
+        self.margin_flag = float(boundary_margin_flag(params) if margin_flag is None else margin_flag)
         allow = 0.0 if fluctuation_allowance is None else float(fluctuation_allowance)
         reach = float(radii.max()) + params.probe_radius + params.ion_radius + max(params.swin, 0.0)
         pad = float(padding) if padding is not None else allow + reach + self.margin_min
@@ -222,7 +239,7 @@ class OnlineMMPBSA:
             "source": (f"pilot {len(frames)} 帧" if pilot is not None else
                        ("参考帧 + fluctuation_allowance" if need_fit else "显式 padding")),
             "fluctuation_allowance": allow, "reach": reach, "margin_min": self.margin_min,
-            "padding": pad, "padding_lig": pad_lig,
+            "margin_flag": self.margin_flag, "padding": pad, "padding_lig": pad_lig,
             "grid": tri.grid.shape, "grid_lig": None if tri.grid_lig is None else tri.grid_lig.shape,
             "min_margin_on_sizing_frames": m_cr, "min_margin_lig_on_sizing_frames": m_l,
         }
@@ -348,10 +365,10 @@ class PBSAReporter:
         self.interval_steps = int(interval_steps)
         self.solute_idx = np.asarray(solute_idx, dtype=int)
         self.on_violation = on_violation
-        # margin_A ≥ 0 只保证没丢原子; margin_min 是 **Dirichlet 边界的物理
-        # 余量**(RESULTS §15.8 的 ~1.5κ⁻¹)—— margin=+1 的帧数值上不丢原子, 边界
-        # 已经贴脸。默认取 analyzer 定尺用的那个值(按离子强度算); 0 只查丢原子。
-        self.margin_min = float(analyzer.margin_min if margin_min is None else margin_min)
+        # margin_A ≥ 0 只保证没丢原子; margin_min 是逐帧 flag 的**边界误差阈值**, 默认取
+        # analyzer.margin_flag(0.1κ⁻¹: 该处 ΔG_PB 边界误差 ≤ 0.073 kcal/mol, RESULTS §18.17),
+        # 不是定尺目标 analyzer.margin_min(1.0κ⁻¹, 还兼作未见涨落的缓冲)。0 只查丢原子。
+        self.margin_min = float(analyzer.margin_flag if margin_min is None else margin_min)
         self._fh = open(out_csv, "w", buffering=1) if out_csv else None
         self._csv = None
         self.n_reports = 0

@@ -226,16 +226,18 @@ az = OnlineMMPBSA(system, topology,
                   pilot_coords_A=pilot)  # [T,N_solute,3] Å trial trajectory: sizes the grid
 
 sim.reporters.append(PBSAReporter(az, interval_steps=10000, solute_idx=solute_idx,
-                                  out_csv="pbsa.csv"))   # margin_min defaults to 1.5·κ⁻¹
+                                  out_csv="pbsa.csv"))   # flags frames with margin < 0.1·κ⁻¹
 ```
 
 The grid is **sized from data, not a magic padding**: per axis, half-extent =
-max|x − COM| over the pilot frames + reach (r_max + probe + ion + swin) + 1.5·κ⁻¹, rounded up
+max|x − COM| over the pilot frames + reach (r_max + probe + ion + swin) + 1.0·κ⁻¹, rounded up
 to the next APBS dime (ligand box: + 1.0·κ⁻¹). Conformational fluctuation does not
 generalise, so either a pilot trajectory or an explicit `fluctuation_allowance=` (Å) is
 **required** — a single frame under-sizes S4 by 3.79 Å (`RESULTS.md` §16.9), and the old
 fixed `padding=30` cost 26.9% extra time for identical ΔG (§16.8). On S4, a 1 ns pilot is
-enough. The chosen sizes are in `az.sizing`.
+enough. The chosen sizes are in `az.sizing`. The sizing target (1.0·κ⁻¹) also buffers fluctuations the pilot
+never saw; the per-frame flag threshold is separate and physical — 0.1·κ⁻¹, where the measured boundary error
+of ΔG_PB is still ≤ 0.073 kcal/mol (`RESULTS.md` §18.17) — plus any frame that drops atoms (margin < 0).
 
 ```bash
 export XLA_PYTHON_CLIENT_PREALLOCATE=false   # required when MD shares the GPU:

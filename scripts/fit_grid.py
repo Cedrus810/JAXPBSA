@@ -10,7 +10,7 @@
 三个输入的泛化能力完全不同（RESULTS.md §16.9）：
 
     reach = r_max + probe + ion + swin   从体系自己的半径现算        自动正确
-    margin_min ≈ 1.5·κ⁻¹                 从离子强度现算              自动正确
+    margin_min ≈ 1.0·κ⁻¹                 从离子强度现算              自动正确(RESULTS §18.17)
     构象涨落                              **不泛化** —— 只能从轨迹量
 
 第三项正是单帧看不见的那一截：S4 上单帧比 10 ns 轨迹欠 **3.79 Å**，按单帧定尺跑满
@@ -49,7 +49,7 @@ def main() -> None:
     ap.add_argument("--ionic", type=float, default=PBParams.ionic_strength_M)
     ap.add_argument("--radii-model", default="mbondi2")
     ap.add_argument("--margin-min", type=float, default=None,
-                    help="默认由 --ionic 算 1.5·κ⁻¹")
+                    help="默认由 --ionic 算 1.0·κ⁻¹")
     ap.add_argument("--safety", type=float, default=0.0,
                     help="额外余量 (Å)，给「试跑比生产短」买保险")
     a = ap.parse_args()
@@ -67,14 +67,14 @@ def main() -> None:
     reach = float(np.max(radii)) + p.probe_radius + p.ion_radius + max(p.swin, 0.0)
     k2 = debye_kappa2(p.ionic_strength_M, p.eps_out, p.temperature_K)
     kinv = float(1.0 / np.sqrt(k2)) if k2 > 0 else float("inf")
-    margin_min = a.margin_min if a.margin_min is not None else 1.5 * kinv
+    margin_min = a.margin_min if a.margin_min is not None else 1.0 * kinv
 
     print(f"{t.n_frames} 帧 / {t.n_atoms} 原子 | h={a.h} | I={a.ionic} M "
           f"-> κ⁻¹={kinv:.2f} Å")
     print(f"reach = r_max {np.max(radii):.2f} + probe {p.probe_radius} + ion "
           f"{p.ion_radius} + swin {p.swin} = {reach:.2f} Å")
     print(f"margin_min = {margin_min:.2f} Å"
-          + ("" if a.margin_min is not None else "  (= 1.5·κ⁻¹)"))
+          + ("" if a.margin_min is not None else "  (= 1.0·κ⁻¹)"))
     print(f"\n每轴半长 max|x−COM|: 帧最大 {np.round(half.max(0), 2)} | "
           f"轨迹内涨落 {np.round(half.max(0) - half.min(0), 2)}")
 

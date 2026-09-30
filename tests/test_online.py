@@ -250,13 +250,13 @@ def test_sizing_requires_fluctuation_info(peptide_system):
 
 
 def test_boundary_margin_min_from_ionic_strength():
-    """ONLINE_PLAN §8 待办 2: margin_min = 1.5·κ⁻¹ 随离子强度走, 不再钉死 12。"""
+    """ONLINE_PLAN §8 待办 2: margin_min = 1.0·κ⁻¹ 随离子强度走(RESULTS §18.17), 不再钉死 12。"""
     from jaxpbsa.constants import debye_kappa2
     from jaxpbsa.online import boundary_margin_min
-    for I, approx in ((0.15, 11.8), (0.05, 20.4)):
+    for I, approx in ((0.15, 7.85), (0.05, 13.6)):
         p = PBParams(ionic_strength_M=I)
         kinv = 1.0 / np.sqrt(debye_kappa2(I, p.eps_out, p.temperature_K))
-        assert boundary_margin_min(p) == pytest.approx(1.5 * kinv)
+        assert boundary_margin_min(p) == pytest.approx(kinv)
         assert boundary_margin_min(p) == pytest.approx(approx, abs=0.2)
     with pytest.raises(ValueError, match="离子强度为 0"):
         boundary_margin_min(PBParams(ionic_strength_M=0.0))
@@ -274,7 +274,7 @@ def test_pilot_sizing_covers_every_pilot_frame(peptide_system):
     az = OnlineMMPBSA(system, topology, sidx, lig, pos, pilot_coords_A=pilot)
     s = az.sizing
     assert s["source"].startswith("pilot 3")
-    assert s["margin_min"] == pytest.approx(11.8, abs=0.2)
+    assert s["margin_min"] == pytest.approx(7.85, abs=0.2)
     assert s["min_margin_on_sizing_frames"] >= s["margin_min"] - 1e-9
     assert s["min_margin_lig_on_sizing_frames"] >= 0.0
     for f in pilot:
@@ -283,4 +283,6 @@ def test_pilot_sizing_covers_every_pilot_frame(peptide_system):
     ref_only = TripletSolver(pos, az._masses, az._radii, az._rec_local, lig,
                              h=0.5, padding=s["padding"], padding_lig=s["padding_lig"])
     assert all(a >= b for a, b in zip(az.triplet_solver.grid.shape, ref_only.grid.shape))
-    assert PBSAReporter(az, 500, sidx).margin_min == az.margin_min
+    # reporter 的 flag 阈值默认是 margin_flag(0.1κ⁻¹), 不是定尺目标 margin_min(1.0κ⁻¹)
+    assert az.margin_flag == pytest.approx(0.1 * s["margin_min"])
+    assert PBSAReporter(az, 500, sidx).margin_min == az.margin_flag
