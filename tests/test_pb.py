@@ -331,3 +331,94 @@ def test_gauss_selfcorr_pair():
     assert spread(raw) > 0.3
     assert spread(cor) < 0.015
     assert abs(2 * np.mean(cor) - (-2281.0)) < 0.01 * 2281.0  # 修正后单位电荷 G_ii ≈ −2281(§18.13)
+
+
+
+def _gap_cluster():
+    rng = np.random.default_rng(5)
+    X = np.array([[0.0, 0, 0], [1.5, 0, 0], [0, 1.5, 0], [-1.2, -0.8, 0.6], [0.3, 0.4, 1.6]]) \
+        + rng.normal(scale=0.05, size=(5, 3))
+    return X, np.array([1.9, 1.7, 1.5, 1.2, 1.7])
+
+
+def test_gaussian_gap_maps_bounds():
+    """surface="gaussian_gap"(JCP 545 (2026) 114452 式 3–7 + GCS): ε_in ∈ [ε_m, ε_gap]; vdW 内 S=1 → ε = ε_in;
+    vdW + 2r_p 外 S=0 → ε = ε_s; 真空态 ε_v ≤ ε_gap 处处; 离子只在 1 − S 里。"""
+    from jaxpbsa.pb.grid import GridSpec
+    from jaxpbsa.pb.surface import build_maps, gap_config
+    X, R = _gap_cluster()
+    h = 0.4
+    n = 61
+    g = GridSpec(origin=(-12.0, -12.0, -12.0), shape=(n, n, n), h=h)
+    cfg = gap_config(h, float(R.max()), 0.93, 1, 8.0, 1.0, 1.5, 1.0, 0.0025)
+    mp = build_maps(jnp.asarray(X), jnp.asarray(R), g, 1.0, 80.0, 1.4, 2.0, 0.01, gap=cfg)
+    e, S, ein = (np.asarray(mp[k]) for k in ("eps", "S", "eps_in_map"))
+    assert ein.min() >= 1.0 - 1e-9 and ein.max() <= 8.0 + 1e-9
+    assert S.min() >= 0.0 and S.max() <= 1.0
+    ax = -12.0 + np.arange(n) * h
+    P = np.stack(np.meshgrid(ax, ax, ax, indexing="ij"), -1)
+    d = (np.linalg.norm(P[..., None, :] - X, axis=-1) - R).min(-1)  # 到 vdW 面的距离
+    assert np.allclose(e[d <= -1e-6], ein[d <= -1e-6])
+    assert np.allclose(e[d >= 3.0 + 1e-6], 80.0)
+    for k in ("x", "y", "z"):
+        assert np.asarray(mp["eps_v_" + k]).max() <= 8.0 + 1e-9
+    assert np.all(np.asarray(mp["kbar2"])[d <= -1e-6] == 0.0)
+
+
+def test_gaussian_gap_vacuum_identity():
+    """ε_s = 1、无盐、单个电荷恰在网格中心: 溶剂态与真空态是同一个方程、同一组边界值 → G ≡ 0。
+    抓参考解是否真用了 ε_v(用均匀 ε_in 的旧参考会给出一个大负值)。"""
+    from jaxpbsa.pb.grid import GridSpec
+    X = np.zeros((1, 3))
+    g = GridSpec(origin=(-10.0, -10.0, -10.0), shape=(41, 41, 41), h=0.5)
+    P = PBParams(surface="gaussian_gap", eps_out=1.0, ionic_strength_M=0.0, tol=1e-6)  # fp32 到不了 1e-8
+    o = make_frame_solver(g, np.array([2.0]), P)(jnp.asarray(X), jnp.asarray([1.0]), jnp.asarray([2.0]))
+    assert bool(o["converged"])
+    assert abs(float(o["g_pb"])) < 1e-3
+
+
+def _npb_setup(surface="binary"):
+    from jaxpbsa.pb.grid import GridSpec
+    X, R = _gap_cluster()
+    q = np.array([0.6, -0.4, 0.5, -0.3, 0.4])  # 净 +0.8
+    g = GridSpec(origin=(-11.0, -11.0, -11.0), shape=(45, 45, 45), h=0.5)
+    return X, R, q, g
+
+
+@pytest.mark.parametrize("surface", ["binary", "gaussian_gap"])
+def test_npb_kappa0_equals_lpb(surface):
+    """无盐时 sinh 项消失: 离子能量项严格 0, 与 LPB 相同(LPB 的 PCG 判收敛后, Newton 在 fp32 里重算的
+    残差可能恰在 tol 之上而多走一步不精确的内层解, 所以比到求解器 tol 量级 1e-5 而非逐位)。"""
+    X, R, q, g = _npb_setup()
+    out = []
+    for nl in (False, True):
+        P = PBParams(surface=surface, ionic_strength_M=0.0, nonlinear=nl, tol=1e-6)
+        out.append(make_frame_solver(g, R, P)(jnp.asarray(X), jnp.asarray(q), jnp.asarray(R)))
+    assert float(out[1]["g_pb_ion"]) == 0.0
+    assert float(out[1]["g_pb"]) == pytest.approx(float(out[0]["g_pb"]), rel=1e-5)
+
+
+def test_npb_weak_potential_limit():
+    """电荷缩 ε 倍: NPB 的 G/ε² → LPB 的 G(sinh u ≈ u, 离子两项 −u²/2 + u²/2 抵消)。"""
+    X, R, q, g = _npb_setup()
+    eps = 1e-3
+    P0 = PBParams(surface="gaussian_gap", nonlinear=False, tol=1e-6)
+    P1 = PBParams(surface="gaussian_gap", nonlinear=True, tol=1e-6)
+    lin = float(make_frame_solver(g, R, P0)(jnp.asarray(X), jnp.asarray(q), jnp.asarray(R))["g_pb"])
+    o = make_frame_solver(g, R, P1)(jnp.asarray(X), jnp.asarray(eps * q), jnp.asarray(R))
+    assert bool(o["converged"])
+    assert float(o["g_pb"]) / eps ** 2 == pytest.approx(lin, rel=1e-3)
+
+
+def test_npb_strong_charge_converges():
+    """强电荷(每原子 ±0.9–1.8 e, 净 +2.4): Newton 真的走了几步、收敛, 离子项非零。GCS 下离子区从 vdW 面紧外侧
+    开始, LPB 初值在那里有几十 kT/e —— 这条同时锁住有界双曲函数的一致性(硬截断时实测发散)。"""
+    X, R, q, g = _npb_setup()
+    qs = q * 3.0
+    P0 = PBParams(surface="gaussian_gap", nonlinear=False)
+    P1 = PBParams(surface="gaussian_gap", nonlinear=True)
+    lin = make_frame_solver(g, R, P0)(jnp.asarray(X), jnp.asarray(qs), jnp.asarray(R))
+    nl = make_frame_solver(g, R, P1)(jnp.asarray(X), jnp.asarray(qs), jnp.asarray(R))
+    assert bool(nl["converged"]) and int(nl["iters_solvent"]) >= 1000  # 千位 = Newton 步数
+    assert abs(float(nl["g_pb_ion"])) > 0
+    assert np.isfinite(float(nl["g_pb"])) and float(nl["g_pb"]) != float(lin["g_pb"])

@@ -36,6 +36,117 @@ from .multigrid import build_levels, make_preconditioner
 from .solver import pcg_solve
 from .surface import ball_offsets, build_maps
 from .gauss_selfcorr import load_table, self_correction
+from ..constants import BJERRUM_VAC
+
+#: NPB 的有界双曲函数转折点(kT/e)。|u| > U 时 sinh 按一阶延拓 sinh(U) + cosh(U)(u − U)(同 pyDelPhi 的
+#: bounded hyperbolic), 能量项与 Jacobian 取**与之严格对应**的原函数与导数 —— 泛函仍凸、C¹, 阻尼 Newton
+#: 全局收敛。硬截断(sinh 平掉)会让 F 不再是 E 的梯度: GCS 下离子区从 vdW 面紧外侧开始, 带电原子旁的
+#: LPB 初值有几十 kT/e, 实测硬截断下 Newton 发散。收敛解在离子区 |u| 远小于 U 时与精确 sinh 相同。
+NPB_U_CLIP = 30.0
+
+
+def _bsinh(u):
+    U = NPB_U_CLIP
+    a = jnp.clip(u, -U, U)
+    return jnp.sinh(a) + jnp.cosh(a) * (u - a)
+
+
+def _bcosh(u):  # d/du _bsinh
+    return jnp.cosh(jnp.clip(u, -NPB_U_CLIP, NPB_U_CLIP))
+
+
+def _bcosh_m1(u):  # ∫₀ᵘ _bsinh = cosh(a) − 1 + sinh(a)(u − a) + ½cosh(a)(u − a)²
+    a = jnp.clip(u, -NPB_U_CLIP, NPB_U_CLIP)
+    return jnp.cosh(a) - 1.0 + jnp.sinh(a) * (u - a) + 0.5 * jnp.cosh(a) * (u - a) ** 2
+
+
+def npb_newton(ex, ey, ez, kbar2, b, u_start, mask, h, *, tol, inner_tol, max_newton, max_iter,
+               use_mg, mg_min_n=7, mg_nu=2, mg_coarse_sweeps=50):
+    """非线性 PB  F(u) = −∇·(ε∇u) + κ̄² sinh u − b = 0  的阻尼 Newton(JCP 545 (2026) 114452 式 1)。
+
+    J(u) = −∇·ε∇ + diag(κ̄² cosh u): 就是把 κ̄² 换成 κ̄² cosh u 的 LPB 算子, 仍 SPD —— 内层直接用
+    现有 PCG(+MG)。u_start 的 shell 值即 Dirichlet 边界(Newton 步在边界上取 0)。NPB 是凸泛函
+    E(u) 的 Euler–Lagrange 方程(∇E = F), 线搜索是对 E 的 Armijo 回溯。收敛: ‖F·mask‖ ≤ tol·‖b·mask‖(fp64 外层, 见下), 线搜索失败即停。κ̄² ≡ 0 时 u_start 已是解, 0 步返回。
+    返回 (u, newton_iters, rel_residual, converged)。"""
+    dt = u_start.dtype
+    # 混合精度(同迭代精化): 外层 u / 残差 / 线搜索能量走 fp64, 内层 Jacobian PCG 仍 fp32。
+    # fp32 外层的残差底线实测 1–3e-4·‖b‖(GCS 离子区紧贴 vdW 面, 带电原子旁 u 几十 kT, κ̄² sinh u 与
+    # ∇·ε∇u 大数相消), 到不了 tol; fp32 能量在线搜索里也分辨不出下降。外层只多几次模板运算, 不进 PCG。
+    f64 = ACCUM_DTYPE
+    ex, ey, ez, kbar2, b = (a.astype(f64) for a in (ex, ey, ez, kbar2, b))
+    ion = kbar2 > 0
+    zk = jnp.zeros_like(kbar2)
+    bnorm = jnp.sqrt(jnp.sum((b * mask) ** 2))
+    nrm = lambda f: jnp.sqrt(jnp.sum(f * f))
+    ex32, ey32, ez32 = (a.astype(dt) for a in (ex, ey, ez))
+
+    def resid(u):
+        sh = jnp.where(ion, kbar2 * _bsinh(u), 0.0)
+        return (apply_operator(u, ex, ey, ez, zk, h) + sh - b) * mask
+
+    def energy(u):
+        # 离散凸泛函 E(u), ∇_内节点 E = resid(u)(A₀ 对称; 边界值作已知源): 线搜索用它, 不用 ‖F‖ ——
+        # 内层 PCG 不精确时 Newton 方向对 ‖F‖ 未必下降, 对 E 一定下降(J SPD)。
+        au = apply_operator(u, ex, ey, ez, zk, h)
+        ab = apply_operator(jnp.where(mask, 0.0, u), ex, ey, ez, zk, h)
+        ion_e = jnp.where(ion, kbar2 * _bcosh_m1(u), 0.0)
+        dens = jnp.where(mask, 0.5 * u * au + 0.5 * u * ab + ion_e - b * u, 0.0)
+        return jnp.sum(dens)
+
+    # 停: 到 tol、到步数上限、或线搜索失败(那一步不走)。**不看 ‖F‖ 降没降**: 离解远时(LPB 初值在离子区
+    # 进了 |u| > U 的延拓段)E 降而 ‖F‖ 升是正常的 —— Kirkwood h=0.5 实测第一步 E 1.59e12 → 1.38e12、
+    # ‖F‖ 反升, 按 ‖F‖ 判停滞会在第一步就停。
+    def cond(st):
+        _, _, fn, it, moved = st
+        return (fn > tol * bnorm) & (it < max_newton) & moved
+
+    def body(st):
+        u, f, fn, it, _ = st
+        keff = jnp.where(ion, kbar2 * _bcosh(u), 0.0).astype(dt)
+        pre = None
+        if use_mg:
+            pre = make_preconditioner(build_levels(ex32, ey32, ez32, keff, h, min_n=mg_min_n),
+                                      nu1=mg_nu, nu2=mg_nu, coarse_sweeps=mg_coarse_sweeps)
+        d, _, _, _ = pcg_solve(lambda v: apply_operator(v, ex32, ey32, ez32, keff, h),
+                                 (-f).astype(dt), jnp.zeros_like(u, dtype=dt),
+                                 jacobi_diagonal(ex32, ey32, ez32, keff, h), mask,
+                                 precond=pre, tol=inner_tol, max_iter=max_iter)
+        d = d.astype(f64)
+
+        e0 = energy(u)
+        slope = jnp.sum(f * d)  # ∇E·d < 0
+
+        def ls_cond(s):  # 试探点非有限(溢出)也减半, 不当作通过(NaN 比较恒假)
+            a, enew, j = s
+            return (~jnp.isfinite(enew) | (enew > e0 + 1e-4 * a * slope)) & (j < 30)
+
+        def ls_body(s):
+            a, _, j = s
+            a = a * 0.5
+            return a, energy(u + a * d), j + 1
+
+        a, enew, _ = jax.lax.while_loop(ls_cond, ls_body, (jnp.asarray(1.0, f64), energy(u + d), 0))
+        # 线搜索失败(或 d 不是下降方向)就不走, 并停。早先版本照走 a = 2⁻²⁰ 那一步, 且能量是 fp32 逐点算的
+        # —— 5090 上 4/27 个蛋白残差一步涨到 1e7–1e8·‖b‖。
+        good = (slope < 0) & jnp.isfinite(enew) & (enew <= e0 + 1e-4 * a * slope)
+        a = jnp.where(good, a, 0.0)
+        u_new = u + a * d
+        f_new = resid(u_new)
+        return u_new, f_new, nrm(f_new), it + 1, good
+
+    u0 = u_start.astype(f64)
+    f0 = resid(u0)
+    fn0 = nrm(f0)
+    u, _, fn, it, _ = jax.lax.while_loop(
+        cond, body, (u0, f0, fn0, jnp.asarray(0, jnp.int32), jnp.asarray(True)))
+    return u.astype(dt), it, (fn / bnorm).astype(dt), fn <= tol * bnorm
+
+
+def npb_ion_energy(u, kbar2, mask, h):
+    """JCP 545 (2026) 114452 式 13 的离子项(kcal/mol): (h³/4πl_B) Σ κ̄² [−(cosh u − 1) + ½ u sinh u],
+    只在溶剂侧 Ω_i^C(κ̄² > 0)求和; 两个边界面积分按原文丢掉。小 u 时两项 −u²/2 + u²/2 抵消 → 退回 LPB。"""
+    dens = jnp.where((kbar2 > 0) & mask, kbar2 * (-_bcosh_m1(u) + 0.5 * u * _bsinh(u)), 0.0)
+    return jnp.sum(dens, dtype=ACCUM_DTYPE) * (h ** 3) / (4.0 * jnp.pi * BJERRUM_VAC) * KT_TO_KCAL
 
 
 #: "auto" 模式下启用 MG 的节点数下限。实测交叉点在 0.9–2.1 M 之间(两张卡一致),
@@ -59,6 +170,25 @@ class PBParams:
     gauss_sigma: float = 0.93
     # 高斯 ε 的亚网格自项修正(gauss_selfcorr.py, RESULTS §18.12)。g_pb_raw 保留未修正值
     gauss_selfcorr: bool = True
+    # surface="gaussian_gap": JCP 545 (2026) 114452 的异质高斯 PB —— 溶质内 ε_in 1 → eps_gap, 光滑面
+    # S(Gaussian convolution surface, Wang–Alexov–Zhao MBE 2021)接到溶剂; 参考解换成真空态 ε_v(溶质内
+    # 同一 ε_in), 用 MG-PCG 解(非常系数, 不能 DST)。gauss_m 与 surface="gaussian" 共用。
+    # gap_sigma: 式 3 的 σ。**JCP26 正文没写 σ**; 1.0 是对其 Table 4(25 蛋白 Gaussian NPB)反推的:
+    # 单因素扫描(RESULTS §18.21)σ = 0.93 / 1.0 / 1.1 时 (我们−原文)/SASA = +5.8 / +1.4 / −8.1 kcal/1000 Å²,
+    # 过零 ≈ 1.01; σ = 1.0 全 25 个 ours = 1.011·theirs − 3.2。为复现该文取 1.0 —— 而 DelPhi 高斯
+    # (Li–Alexov 2013)及多数后续工作用 0.93(即上面的 gauss_sigma), 与别的工作比时注意改回。
+    gap_sigma: float = 1.0
+    gauss_m: int = 1  # 1 = Gaussian, 2 = super-Gaussian
+    eps_gap: float = 8.0
+    gcs_probe: float = 1.5  # Å, GCS 的 SAS 探针(原文 1.5, 与 SES 的 probe_radius 分开)
+    gcs_sigma2: float = 1.0
+    gcs_tau: float = 0.0025
+    gcs_normalize: bool = True  # False = 原文离散核不归一化(M=7 时和 0.94), 见 surface.gcs_kernel
+    eps_vacuum: float = 1.0
+    # 非线性 PB(sinh): 阻尼 Newton, 内层 PCG(+MG); 能量加 JCP26 式 13 的离子项(g_pb_ion)。默认线性。
+    nonlinear: bool = False
+    newton_max_iter: int = 60  # 30 时 2FDN h=0.25 三个相位两个未收敛(实测 5090)
+    newton_inner_tol: float = 1e-3
     ref_solver: str = "dst"  # "dst" (精确直解, 默认) | "pcg" (对照用)
     # 溶剂方程的预处理器。MG = V-cycle 预处理的 CG(不能独立求解: ε 跳变 1:80 会发散,
     # 见 multigrid.py)。"auto" 按网格规模选 —— **MG 在粗网格上是负收益**:
@@ -115,13 +245,20 @@ def make_frame_solver(
         level_offsets = (ball_offsets(r_max + params.probe_radius + reach, grid.h),
                          ball_offsets(reach, grid.h), reach)
     gauss = None
+    gap = None
     selfcorr_table = None
-    if params.surface == "gaussian":
+    if params.surface == "gaussian_gap":
+        from .surface import gap_config
+        gap = gap_config(grid.h, r_max, params.gap_sigma, params.gauss_m, params.eps_gap,
+                         params.eps_vacuum, params.gcs_probe, params.gcs_sigma2, params.gcs_tau,
+                         params.gcs_normalize)
+    elif params.surface == "gaussian":
         gauss = (ball_offsets(3.0 * params.gauss_sigma * r_max + grid.h, grid.h), params.gauss_sigma)
         if params.gauss_selfcorr:
             selfcorr_table = load_table(params.eps_in, params.eps_out)
     elif params.surface not in ("binary", "fraction"):
-        raise ValueError(f'surface 必须是 "binary"/"fraction"/"gaussian", 得到 {params.surface!r}')
+        raise ValueError('surface 必须是 "binary"/"fraction"/"gaussian"/"gaussian_gap", '
+                         f'得到 {params.surface!r}')
     kappa2_phys = debye_kappa2(
         params.ionic_strength_M, params.eps_out, params.temperature_K
     )
@@ -151,7 +288,7 @@ def make_frame_solver(
             params.probe_radius, params.ion_radius, kappa2_phys,
             smooth_offsets=smooth_offsets,
             raster_offsets=raster_offsets, probe_offsets=probe_offsets,
-            ion_offsets=ion_offsets, level_offsets=level_offsets, gauss=gauss,
+            ion_offsets=ion_offsets, level_offsets=level_offsets, gauss=gauss, gap=gap,
         )
         q_net = q.sum()
         # a 只在**有效原子**上取: 被屏蔽的原子会被挪到盒外(见 make_triplet_solver),
@@ -180,6 +317,17 @@ def make_frame_solver(
         u_solv, it_s, rr_s, ok_s = pcg_solve(apply_solv, b, u0, diag_s, mask,
                                              precond=pre, tol=params.tol,
                                              max_iter=params.max_iter)
+        g_ion = None
+        if params.nonlinear:
+            # LPB 解作初值 -> Newton; 离子能量项只属于溶剂态(真空态无离子)
+            u_solv, n_newt, rr_s, ok_n = npb_newton(
+                maps["eps_x"], maps["eps_y"], maps["eps_z"], maps["kbar2"], b, u_solv, mask, grid.h,
+                tol=params.tol, inner_tol=params.newton_inner_tol, max_newton=params.newton_max_iter,
+                max_iter=params.max_iter, use_mg=use_mg, mg_min_n=params.mg_min_n,
+                mg_nu=params.mg_nu, mg_coarse_sweeps=params.mg_coarse_sweeps)
+            ok_s = ok_s & ok_n
+            it_s = it_s + 1000 * n_newt  # 诊断: 千位 = Newton 步数
+            g_ion = npb_ion_energy(u_solv, maps["kbar2"], mask, grid.h)
 
         # 参考方程: 均匀 ε_in, κ̄² = 0, 解析库仑 Dirichlet 边界
         eps_x = jnp.full((shape[0] - 1, shape[1], shape[2]), params.eps_in, dt)
@@ -195,7 +343,23 @@ def make_frame_solver(
             u_ref = u_ref_given
             it_r, rr_r = jnp.asarray(0, jnp.int32), jnp.zeros((), dt)
             ok_r = jnp.asarray(True)
-            return _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r)
+            return _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r, g_ion)
+        if gap is not None:
+            # 真空态: 溶质内同一 ε_in, 外面 ε_vac = 1 —— 变系数, MG-PCG; 边界是真空库仑
+            ev = (maps["eps_v_x"], maps["eps_v_y"], maps["eps_v_z"])
+            ubr = coulomb_boundary_values(shell_xyz, coords, q, params.eps_vacuum,
+                                          atom_block=params.boundary_atom_block)
+            u0r = jnp.zeros(shape, dt).reshape(-1).at[shell_flat].set(ubr).reshape(shape)
+            apply_v = lambda u: apply_operator(u, *ev, zero, grid.h)
+            pre_v = None
+            if use_mg:
+                pre_v = make_preconditioner(
+                    build_levels(*ev, zero, grid.h, min_n=params.mg_min_n),
+                    nu1=params.mg_nu, nu2=params.mg_nu, coarse_sweeps=params.mg_coarse_sweeps)
+            u_ref, it_r, rr_r, ok_r = pcg_solve(apply_v, b, u0r, jacobi_diagonal(*ev, zero, grid.h),
+                                                mask, precond=pre_v, tol=params.tol,
+                                                max_iter=params.max_iter)
+            return _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r, g_ion)
         ubr = coulomb_boundary_values(shell_xyz, coords, q, params.eps_in,
                                       atom_block=params.boundary_atom_block)
         u0r = jnp.zeros(shape, dt).reshape(-1).at[shell_flat].set(ubr).reshape(shape)
@@ -211,18 +375,21 @@ def make_frame_solver(
                                                 tol=params.tol,
                                                 max_iter=params.max_iter)
 
-        return _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r)
+        return _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r, g_ion)
 
-    def _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r):
+    def _finish(u_solv, u_ref, coords, q, radii, it_s, rr_s, ok_s, it_r, rr_r, ok_r, g_ion=None):
         u_reac = interpolate(u_solv, coords, grid) - interpolate(u_ref, coords, grid)
         # 归约走 fp64: u_reac 是两个自能量级势的差, 逐原子求和会放大抵消误差
         g_raw = 0.5 * jnp.sum(q * u_reac, dtype=ACCUM_DTYPE) * KT_TO_KCAL
         extra = {}
+        if g_ion is not None:
+            extra["g_pb_ion"] = g_ion
+            g_raw = g_raw + g_ion
         if selfcorr_table is not None:
             corr = self_correction(coords.astype(ACCUM_DTYPE), q.astype(ACCUM_DTYPE),
                                    radii.astype(ACCUM_DTYPE), grid, params.gauss_sigma,
                                    selfcorr_table)
-            extra = {"g_pb_raw": g_raw, "g_pb_selfcorr": corr}
+            extra = {**extra, "g_pb_raw": g_raw, "g_pb_selfcorr": corr}
             g_raw = g_raw + corr
         return ({
             "g_pb": g_raw, **extra,
@@ -330,7 +497,9 @@ def make_frame_solver(
         cl, ql, rl = _species(coords, q, radii, keep_l)
         out_r, _, u_ref_r = _frame_impl(cr, qr, rr_)
         out_l, _, u_ref_l = _frame_impl(cl, ql, rl)
-        out_c, _, _ = _frame_impl(coords, q, radii, u_ref_given=u_ref_r + u_ref_l)
+        # gaussian_gap 的参考态 ε_v 依赖 species(溶质内 ε_in 不同), 势不可叠加 → C 自己解参考
+        out_c, _, _ = (_frame_impl(coords, q, radii) if gap is not None
+                       else _frame_impl(coords, q, radii, u_ref_given=u_ref_r + u_ref_l))
         d = out_c["g_pb"] - out_r["g_pb"] - out_l["g_pb"]
         return {
             "g_pb_complex": out_c["g_pb"],

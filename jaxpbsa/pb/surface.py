@@ -210,13 +210,19 @@ def ses_level(
     lens = np.sqrt((offs.astype(np.float64) ** 2).sum(-1)) * h
     nx, ny, nz = grid.shape
     acc = jnp.full(grid.shape, neg, dt)
-    for o, ln in zip(offs, lens):  # 静态起点, 同 dilate: XLA 融合整条链
+    # 每 8 个偏移插一道 optimization_barrier: 数学不变(逐位相同), 但禁止 XLA 把整条链改写成
+    # 「先堆叠再归约」。RTX 5090(sm_120)上 1YCR 配体紧盒(h=0.25, 1837 偏移)只编译测临时显存
+    # (RESULTS §18.16): 无屏障 16.06 GiB(= 那次 OOM) / 每 32 个 8.70 / **每 8 个 0.50** / 关
+    # crease 0.32; 2080 Ti 上四者都是 0.52, 屏障不改速度。
+    for j, (o, ln) in enumerate(zip(offs, lens)):  # 静态起点, 同 dilate: XLA 融合整条链
         st = [int(pad + o[0]), int(pad + o[1]), int(pad + o[2])]
         sl = lambda a: jax.lax.slice(a, st, [st[0] + nx, st[1] + ny, st[2] + nz])
         acc = jnp.maximum(acc, sl(src) - float(ln))
         if crease:
             dist = jnp.sqrt((px - sl(yx)) ** 2 + (py - sl(yy)) ** 2 + (pz - sl(yz)) ** 2)
             acc = jnp.maximum(acc, probe_radius - dist)
+        if (j + 1) % 8 == 0:
+            acc = jax.lax.optimization_barrier(acc)
     return acc
 
 
@@ -226,8 +232,9 @@ def gaussian_density(
     grid: GridSpec,
     sigma: float,
     offsets: jnp.ndarray,  # 半径 ≥ 3σ·r_max + h, host 静态
+    m: int = 1,  # 阶数: 1 = Gaussian, 2 = super-Gaussian(JCP 545 (2026) 114452 式 3)
 ) -> jnp.ndarray:
-    """DelPhi 高斯溶质密度 ρ = 1 − Π_i (1 − g_i), g_i = exp(−|r − r_i|² / (σR_i)²)。
+    """DelPhi 高斯溶质密度 ρ = 1 − Π_i (1 − g_i), g_i = exp(−(|r − r_i|² / (σR_i)²)^m)。
 
     Li, Li, Zhang, Alexov, JCTC 9, 2126 (2013); σ = 0.93。逐原子截断在 3σR_i(同 DelPhi),
     Π 在 log 空间 scatter-add。**电荷中心附近 ε 按 r² 升高, 内层 ~σR·√(ε_in/Δε) ≈ 0.2 Å,
@@ -242,11 +249,67 @@ def gaussian_density(
     r2 = ((coords[:, None, :] - nodes) ** 2).sum(-1)
     s2 = (sigma * radii[:, None]) ** 2
     live = jnp.all((cand >= 0) & (cand < n), axis=-1) & (radii[:, None] > 0) & (r2 <= 9.0 * s2)
-    g = jnp.exp(-r2 / jnp.where(live, s2, 1.0))
+    g = jnp.exp(-((r2 / jnp.where(live, s2, 1.0)) ** m))
     lg = jnp.where(live, jnp.log(jnp.maximum(1.0 - g, 1e-30)), 0.0)
     cand = jnp.clip(cand, 0, n - 1)
     acc = jnp.zeros(grid.shape, dt).at[(cand[:, :, 0], cand[:, :, 1], cand[:, :, 2])].add(lg)
     return 1.0 - jnp.exp(acc)
+
+
+def gcs_kernel(h: float, probe: float, sigma2: float, tau: float, normalize: bool = True) -> np.ndarray:
+    """GCS 的离散一维高斯核(Wang–Alexov–Zhao, Math. Biosci. Eng. 18 (2021) 1370, §3.2):
+    M = 2⌊r_p/h⌋ + 1 个点均匀取在 [−W, W], W = σ√(−ln(2πτ²σ²))(式 27), 按格点间距 h 作用 ——
+    核在物理空间恒覆盖 ±⌊r_p/h⌋h ≈ ±r_p, 等效标准差 ≈ σ·r_p/W(σ²=1, τ=0.0025: ~0.47 Å)。
+    **与原文的差别**: 原文不归一化离散权重(M=7 时和 ≈ 0.94, 三遍后 ≈ 0.83, 靠后处理把内部重置为 1);
+    这里默认归一化到和为 1, 内部不依赖截断也是 1。`normalize=False` 取原文式 (23)(29) 原样的
+    K[j] = exp(−x_j²/2σ²)/(σ√2π), 不乘采样间距(单因素对照用)。"""
+    sig = float(np.sqrt(sigma2))
+    M = 2 * int(np.floor(probe / h)) + 1
+    if M == 1:
+        return np.ones(1)
+    W = sig * np.sqrt(-np.log(2 * np.pi * tau ** 2 * sigma2))
+    x = np.linspace(-W, W, M)
+    k = np.exp(-x ** 2 / (2 * sigma2))
+    return k / k.sum() if normalize else k / (sig * np.sqrt(2 * np.pi))
+
+
+def gap_config(h: float, r_max: float, sigma: float, m: int, eps_gap: float, eps_vac: float,
+               probe: float, sigma2: float, tau: float, normalize: bool = True) -> dict:
+    """`build_maps(gap=...)` 的静态配置(host 侧: 偏移、GCS 核)。"""
+    return {"g_off": ball_offsets(3.0 * sigma * r_max + h, h), "sigma": sigma, "m": int(m),
+            "eps_gap": eps_gap, "eps_vac": eps_vac, "probe": probe,
+            "kernel": gcs_kernel(h, probe, sigma2, tau, normalize),
+            "s_off": (ball_offsets(r_max + probe + h, h), ball_offsets(r_max + h, h),
+                      ball_offsets(r_max + 2 * probe + h, h))}
+
+
+def gcs_surface(
+    coords: jnp.ndarray,  # [N,3] Å
+    radii: jnp.ndarray,  # [N] Å(vdW), 0 = 屏蔽原子
+    grid: GridSpec,
+    probe: float,  # GCS 用的探针半径(原文 1.5 Å)
+    kernel: np.ndarray,  # gcs_kernel(...), host 静态
+    offsets: tuple,  # (ball(r_max + probe + h), ball(r_max + h), ball(r_max + 2·probe + h)), host 静态
+) -> jnp.ndarray:
+    """Gaussian convolution surface S(r) ∈ [0, 1](同上文献 §3): SAS(半径 R + r_p)的格点指示函数
+    H 沿 x/y/z 三遍可分离高斯卷积(零填充), 再后处理: vdW 内置 1, vdW + 2r_p 外置 0。
+    过渡层以 SAS 为中心、宽 2r_p = 3 Å。"""
+    off_sas, off_vdw, off_out = offsets
+    live = radii > 0
+    sas = rasterize_spheres(coords, jnp.where(live, radii + probe, 0.0), grid, off_sas)
+    S = sas.astype(coords.dtype)
+    k = [float(v) for v in kernel]
+    half = (len(k) - 1) // 2
+    if half:
+        for ax in range(3):
+            n = S.shape[ax]
+            pw = [(0, 0)] * 3
+            pw[ax] = (half, half)
+            P = jnp.pad(S, pw)
+            S = sum(w * jax.lax.slice_in_dim(P, j, j + n, axis=ax) for j, w in enumerate(k))
+    inner = rasterize_spheres(coords, radii, grid, off_vdw)
+    outer = rasterize_spheres(coords, jnp.where(live, radii + 2 * probe, 0.0), grid, off_out)
+    return jnp.where(inner, 1.0, jnp.where(outer, jnp.clip(S, 0.0, 1.0), 0.0))
 
 
 def _fraction_faces(g: jnp.ndarray, eps_in: float, eps_out: float, axis: int):
@@ -276,11 +339,30 @@ def build_maps(
     smooth_offsets: jnp.ndarray | None = None,
     level_offsets: tuple | None = None,  # (sas_offsets, reach_offsets, reach) -> 分数面 ε
     gauss: tuple | None = None,  # (offsets, sigma) -> DelPhi 高斯 ε
+    gap: dict | None = None,  # JCP 545 (2026) 114452 的异质模型, 见下
 ) -> dict:
     """Returns eps [nx,ny,nz], face maps (eps_x/y/z), kbar2, ses.
 
     `level_offsets` 给定时走分数面 ε(`ses_level` + `_fraction_faces`, swin 不用);
     否则是二值 SES + 节点调和平均。"""
+    if gap is not None:
+        # 异质高斯 PB(JCP 545 (2026) 114452 式 3–7): 溶质内 ε_in = ε_m + (ε_gap − ε_m) Π(1 − g_j)
+        # (1 → 8), 再由独立的光滑面 S(GCS) 接到溶剂: ε = S ε_in + (1 − S) ε_s。真空态 ε_v 同式、
+        # ε_s = 1 —— 溶质内的异质性两态相同, 电荷心附近的内层在 u − v 里对消(GEC)。离子可及 1 − S。
+        rho = gaussian_density(coords, radii, grid, gap["sigma"], gap["g_off"], m=gap["m"])
+        e_in = eps_in + (gap["eps_gap"] - eps_in) * (1.0 - rho)
+        S = gcs_surface(coords, radii, grid, gap["probe"], gap["kernel"], gap["s_off"])
+        eps = (S * e_in + (1.0 - S) * eps_out).astype(coords.dtype)
+        eps_v = (S * e_in + (1.0 - S) * gap["eps_vac"]).astype(coords.dtype)
+        kbar2 = (eps_out * kappa2_phys * (1.0 - S)).astype(coords.dtype)
+        sl = lambda a, lo, hi, ax: jax.lax.slice_in_dim(a, lo, hi, axis=ax)
+        hm = lambda e, a: (2 * sl(e, 0, e.shape[a] - 1, a) * sl(e, 1, e.shape[a], a)
+                           / (sl(e, 0, e.shape[a] - 1, a) + sl(e, 1, e.shape[a], a)))
+        out = {"eps": eps, "kbar2": kbar2, "ses": S > 0.5, "S": S, "eps_in_map": e_in}
+        for a, k in enumerate(("x", "y", "z")):
+            out["eps_" + k] = hm(eps, a)
+            out["eps_v_" + k] = hm(eps_v, a)
+        return out
     if gauss is not None:
         # ε = ρ ε_in + (1 − ρ) ε_out 在节点上, 面上调和平均(同 binary)。离子可及度直接用 1 − ρ。
         g_off, sigma = gauss
