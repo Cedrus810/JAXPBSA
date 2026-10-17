@@ -1,8 +1,8 @@
 """在线 MM/PBSA: 固定网格 + 每帧归位 (ONLINE_PLAN.md; plan §21–§23 落地第 2 步).
 
-第 1 步(stage-2 JAX SA)已在 `sa/jax_sr.py`。本文件是**同步原型**:
-MD 循环经 `PBSAReporter` 逐帧调用, analysis 与 MD 同卡分时 —— async worker /
-双 GPU 明确不做, 等 `scripts/online_overhead.py` 的实测数说话(ONLINE_PLAN §5)。
+第 1 步(stage-2 JAX SA)已在 `sa/jax_sr.py`。`PBSAReporter` 是同步入口;
+单卡后台调度用 `online_async.AsyncPBSAReporter`: 常驻进程计算, MD 回调只提交
+坐标。MPS 优先级/线程限额只作用于后台进程, 共卡影响须用 online_overhead 实测。
 
 ## 三条契约 (ONLINE_PLAN §0, 违反任何一条都是静默错数)
 
@@ -64,7 +64,7 @@ C/R 网格每轴半长 = max|x − COM| + padding, 其中
 
 ## 不做清单 (ONLINE_PLAN §5, 免得后面重捡)
 
-async worker/双 GPU(等 S6 实测) · `jax.export`/PJRT plugin(跟随上游 #5320)
+`jax.export`/PJRT plugin(跟随上游 #5320)
 · 零拷贝(占 1e-5) · §23 的 JSD/ESS/自相关(CSV 落盘离线算) · SA 融进同一个
 jit(PB 占 91.5%, 先优化错的项) · triplet warm start(相隔 N ps 的帧构象无关,
 1.08× 不值得) · origin 运行期参数(见上)。
@@ -363,6 +363,8 @@ class PBSAReporter:
             raise ValueError('on_violation 必须是 "flag"/"raise"')
         self.analyzer = analyzer
         self.interval_steps = int(interval_steps)
+        if self.interval_steps <= 0:
+            raise ValueError("interval_steps 必须为正")
         self.solute_idx = np.asarray(solute_idx, dtype=int)
         self.on_violation = on_violation
         # margin_A ≥ 0 只保证没丢原子; margin_min 是逐帧 flag 的**边界误差阈值**, 默认取
@@ -429,7 +431,10 @@ class PBSAReporter:
         self.total_pbsa_s += time.perf_counter() - t0
         out["step"] = int(simulation.currentStep)
         out["time_ps"] = float(state.getTime().value_in_unit(unit.picosecond))
+        self._record_result(out)
 
+    def _record_result(self, out: dict) -> None:
+        """共享的结果检查/落盘路径; 异步入口在 worker 内调用。"""
         bad = self._violation(out)
         if bad:
             if self.on_violation == "raise":
@@ -449,13 +454,8 @@ class PBSAReporter:
                 self._csv = csv.writer(self._fh)
                 self._csv.writerow(self._CSV_FIELDS)
             it = out["solver_iters"]
-            self._csv.writerow([
-                out["step"], out["time_ps"], out["e_coul_rl"], out["e_lj_rl"],
-                out["g_pb_complex"], out["g_pb_receptor"], out["g_pb_ligand"],
-                out["delta_g_pb"], out["sasa_complex"], out["sasa_receptor"],
-                out["sasa_ligand"], out["delta_g_sa"], out["delta_g_mmpbsa"],
-                it[0], it[1], it[2], out["converged"], out["sa_ok"],
-                out["margin_A"], out["margin_lig_A"]])
+            row = dict(out, iter_c=it[0], iter_r=it[1], iter_l=it[2])
+            self._csv.writerow([row[key] for key in self._CSV_FIELDS])
             self._fh.flush()  # 跑几小时崩了不能丢已算的帧
         self.n_reports += 1
 

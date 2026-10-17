@@ -6,3 +6,34 @@ io.mc
 *.chk
 *.dcd
 zsasa*
+
+# --- 2026-10-17: before the first push of the peptide work ---
+# local tool / credential directories and commit drafts
+CLAUDE.md
+.aws/
+.codex/
+.agents/
+.commit_drafts/
+# third-party papers and downloaded sources (redistribution not checked)
+/*.pdf
+/1-s2.0-*.md
+/JCIM26 (1).md
+experiments/2026-10-10_peptide_samples/raw/
+experiments/**/sources/
+# large PPIKB-derived tables (small manifests such as pilot_mdm2_8.csv stay)
+experiments/2026-10-10_peptide_samples/manifests/ppikb_*.csv
+experiments/2026-10-10_peptide_samples/manifests/candidate_inventory.csv
+experiments/2026-10-10_peptide_samples/manifests/linear_kd_candidates.csv
+# MD outputs: only the small JSON records (status, setup_record, diagnostics_summary) stay
+experiments/**/md/**/*.xml
+experiments/**/md/**/*.cif
+experiments/**/md/**/*.pdb
+experiments/**/md/**/*.log
+experiments/**/md/**/diagnostics.csv
+experiments/**/prepared/**/system_vacuum.xml
+experiments/**/diagnostics/**/system_vacuum.xml
+# per-frame scores of the sensitivity windows (the main 1-20 ns scores_1_20/ stays)
+experiments/2026-10-11_public_data_execution_packet/scores/**/frames.csv
+experiments/2026-10-11_public_data_execution_packet/scores_10_20/**/frames.csv
+# PBS job stdout files
+experiments/**/*.o[0-9]*

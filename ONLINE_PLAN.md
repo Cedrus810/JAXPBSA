@@ -3,6 +3,11 @@
 对应 `JAXPBSA_OpenMM_Plan.md` §21–§23 的落地顺序第 2 步（固定网格的在线接口）。
 第 1 步（stage-2 JAX SA）已完成：`jaxpbsa/sa/jax_sr.py`，13.7 ms/帧，进图可 jit。
 
+**2026-10-03 更新**：已新增单 GPU 常驻后台入口 `online_async.AsyncPBSAReporter`，
+支持 worker 专属 MPS 低优先级/线程限额。下面 S0–S6 是同步版本的历史实施记录；
+“干净串行”不证明 OpenMM 与 PBSA 的后台并发没有收益。新接口、生命周期和对照基准
+见 [单 GPU 在线调度](docs/ONLINE_SCHEDULING.md)，GPU 实测见 RESULTS §18.22（2080 Ti）/ §18.23（4090）：MPS 30% 限额下 5000 步间隔 overhead 15% → ~10% / 11.8% → 3.9%。
+
 **分工**：本文件是实现说明，代码由人写，写完我审。
 
 ---

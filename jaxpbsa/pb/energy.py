@@ -259,6 +259,11 @@ def make_frame_solver(
     elif params.surface not in ("binary", "fraction"):
         raise ValueError('surface 必须是 "binary"/"fraction"/"gaussian"/"gaussian_gap", '
                          f'得到 {params.surface!r}')
+    if params.nonlinear and params.temperature_K != 298.15:
+        # u 的单位是 298.15 K 的 kT/e(源项 BJERRUM_VAC、能量 KT_TO_KCAL 都固定在 298.15 K);
+        # 线性方程对此无感, sinh(u) 不行 —— 其他温度会静默给错数
+        raise ValueError("nonlinear=True 只支持 temperature_K=298.15, "
+                         f"得到 {params.temperature_K}")
     kappa2_phys = debye_kappa2(
         params.ionic_strength_M, params.eps_out, params.temperature_K
     )
