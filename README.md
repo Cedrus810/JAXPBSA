@@ -112,6 +112,37 @@ the measured ΔG_PB boundary error is still ≤ 0.073 kcal/mol, §18.17). When M
 share one GPU: `export XLA_PYTHON_CLIENT_PREALLOCATE=false`, or OpenMM's CUDA context
 fails to start.
 
+For background analysis on the **same GPU**, construct the analyzer in a persistent
+worker instead of calling it from the MD callback:
+
+```python
+from jaxpbsa.online_async import AsyncPBSAReporter
+
+with AsyncPBSAReporter.from_system(
+    system, topology, solute_idx, ligand_local_idx, ref_coords_A,
+    interval_steps=25000,
+    analyzer_kwargs={"pilot_coords_A": pilot},
+    out_csv="pbsa.csv",
+    mps_thread_percentage=30, mps_priority=1,
+) as reporter:
+    sim.reporters.append(reporter)
+    sim.step(production_steps)
+```
+
+Enable NVIDIA MPS **before creating the OpenMM CUDA Context** for this example.
+The thread limit and priority apply only to the PBSA process; the reporter keeps
+the MD callback short and the worker flushes results to CSV. `close()` (also called
+by the context manager) drains all submitted frames. A full queue raises by
+default rather than silently dropping samples. Omitting both MPS options enables
+ordinary process-based async analysis, without claiming resource limits.
+
+See [single-GPU scheduling](docs/ONLINE_SCHEDULING.md) for setup, backlog/error
+handling and the sync/async contention benchmark. Measured MD overhead at a
+5000-step interval (S4, one run per configuration): RTX 2080 Ti, 50k steps (RESULTS
+§18.22): sync 15% → MPS 30% ~10% (max latency 0.68 s); RTX 4090, 200k steps (§18.23):
+sync 11.8% → MPS 30% 3.9% (max latency 0.20 s). Unlimited async overlaps little
+(+1–1.5% over sync) on both cards; 20/30/40% are within noise, 50% is worse.
+
 ```bash
 python scripts/benchmark.py --csv out.csv   # h × {fp32,fp64} × {jacobi,mg,auto}
 python scripts/crl.py                       # ΔG_PB, C/R 0.5 + L 0.25 (current defaults)

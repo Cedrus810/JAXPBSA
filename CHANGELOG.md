@@ -2,6 +2,33 @@
 
 对应两份 code review 的回应 + 后续实测。所有性能数字见 [RESULTS.md](./RESULTS.md)。
 
+## 2026-10-06 · 投稿审查（docs/JCIM_SUBMISSION_REVIEW.md §5）的两处修复
+
+- `scripts/validate_mmpbsa.py`：逐帧检查 converged / margin_A / margin_lig_A（判据同在线
+  reporter），任一帧不可用直接失败、不进均值；我们这边先算，坏帧在跑 MMPBSA.py 之前就报。
+  测试 `tests/test_validate_mmpbsa.py`（无需 GPU / Amber）。
+- `pb/energy.py`：`nonlinear=True` 且 `temperature_K != 298.15` 时报错。源项与能量单位固定在
+  298.15 K，sinh(u) 在其他温度下会静默给错数；线性 PB 不受影响。
+
+## 2026-10-03 · 单 GPU 在线后台调度
+
+- 新增 `AsyncPBSAReporter.from_system`，分析器只在常驻子进程构造/预热；OpenMM
+  回调复制并提交坐标后返回，worker 计算、检查和及时写 CSV。
+- MPS 线程限额/低优先级与 CPU 线程设置仅作用于 worker，启动前检查 MPS 服务。
+  显式队列上限、积压策略、失败传播、结果延迟统计和排空退出。
+- `online_overhead.py --mode both` 对照同步/异步，报告 MD 与含排空的端到端吞吐。
+  调度与 OpenMM reporter 共存测试无需 CUDA；真实分析器数值对照使用运行时 JAX
+  后端。
+- 2080 Ti 实测（RESULTS §18.22）：不限额异步 +1.5%；MPS 30% 限额下 5000 步间隔
+  MD overhead 15% → ~10%，最大延迟 0.68 s。单次 5 万步。
+- 4090 复测（RESULTS §18.23）：20 万步、MPS 20/30/40/50% 四档，5000 步间隔
+  11.8% → 3.9%（30%）；20–40% 持平、50% 变差。示例与推荐值统一为 30%。
+- 父子进程计时统一使用 POSIX `CLOCK_MONOTONIC`；遗漏关闭且存在 pending 帧时
+  发出 `ResourceWarning` 并尝试正常排空。context manager 退出默认 60 秒超时，可通过
+  `close_timeout` 配置，超时后可重试关闭，不强杀 CUDA/MPS client。
+- 带 MPS 参数的基准在计时前核对 MD/worker PID 是否出现在 MPS client 列表；
+  worker 保留父进程 `sys.path`，`scripts/` 中应避免模块同名遮蔽。
+
 ---
 
 ## 1. 正确性修复（全部是静默失败：不报错，只给看起来合理的错数字）

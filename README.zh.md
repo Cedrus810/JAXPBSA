@@ -19,6 +19,14 @@
 
 开发在 CPU 上，实际计算跑在用户的 GPU 机器（openmm_dev conda 环境）。依赖见 `pyproject.toml`。
 
+## 单 GPU 在线调度
+
+`AsyncPBSAReporter.from_system(...)` 在常驻子进程内构造、预热分析器。OpenMM
+reporter 只复制并提交溶质坐标，后台进程计算并及时写 CSV，结束时排空已提交帧。
+同卡 MPS 可给 PBSA worker 单独设置低优先级和执行线程限额，不改 OpenMM 的配置。
+队列满默认报错，不静默丢采样帧。使用方法和对照基准见
+[在线调度说明](docs/ONLINE_SCHEDULING.md)；5000 步间隔 MD overhead，MPS 30% 限额：2080 Ti 15% → ~10%（RESULTS §18.22，5 万步），4090 11.8% → 3.9%（§18.23，20 万步）。
+
 ## 运行测试
 
 ```bash
