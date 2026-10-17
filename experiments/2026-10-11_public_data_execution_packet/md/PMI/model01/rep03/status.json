@@ -1,0 +1,79 @@
+{
+  "run_id": "PMI_model01_rep03",
+  "sample_id": "Li2021_MDM2_TSFAEYWNLLSP_Kd",
+  "peptide_name": "PMI",
+  "model_id": "model01",
+  "replica": 3,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/model01/setup",
+  "seeds": {
+    "velocity": 2026101113,
+    "integrator": 2026102113,
+    "barostat": 2026103113
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 500000,
+  "nvt_steps": 50000,
+  "npt_steps": 500000,
+  "eq_restraint_k": 0.0,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 10,
+  "prod_target_history": [
+    5000000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 2026102113,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 5090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 2026110032,
+      "barostat_seed": 2026111032,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 5090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 2026117951,
+      "barostat_seed": 2026118951,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 5090",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 7.7,
+    "npt": 88.44,
+    "prod_chunk_0000": 95.68,
+    "prod_chunk_0001": 95.33,
+    "prod_chunk_0002": 95.13,
+    "prod_chunk_0003": 95.68,
+    "prod_chunk_0004": 96.52,
+    "prod_chunk_0005": 95.75,
+    "prod_chunk_0006": 95.53,
+    "prod_chunk_0007": 95.61,
+    "prod_chunk_0008": 95.09,
+    "prod_chunk_0009": 95.45
+  },
+  "complete": true,
+  "openmm": "8.5.2",
+  "host": "fulda"
+}

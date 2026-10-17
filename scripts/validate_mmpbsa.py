@@ -183,8 +183,23 @@ def parse_results(path):
     return out
 
 
+def frame_violation(r, margin_flag):
+    """单帧 PB 结果不可用的原因，可用返回 None。判据同 `online.PBSAReporter._violation`。
+
+    MMPBSA.py 的 Average 包含全部帧，所以坏帧不能悄悄剔掉 —— 剔了两边就不是同一组帧。"""
+    if not bool(np.asarray(r["converged"])):
+        return f"PB 未收敛 (iters {np.asarray(r['iters']).tolist()})"
+    if r["margin_A"] < margin_flag:
+        return f"margin_A = {r['margin_A']:.2f} Å < {margin_flag:.2f}（C/R 边界贴脸或丢原子）"
+    if r["margin_lig_A"] < 0:  # 共用网格时是 nan，不触发
+        return f"margin_lig_A = {r['margin_lig_A']:.2f} Å < 0（配体撑出紧盒，丢原子）"
+    return None
+
+
 def ours(coords_A, d, h, with_pb=True, shared=False):
-    """我们这边的三项，取 frame 平均（与 MMPBSA.py 报告的 Average 对齐）。"""
+    """我们这边的三项，取 frame 平均（与 MMPBSA.py 报告的 Average 对齐）。
+
+    任一帧 PB 不可用（未收敛 / margin 越限）直接失败，不进均值。"""
     from jaxpbsa.mm.cross import mm_cross
     from jaxpbsa.openmm_io.system import extract_nonbonded
     from jaxpbsa.pb import PBParams, TripletSolver
@@ -207,7 +222,17 @@ def ours(coords_A, d, h, with_pb=True, shared=False):
                            PBParams(swin=0.5, tol=1e-5, max_iter=8000,
                                     precond="mg"),
                            h=h, h_lig=None if shared else 0.25)
-        per = [float(sv(f, d["charge"])["delta_g_pb"]) for f in c]
+        from jaxpbsa.online import boundary_margin_flag
+        margin_flag = boundary_margin_flag(sv.params)
+        per, bad = [], []
+        for i, f in enumerate(c):
+            r = sv(f, d["charge"])
+            why = frame_violation(r, margin_flag)
+            if why:
+                bad.append(f"  帧 {i}: {why}")
+            per.append(float(r["delta_g_pb"]))
+        if bad:
+            sys.exit(f"{len(bad)}/{len(c)} 帧 PB 不可用，拒绝出均值:\n" + "\n".join(bad))
         out["EPB"] = float(np.mean(per))
         out["_epb_frames"] = per
     return out
@@ -256,6 +281,9 @@ def main():
     print(f"工作目录 {wd}\nAMBERHOME {AMBERHOME}\n{len(coords)} 帧, 我们 h={a.h}"
           f"{' 共用网格' if a.shared else ' / 配体 0.25'}, pbsa h={a.pbsa_h}\n")
 
+    # 先算我们这边: 有坏帧就在跑 MMPBSA.py(多帧要很久)之前失败
+    us = ours(coords, d, a.h, with_pb=not a.no_pb, shared=a.shared)
+
     parms = build_parms(wd, d["radii"], d["topology"], d["system"],
                         coords[0], rec, lig)
     traj = write_traj(wd, coords)
@@ -290,7 +318,6 @@ def main():
             print(f"!! 这些 --pbopt 被 MMPBSA.py 丢弃了(没进 mdin): {dropped}")
     print()
     ref = parse_results(res_path)
-    us = ours(coords, d, a.h, with_pb=not a.no_pb, shared=a.shared)
     rows = [("ΔE_coul", "EEL", "EEL", "同一套力场参数 —— **必须**近似逐位一致"),
             ("ΔE_LJ", "VDWAALS", "VDWAALS", "同上"),
             ("ΔG_PB", "EPB", "EPB", "方法比较，**不是断言**：离散/表面/泛函都不同"),

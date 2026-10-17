@@ -1,0 +1,267 @@
+{
+ "start": {
+  "watch_chirality_deg": -121.7,
+  "E_kJ_mol": -238366.9,
+  "closest_contacts_A": [
+   [
+    2.27,
+    "B:SER11.H",
+    "B:LEU10.N"
+   ],
+   [
+    2.291,
+    "B:SER11.H",
+    "B:ASN8.O"
+   ],
+   [
+    2.442,
+    "B:SER11.HB2",
+    "A:LYS51.HG3"
+   ],
+   [
+    2.532,
+    "B:SER11.HA",
+    "B:SER11.HG"
+   ],
+   [
+    2.532,
+    "B:SER11.HG",
+    "B:SER11.HA"
+   ],
+   [
+    2.583,
+    "B:SER11.H",
+    "B:LEU10.H"
+   ],
+   [
+    2.587,
+    "B:SER11.CA",
+    "B:PRO12.HD2"
+   ],
+   [
+    2.602,
+    "B:SER11.HB3",
+    "B:SER11.O"
+   ],
+   [
+    2.602,
+    "B:SER11.O",
+    "B:SER11.HB3"
+   ],
+   [
+    2.666,
+    "B:SER11.HG",
+    "B:SER11.N"
+   ]
+  ],
+  "class_changes_vs_start": []
+ },
+ "stage1": {
+  "watch_chirality_deg": -123.0,
+  "E_kJ_mol": -339139.4,
+  "closest_contacts_A": [
+   [
+    1.745,
+    "B:SER11.O",
+    "3:HOH4225.H2"
+   ],
+   [
+    2.042,
+    "B:SER11.HG",
+    "B:LEU10.O"
+   ],
+   [
+    2.172,
+    "B:SER11.H",
+    "B:ASN8.O"
+   ],
+   [
+    2.29,
+    "B:SER11.HG",
+    "A:LEU54.HD12"
+   ],
+   [
+    2.38,
+    "B:SER11.H",
+    "B:LEU10.N"
+   ],
+   [
+    2.413,
+    "B:SER11.HG",
+    "B:LEU10.C"
+   ],
+   [
+    2.416,
+    "B:SER11.HB2",
+    "B:SER11.O"
+   ],
+   [
+    2.416,
+    "B:SER11.O",
+    "B:SER11.HB2"
+   ],
+   [
+    2.46,
+    "B:SER11.HG",
+    "A:LEU54.HD13"
+   ],
+   [
+    2.504,
+    "B:SER11.H",
+    "B:SER11.HB3"
+   ]
+  ],
+  "class_changes_vs_start": [],
+  "largest_restraint_deviation_deg": [
+   [
+    1.3,
+    "B:SER11",
+    "chirality"
+   ],
+   [
+    0.4,
+    "A:HIS73",
+    "chirality"
+   ],
+   [
+    0.4,
+    "A:LYS39-SER40",
+    "omega"
+   ],
+   [
+    0.3,
+    "A:ASP46",
+    "chirality"
+   ],
+   [
+    0.3,
+    "A:ARG105-ASN106",
+    "omega"
+   ],
+   [
+    0.3,
+    "A:VAL88-PRO89",
+    "omega"
+   ]
+  ],
+  "largest_unrestrained_force_near_watch_kJ_mol_nm": [
+   [
+    4721.3,
+    "B:SER11.CA"
+   ],
+   [
+    2149.6,
+    "3:HOH4110.O"
+   ],
+   [
+    2138.1,
+    "B:SER11.N"
+   ],
+   [
+    1608.6,
+    "B:SER11.CB"
+   ],
+   [
+    1571.4,
+    "3:HOH4110.H1"
+   ],
+   [
+    1539.6,
+    "B:SER11.C"
+   ],
+   [
+    1441.3,
+    "3:HOH4225.O"
+   ],
+   [
+    1101.8,
+    "3:HOH4225.H2"
+   ]
+  ],
+  "largest_unrestrained_force_anywhere_kJ_mol_nm": [
+   [
+    4721.3,
+    "B:SER11.CA"
+   ],
+   [
+    2511.8,
+    "3:HOH963.O"
+   ],
+   [
+    2350.5,
+    "3:HOH2715.O"
+   ],
+   [
+    2333.7,
+    "3:HOH2139.O"
+   ],
+   [
+    2310.7,
+    "3:HOH2641.O"
+   ]
+  ]
+ },
+ "stage2_single_call": {
+  "watch_chirality_deg": 141.7,
+  "E_kJ_mol": -339491.9,
+  "closest_contacts_A": [
+   [
+    1.707,
+    "B:SER11.O",
+    "3:HOH4225.H2"
+   ],
+   [
+    1.867,
+    "B:SER11.HG",
+    "B:LEU10.O"
+   ],
+   [
+    2.197,
+    "B:SER11.H",
+    "B:ASN8.O"
+   ],
+   [
+    2.232,
+    "B:SER11.H",
+    "B:LEU10.N"
+   ],
+   [
+    2.439,
+    "B:SER11.N",
+    "B:PRO12.HD2"
+   ],
+   [
+    2.465,
+    "B:SER11.OG",
+    "A:LYS51.HG3"
+   ]
+  ],
+  "class_changes_vs_start": [
+   {
+    "label": "B:SER11",
+    "kind": "chirality",
+    "before": -121.7,
+    "after": 141.7
+   }
+  ]
+ }
+}
+pieces: 82 first piece with a class change: {"watch_chirality_deg": 157.5, "E_kJ_mol": -339394.6, "closest_contacts_A": [[1.785, "B:SER11.O", "3:HOH4225.H2"], [1.87, "B:SER11.HG", "B:LEU10.O"], [2.174, "B:SER11.H", "B:LEU10.N"], [2.324, "B:SER11.H", "B:ASN8.O"]], "class_changes_vs_start": [{"label": "B:SER11", "kind": "chirality", "before": -121.7, "after": 157.5}], "iterations": 50}
+25 -175.3 -339336.7 [(1.779, 'B:SER11.O', '3:HOH4225.H2'), (2.004, 'B:SER11.HG', 'B:LEU10.O')]
+150 157.5 -339395.8 [(1.786, 'B:SER11.O', '3:HOH4225.H2'), (1.867, 'B:SER11.HG', 'B:LEU10.O')]
+275 157.6 -339396.8 [(1.785, 'B:SER11.O', '3:HOH4225.H2'), (1.864, 'B:SER11.HG', 'B:LEU10.O')]
+400 157.6 -339397.9 [(1.784, 'B:SER11.O', '3:HOH4225.H2'), (1.861, 'B:SER11.HG', 'B:LEU10.O')]
+525 157.6 -339398.8 [(1.784, 'B:SER11.O', '3:HOH4225.H2'), (1.858, 'B:SER11.HG', 'B:LEU10.O')]
+650 157.7 -339399.7 [(1.783, 'B:SER11.O', '3:HOH4225.H2'), (1.856, 'B:SER11.HG', 'B:LEU10.O')]
+775 157.7 -339400.6 [(1.782, 'B:SER11.O', '3:HOH4225.H2'), (1.853, 'B:SER11.HG', 'B:LEU10.O')]
+900 157.7 -339401.5 [(1.782, 'B:SER11.O', '3:HOH4225.H2'), (1.85, 'B:SER11.HG', 'B:LEU10.O')]
+1025 157.7 -339402.2 [(1.781, 'B:SER11.O', '3:HOH4225.H2'), (1.847, 'B:SER11.HG', 'B:LEU10.O')]
+1150 157.7 -339402.9 [(1.781, 'B:SER11.O', '3:HOH4225.H2'), (1.845, 'B:SER11.HG', 'B:LEU10.O')]
+1275 157.7 -339403.7 [(1.78, 'B:SER11.O', '3:HOH4225.H2'), (1.842, 'B:SER11.HG', 'B:LEU10.O')]
+1400 157.6 -339404.4 [(1.78, 'B:SER11.O', '3:HOH4225.H2'), (1.84, 'B:SER11.HG', 'B:LEU10.O')]
+1525 157.6 -339405.1 [(1.78, 'B:SER11.O', '3:HOH4225.H2'), (1.837, 'B:SER11.HG', 'B:LEU10.O')]
+1650 157.6 -339405.7 [(1.779, 'B:SER11.O', '3:HOH4225.H2'), (1.835, 'B:SER11.HG', 'B:LEU10.O')]
+1775 157.5 -339406.4 [(1.779, 'B:SER11.O', '3:HOH4225.H2'), (1.833, 'B:SER11.HG', 'B:LEU10.O')]
+1900 157.5 -339406.9 [(1.778, 'B:SER11.O', '3:HOH4225.H2'), (1.831, 'B:SER11.HG', 'B:LEU10.O')]
+2025 157.4 -339407.6 [(1.778, 'B:SER11.O', '3:HOH4225.H2'), (1.828, 'B:SER11.HG', 'B:LEU10.O')]
+trace: /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/diagnostics/setup_stereo_20261014/PMI_v2m2/trace.json

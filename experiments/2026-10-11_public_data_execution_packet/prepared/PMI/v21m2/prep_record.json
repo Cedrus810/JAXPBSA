@@ -1,0 +1,227 @@
+{
+  "sample_id": "Li2021_MDM2_TSFAEYWNLLSP_Kd",
+  "peptide_name": "PMI",
+  "sequence": "TSFAEYWNLLSP",
+  "template_peptide": "TSFAEYWNLLSP",
+  "receptor_chain": "A",
+  "peptide_chain": "B",
+  "mutations": [],
+  "rebuilt_residues": [
+    {
+      "chain": "A",
+      "resnum": 25,
+      "template": "GLU",
+      "built": "GLU"
+    },
+    {
+      "chain": "B",
+      "resnum": 12,
+      "template": "PRO",
+      "built": "PRO"
+    }
+  ],
+  "model_id": "v21m2",
+  "prep_seed": 20261011,
+  "template": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/raw/mdm2_3EQS.pdb",
+  "heterogens_in_template": {
+    "GAI": 1,
+    "HOH": 117
+  },
+  "residue_names_removed": [],
+  "altloc_policy": "altloc A applied when building the MODELLER clean template (v2 design \u00a71)",
+  "altloc_A_max_dev_A": null,
+  "pdbfixer_missing_residues": {},
+  "missing_atoms_added": {},
+  "missing_terminals_added": {},
+  "prep_protocol": "v2.1_modeller_allh",
+  "v2_start": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v21/PMI/start_v21m2.pdb",
+  "c2_checks": {
+    "passed": true,
+    "focus_residues": [
+      "A:25",
+      "A:26",
+      "B:11",
+      "B:12"
+    ],
+    "harmonic_terms_checked": "heavy-atom ff14SB bonds/angles touching focus residues + every H-containing bond/angle, 4 sigma at 298 K",
+    "junction": {
+      "A25-A26 C-N": 1.348,
+      "A25-A26 CA-C-N": 116.1,
+      "A25-A26 O-C-N": 123.0,
+      "A25-A26 C-N-CA": 127.0,
+      "B11-B12 C-N": 1.31,
+      "B11-B12 CA-C-N": 114.6,
+      "B11-B12 O-C-N": 125.1,
+      "B11-B12 C-N-CA": 125.5,
+      "B11-B12 C-N-CD": 121.2,
+      "A25 N-CA": 1.476,
+      "A25 N-CA-C": 110.3,
+      "A26 N-CA": 1.509,
+      "A26 N-CA-C": 109.6,
+      "B11 N-CA": 1.445,
+      "B11 N-CA-C": 109.0,
+      "B12 N-CA": 1.439,
+      "B12 N-CA-C": 112.2,
+      "B12 N-CD": 1.447,
+      "B12 CD-CG": 1.531,
+      "B12 CG-CB": 1.538,
+      "B12 CB-CA": 1.531,
+      "B12 CD-N-CA": 112.6,
+      "B12 N-CA-CB": 105.5,
+      "B12 CA-CB-CG": 104.8,
+      "B12 CB-CG-CD": 103.6,
+      "B12 CG-CD-N": 105.4,
+      "B12 ring_torsions_deg": [
+        -21.0,
+        28.1,
+        -25.1,
+        12.7,
+        5.3
+      ],
+      "B12 pucker": "Cg-exo"
+    },
+    "closest_nonbonded": {
+      "d_A": 1.402,
+      "pair": "A:PHE86.HB3--A:VAL88.HG22"
+    },
+    "ha_direction_worst": {
+      "residue": "A:LEU33",
+      "deg": 0.0,
+      "gate": "< 90 deg"
+    },
+    "max_dev_vs_start_A": 0.0,
+    "dev_scope": "all atoms by name"
+  },
+  "termini": {
+    "A": {
+      "n_residue": "GLU25",
+      "n_H": [
+        "H",
+        "H2",
+        "H3"
+      ],
+      "c_residue": "VAL109",
+      "has_OXT": true
+    },
+    "B": {
+      "n_residue": "THR1",
+      "n_H": [
+        "H",
+        "H2",
+        "H3"
+      ],
+      "c_residue": "PRO12",
+      "has_OXT": true
+    }
+  },
+  "his_states": {
+    "A:HIS73": [
+      "HE2"
+    ],
+    "A:HIS96": [
+      "HE2"
+    ]
+  },
+  "chirality_repair": "none in v2.1: MODELLER built every atom (design \u00a711)",
+  "stereo_check": {
+    "terms": 188,
+    "violations": 0,
+    "rule": "all CA L; all non-Pro omega trans (peptide_geometry.py)"
+  },
+  "his_variants_returned": [],
+  "forcefield": "amber/ff14SB.xml",
+  "pH": 7.4,
+  "caps": "none: free termini (protocol \u00a71.1)",
+  "n_atoms": 1644,
+  "n_receptor_atoms": 1449,
+  "n_peptide_atoms": 195,
+  "net_charge_complex": 4.0,
+  "net_charge_receptor": 5.0,
+  "net_charge_peptide": -1.0,
+  "closest_nonbonded_heavy_contacts_of_rebuilt_or_mutated": [
+    {
+      "d_A": 2.77,
+      "a": "B:PRO12.C",
+      "b": "B:SER11.O"
+    },
+    {
+      "d_A": 3.123,
+      "a": "A:GLU25.O",
+      "b": "A:THR26.C"
+    },
+    {
+      "d_A": 3.16,
+      "a": "B:PRO12.O",
+      "b": "B:SER11.O"
+    },
+    {
+      "d_A": 3.178,
+      "a": "B:PRO12.OXT",
+      "b": "B:SER11.O"
+    },
+    {
+      "d_A": 3.207,
+      "a": "A:GLU25.CG",
+      "b": "A:THR26.N"
+    },
+    {
+      "d_A": 3.212,
+      "a": "A:GLU25.OE2",
+      "b": "A:MET50.N"
+    },
+    {
+      "d_A": 3.292,
+      "a": "B:PRO12.CD",
+      "b": "B:LEU10.O"
+    },
+    {
+      "d_A": 3.311,
+      "a": "B:PRO12.OXT",
+      "b": "B:SER11.C"
+    },
+    {
+      "d_A": 3.361,
+      "a": "A:GLU25.OE1",
+      "b": "A:THR49.CB"
+    },
+    {
+      "d_A": 3.446,
+      "a": "A:GLU25.OE2",
+      "b": "A:THR49.CB"
+    },
+    {
+      "d_A": 3.457,
+      "a": "A:GLU25.O",
+      "b": "A:LEU27.N"
+    },
+    {
+      "d_A": 3.521,
+      "a": "A:GLU25.CD",
+      "b": "A:THR49.CB"
+    },
+    {
+      "d_A": 3.527,
+      "a": "B:PRO12.CD",
+      "b": "A:TYR100.OH"
+    },
+    {
+      "d_A": 3.535,
+      "a": "A:GLU25.C",
+      "b": "A:THR26.O"
+    },
+    {
+      "d_A": 3.614,
+      "a": "A:GLU25.OE2",
+      "b": "A:THR26.O"
+    }
+  ],
+  "minimisation": "none here; done in solvent by run_peptide_md.py setup",
+  "software": {
+    "openmm": "8.5.2",
+    "pdbfixer": "1.12.0",
+    "python": "3.12.13"
+  },
+  "host": "kasuga02",
+  "wall_s": 0.96,
+  "evidence_scope": "prepared template model input; not structure/parameter acceptance"
+}

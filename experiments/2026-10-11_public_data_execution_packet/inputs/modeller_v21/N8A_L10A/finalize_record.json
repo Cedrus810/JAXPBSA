@@ -1,0 +1,48 @@
+{
+  "v2m1": {
+    "source": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v21/N8A_L10A/reduced_v2m1.pdb",
+    "n_atoms": 1631,
+    "renamed": [],
+    "mutated": [
+      "B:10",
+      "B:8"
+    ],
+    "ha_worst_deg": [
+      0.0,
+      "A:LEU33"
+    ],
+    "max_heavy_dev_vs_start_A": 0.0,
+    "closest_nonbonded": [
+      1.402,
+      "A:PHE86.HB3",
+      "A:VAL88.HG22"
+    ],
+    "stereo_terms": 188,
+    "failures": [],
+    "passed": true,
+    "written": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v21/N8A_L10A/start_v21m1.pdb"
+  },
+  "v2m2": {
+    "source": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v21/N8A_L10A/reduced_v2m2.pdb",
+    "n_atoms": 1631,
+    "renamed": [],
+    "mutated": [
+      "B:10",
+      "B:8"
+    ],
+    "ha_worst_deg": [
+      0.0,
+      "A:LEU33"
+    ],
+    "max_heavy_dev_vs_start_A": 0.0,
+    "closest_nonbonded": [
+      1.402,
+      "A:PHE86.HB3",
+      "A:VAL88.HG22"
+    ],
+    "stereo_terms": 188,
+    "failures": [],
+    "passed": true,
+    "written": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v21/N8A_L10A/start_v21m2.pdb"
+  }
+}

@@ -1,0 +1,31 @@
+#!/bin/zsh
+#PBS -N score_1_20
+#PBS -q default
+#PBS -l select=1:ncpus=32:ngpus=1:mem=60gb:host=yayoi31
+#PBS -l walltime=12:00:00
+#PBS -j oe
+# Rescore the main window 1-20 ns (protocol §2.1, user 2026-10-16) with ONE grid sizing per
+# replica, sized from all 1900 window frames (score_peptide_replica.py: pilot = the window).
+# Reason (design §10, 2026-10-16): scores/ (1-10 ns) and scores_10_20/ (10-20 ns) were sized
+# separately; 39/48 replicas got different grid or ligand-box dimensions in the two halves.
+# The old outputs stay; frames shared with them give a paired per-frame comparison of the
+# two sizings (grid-sizing sensitivity, P4).  Output scores_1_20/<sample>/<model>/<rep>/;
+# log score_1_20.log.  Frozen OnlineMMPBSA defaults, every frame, flagged frames recorded.
+# Time basis: yayoi43 4080 SUPER 115 ms/frame median (score_ext20, 2026-10-16), 48000 frames
+# + init in 2 h 0 min -> 48 x 1900 = 91200 frames ~3.8 h.  Resumable: qsub again.
+#
+#   cd /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+#   qsub score_1_20.pbs
+
+test $PBS_O_WORKDIR && cd $PBS_O_WORKDIR
+. /home/apps/Modules/init/profile.sh
+export MODULEPATH=/home/ruigengji/modulefiles:$MODULEPATH
+
+export MAMBA_EXE=/home/ruigengji/miniforge3/bin/mamba
+export MAMBA_ROOT_PREFIX=/home/ruigengji/miniforge3
+source /home/ruigengji/miniforge3/etc/profile.d/mamba.sh
+mamba activate openmm_dev
+
+P=/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+export OMP_NUM_THREADS=16 MKL_NUM_THREADS=16
+PY="$(command -v python)" START_NS=1 END_NS=20 OUT_ROOT=scores_1_20 LOG=score_1_20.log bash $P/score_all.sh

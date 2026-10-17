@@ -1,0 +1,22 @@
+== start host yayoi40.cluster.local 2026-10-14T04:41:48-04:00 PY=/home/ruigengji/miniforge3/envs/openmm_dev/bin/python DEV=0 PROD_NS=1 REPS=01 DCD_PS=10 pid 4169148
+index, name, memory.used [MiB], utilization.gpu [%]
+0, NVIDIA GeForce RTX 5080, 0 MiB, 0 %
+== [PMI/v2m1] prep (v2, C2) 2026-10-14T04:41:49-04:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"peptide_name": "PMI", "model_id": "v2m1", "n_atoms": 1644, "net_charge_complex": 4.0, "net_charge_peptide": -1.0, "his_states": {"A:HIS73": ["HD1"], "A:HIS96": ["HD1"]}, "chirality_repair": "disabled in v2: any D residue fails the stereo check (design \u00a71)", "c2_checks": {"passed": true, "focus_residues": ["A:25", "A:26", "B:11", "B:12"], "harmonic_terms_checked": "heavy-atom ff14SB bonds/angles touching focus residues, 4 sigma at 298 K", "junction": {"A25-A26 C-N": 1.349, "A25-A26 CA-C-N": 117.5, "A25-A26 O-C-N": 122.8, "A25-A26 C-N-CA": 123.2, "B11-B12 C-N": 1.307, "B11-B12 CA-C-N": 116.1, "B11-B12 O-C-N": 123.9, "B11-B12 C-N-CA": 118.6, "B11-B12 C-N-CD": 118.7, "A25 N-CA": 1.483, "A25 N-CA-C": 108.4, "A26 N-CA": 1.509, "A26 N-CA-C": 109.6, "B11 N-CA": 1.445, "B11 N-CA-C": 109.0, "B12 N-CA": 1.433, "B12 N-CA-C": 106.7, "B12 N-CD": 1.449, "B12 CD-CG": 1.534, "B12 CG-CB": 1.534, "B12 CB-CA": 1.537, "B12 CD-N-CA": 111.6, "B12 N-CA-CB": 106.7, "B12 CA-CB-CG": 104.2, "B12 CB-CG-CD": 103.7, "B12 CG-CD-N": 105.3, "B12 ring_torsions_deg": [18.2, -27.9, 27.9, -17.5, -0.5], "B12 pucker": "Cg-endo"}, "closest_nonbonded": {"d_A": 2.108, "pair": "B:SER11.HA--B:PRO12.HD2"}, "max_heavy_dev_vs_start_A": 0.0}, "wall_s": 1.65}
+== [PMI/v2m1] setup (C3) 2026-10-14T04:42:36-04:00
+{"setup_done": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/v2m1/setup", "n_atoms": 20597, "added": {"HOH": 6305, "NA": 17, "CL": 21}, "E_min_kJ_mol": -341608.6601305157, "wall_s": 10.18}
+== [PMI/v2m2] prep (v2, C2) 2026-10-14T04:42:48-04:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"peptide_name": "PMI", "model_id": "v2m2", "n_atoms": 1644, "net_charge_complex": 4.0, "net_charge_peptide": -1.0, "his_states": {"A:HIS73": ["HD1"], "A:HIS96": ["HD1"]}, "chirality_repair": "disabled in v2: any D residue fails the stereo check (design \u00a71)", "c2_checks": {"passed": true, "focus_residues": ["A:25", "A:26", "B:11", "B:12"], "harmonic_terms_checked": "heavy-atom ff14SB bonds/angles touching focus residues, 4 sigma at 298 K", "junction": {"A25-A26 C-N": 1.348, "A25-A26 CA-C-N": 116.1, "A25-A26 O-C-N": 123.0, "A25-A26 C-N-CA": 127.0, "B11-B12 C-N": 1.31, "B11-B12 CA-C-N": 114.6, "B11-B12 O-C-N": 125.1, "B11-B12 C-N-CA": 125.5, "B11-B12 C-N-CD": 121.2, "A25 N-CA": 1.476, "A25 N-CA-C": 110.3, "A26 N-CA": 1.509, "A26 N-CA-C": 109.6, "B11 N-CA": 1.445, "B11 N-CA-C": 109.0, "B12 N-CA": 1.439, "B12 N-CA-C": 112.2, "B12 N-CD": 1.447, "B12 CD-CG": 1.531, "B12 CG-CB": 1.538, "B12 CB-CA": 1.531, "B12 CD-N-CA": 112.6, "B12 N-CA-CB": 105.5, "B12 CA-CB-CG": 104.8, "B12 CB-CG-CD": 103.6, "B12 CG-CD-N": 105.4, "B12 ring_torsions_deg": [-21.0, 28.1, -25.1, 12.7, 5.3], "B12 pucker": "Cg-exo"}, "closest_nonbonded": {"d_A": 1.786, "pair": "A:GLU25.HG3--A:THR26.H"}, "max_heavy_dev_vs_start_A": 0.0}, "wall_s": 0.85}
+== [PMI/v2m2] setup (C3) 2026-10-14T04:42:52-04:00
+Traceback (most recent call last):
+  File "/home/ruigengji/JAXPBSA/scripts/run_peptide_md.py", line 458, in <module>
+    main()
+  File "/home/ruigengji/JAXPBSA/scripts/run_peptide_md.py", line 454, in main
+    {"setup": cmd_setup, "run": cmd_run}[a.cmd](a)
+  File "/home/ruigengji/JAXPBSA/scripts/run_peptide_md.py", line 222, in cmd_setup
+    raise RuntimeError(f"cis/trans or L/D class changed during setup minimisation: {changes}; nothing written")
+RuntimeError: cis/trans or L/D class changed during setup minimisation: {'stage1': [], 'stage2': [{'label': 'B:SER11', 'kind': 'chirality', 'before': -121.7, 'after': 139.1}]}; nothing written

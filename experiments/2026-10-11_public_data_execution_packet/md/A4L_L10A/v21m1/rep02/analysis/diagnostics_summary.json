@@ -1,0 +1,89 @@
+{
+  "run_id": "A4L_L10A_v21m1_rep02",
+  "frames_total": 2000,
+  "chunks_used": 20,
+  "dry_frames": 2000,
+  "dry_stride": 1,
+  "diag_stride": 1,
+  "n_solute_atoms": 1644,
+  "quantiles_p5_p50_p95": {
+    "receptor_CA_rmsd_A": {
+      "5": 0.811,
+      "50": 1.003,
+      "95": 1.256
+    },
+    "peptide_CA_rmsd_receptor_frame_A": {
+      "5": 1.379,
+      "50": 2.006,
+      "95": 3.39
+    },
+    "peptide_CA12_shift_A": {
+      "5": 2.025,
+      "50": 2.953,
+      "95": 3.886
+    },
+    "min_rec_pep_heavy_A": {
+      "5": 2.554,
+      "50": 2.704,
+      "95": 2.912
+    },
+    "nearest_waterO_A_HOH1_A": {
+      "5": 0.483,
+      "50": 1.768,
+      "95": 4.729
+    },
+    "nearest_waterO_A_HOH185_A": {
+      "5": 0.799,
+      "50": 1.673,
+      "95": 2.725
+    },
+    "nearest_waterO_A_HOH186_A": {
+      "5": 0.404,
+      "50": 1.142,
+      "95": 2.741
+    },
+    "nearest_waterO_B_HOH74_A": {
+      "5": 0.723,
+      "50": 1.551,
+      "95": 2.28
+    },
+    "junction_A25-A26_C-N": {
+      "5": 1.297,
+      "50": 1.335,
+      "95": 1.375
+    },
+    "junction_A25-A26_O-C-N": {
+      "5": 117.7,
+      "50": 122.2,
+      "95": 126.6
+    },
+    "junction_A25-A26_C-N-CA": {
+      "5": 119.1,
+      "50": 124.2,
+      "95": 129.7
+    },
+    "junction_B11-B12_C-N": {
+      "5": 1.313,
+      "50": 1.352,
+      "95": 1.391
+    },
+    "junction_B11-B12_O-C-N": {
+      "5": 116.9,
+      "50": 121.2,
+      "95": 125.4
+    },
+    "junction_B11-B12_C-N-CA": {
+      "5": 119.195,
+      "50": 123.8,
+      "95": 128.3
+    }
+  },
+  "junction_frames_outside_4sigma": 3,
+  "log_means": {
+    "T_K": 298.4912,
+    "density": 1.0171
+  },
+  "stereo_terms": 188,
+  "stereo_class_changes_frames_by_term": {},
+  "note": "diagnostic report only; no acceptance thresholds applied"
+}

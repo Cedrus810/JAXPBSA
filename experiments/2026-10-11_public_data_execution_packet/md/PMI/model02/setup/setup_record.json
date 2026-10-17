@@ -1,0 +1,64 @@
+{
+  "sample_id": "Li2021_MDM2_TSFAEYWNLLSP_Kd",
+  "peptide_name": "PMI",
+  "model_id": "model02",
+  "prepared": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/PMI/model02",
+  "solvation_seed": 20261011,
+  "forcefield": [
+    "amber/ff14SB.xml",
+    "amber/tip3p_standard.xml"
+  ],
+  "padding_nm": 1.2,
+  "ionic_strength_M": 0.15,
+  "neutralize": true,
+  "n_solute_atoms": 1644,
+  "n_atoms": 23951,
+  "added_residues": {
+    "HOH": 7421,
+    "NA": 20,
+    "CL": 24
+  },
+  "box_vectors_nm": [
+    [
+      6.3275,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      6.3275,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      6.3275
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "stage1": "omega + CA-chirality torsion restraints, k=10000.0 kJ/mol/rad^2, theta0=prepared",
+    "stage2": "unrestrained",
+    "E_before_kJ_mol": 4286.975512341363,
+    "E_stage1_incl_restraint_kJ_mol": -401503.1594366045,
+    "E_after_kJ_mol": -401598.44748976105,
+    "max_force_after_kJ_mol_nm": 2362.7072205778677,
+    "stereo_terms": 188,
+    "stereo_class_changes": 0,
+    "max_stereo_dihedral_shift_deg": 10.6,
+    "wall_s": 3.18
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 5090",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "fulda",
+  "wall_s": 5.59
+}

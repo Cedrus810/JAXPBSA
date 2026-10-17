@@ -1,0 +1,272 @@
+{
+ "start": {
+  "watch_chirality_deg": -123.3,
+  "E_kJ_mol": 11153883.8,
+  "closest_contacts_A": [
+   [
+    2.278,
+    "A:THR26.CB",
+    "A:GLU25.O"
+   ],
+   [
+    2.3,
+    "A:THR26.HG22",
+    "3:HOH4405.H1"
+   ],
+   [
+    2.339,
+    "A:THR26.OG1",
+    "A:GLU25.O"
+   ],
+   [
+    2.435,
+    "A:THR26.O",
+    "A:LEU27.HA"
+   ],
+   [
+    2.475,
+    "A:THR26.HA",
+    "A:GLU25.O"
+   ],
+   [
+    2.569,
+    "A:THR26.HA",
+    "A:THR26.HG1"
+   ],
+   [
+    2.569,
+    "A:THR26.HG1",
+    "A:THR26.HA"
+   ],
+   [
+    2.612,
+    "A:THR26.HG22",
+    "A:GLU25.O"
+   ],
+   [
+    2.613,
+    "A:THR26.HG23",
+    "A:LEU27.O"
+   ],
+   [
+    2.67,
+    "A:THR26.O",
+    "A:THR49.HA"
+   ]
+  ],
+  "class_changes_vs_start": []
+ },
+ "stage1": {
+  "watch_chirality_deg": -124.8,
+  "E_kJ_mol": -416824.0,
+  "closest_contacts_A": [
+   [
+    1.756,
+    "A:THR26.HG1",
+    "3:HOH1229.O"
+   ],
+   [
+    1.931,
+    "A:THR26.OG1",
+    "3:HOH789.H1"
+   ],
+   [
+    2.064,
+    "A:THR26.HG1",
+    "3:HOH789.H1"
+   ],
+   [
+    2.133,
+    "A:THR26.H",
+    "A:THR26.HB"
+   ],
+   [
+    2.133,
+    "A:THR26.HB",
+    "A:THR26.H"
+   ],
+   [
+    2.256,
+    "A:THR26.HG1",
+    "3:HOH1229.H2"
+   ],
+   [
+    2.269,
+    "A:THR26.HG22",
+    "A:LEU27.H"
+   ],
+   [
+    2.421,
+    "A:THR26.HG1",
+    "A:THR26.HG21"
+   ],
+   [
+    2.421,
+    "A:THR26.HG21",
+    "A:THR26.HG1"
+   ],
+   [
+    2.506,
+    "A:THR26.O",
+    "A:LEU27.HA"
+   ]
+  ],
+  "class_changes_vs_start": [],
+  "largest_restraint_deviation_deg": [
+   [
+    1.8,
+    "A:GLU25",
+    "chirality"
+   ],
+   [
+    1.6,
+    "B:SER11",
+    "chirality"
+   ],
+   [
+    1.6,
+    "A:THR26",
+    "chirality"
+   ],
+   [
+    0.5,
+    "B:GLN12",
+    "chirality"
+   ],
+   [
+    0.4,
+    "A:LYS39-SER40",
+    "omega"
+   ],
+   [
+    0.3,
+    "B:GLU5-TYR6",
+    "omega"
+   ]
+  ],
+  "largest_unrestrained_force_near_watch_kJ_mol_nm": [
+   [
+    5568.7,
+    "A:THR26.CA"
+   ],
+   [
+    4236.1,
+    "A:GLU25.CA"
+   ],
+   [
+    2336.0,
+    "A:GLU25.N"
+   ],
+   [
+    2209.5,
+    "A:GLU25.CB"
+   ],
+   [
+    2162.9,
+    "A:THR26.N"
+   ],
+   [
+    2142.0,
+    "A:THR26.CB"
+   ],
+   [
+    1831.9,
+    "3:HOH4043.O"
+   ],
+   [
+    1809.0,
+    "3:HOH4050.O"
+   ]
+  ],
+  "largest_unrestrained_force_anywhere_kJ_mol_nm": [
+   [
+    5568.7,
+    "A:THR26.CA"
+   ],
+   [
+    5511.9,
+    "B:SER11.CA"
+   ],
+   [
+    4236.1,
+    "A:GLU25.CA"
+   ],
+   [
+    2487.2,
+    "3:HOH274.O"
+   ],
+   [
+    2469.5,
+    "3:HOH2642.O"
+   ]
+  ]
+ },
+ "stage2_single_call": {
+  "watch_chirality_deg": 148.8,
+  "E_kJ_mol": -417435.9,
+  "closest_contacts_A": [
+   [
+    1.834,
+    "A:THR26.HG1",
+    "3:HOH1229.O"
+   ],
+   [
+    1.946,
+    "A:THR26.OG1",
+    "3:HOH789.H1"
+   ],
+   [
+    1.975,
+    "A:THR26.HG22",
+    "A:LEU27.H"
+   ],
+   [
+    2.007,
+    "A:THR26.HG1",
+    "3:HOH789.H1"
+   ],
+   [
+    2.329,
+    "A:THR26.HG1",
+    "3:HOH1229.H2"
+   ],
+   [
+    2.335,
+    "A:THR26.H",
+    "A:GLU25.HA"
+   ]
+  ],
+  "class_changes_vs_start": [
+   {
+    "label": "A:THR26",
+    "kind": "chirality",
+    "before": -123.3,
+    "after": 148.8
+   },
+   {
+    "label": "B:SER11",
+    "kind": "chirality",
+    "before": -121.7,
+    "after": 136.5
+   }
+  ]
+ }
+}
+pieces: 112 first piece with a class change: {"watch_chirality_deg": 158.0, "E_kJ_mol": -417326.6, "closest_contacts_A": [[1.886, "A:THR26.HG1", "3:HOH1229.O"], [1.901, "A:THR26.OG1", "3:HOH789.H1"], [1.98, "A:THR26.HG1", "3:HOH789.H1"], [2.147, "A:THR26.HG22", "A:LEU27.H"]], "class_changes_vs_start": [{"label": "A:THR26", "kind": "chirality", "before": -123.3, "after": 158.0}, {"label": "B:SER11", "kind": "chirality", "before": -121.7, "after": 152.0}], "iterations": 50}
+25 -179.3 -417224.0 [(1.78, 'A:THR26.HG1', '3:HOH1229.O'), (1.891, 'A:THR26.OG1', '3:HOH789.H1')]
+200 157.9 -417329.2 [(1.886, 'A:THR26.HG1', '3:HOH1229.O'), (1.902, 'A:THR26.OG1', '3:HOH789.H1')]
+375 157.7 -417331.0 [(1.886, 'A:THR26.HG1', '3:HOH1229.O'), (1.903, 'A:THR26.OG1', '3:HOH789.H1')]
+550 157.6 -417332.8 [(1.887, 'A:THR26.HG1', '3:HOH1229.O'), (1.904, 'A:THR26.OG1', '3:HOH789.H1')]
+725 157.5 -417334.3 [(1.887, 'A:THR26.HG1', '3:HOH1229.O'), (1.905, 'A:THR26.OG1', '3:HOH789.H1')]
+900 157.4 -417335.9 [(1.887, 'A:THR26.HG1', '3:HOH1229.O'), (1.906, 'A:THR26.OG1', '3:HOH789.H1')]
+1075 157.3 -417337.3 [(1.887, 'A:THR26.HG1', '3:HOH1229.O'), (1.907, 'A:THR26.OG1', '3:HOH789.H1')]
+1250 157.2 -417338.7 [(1.887, 'A:THR26.HG1', '3:HOH1229.O'), (1.908, 'A:THR26.OG1', '3:HOH789.H1')]
+1425 157.1 -417340.2 [(1.888, 'A:THR26.HG1', '3:HOH1229.O'), (1.909, 'A:THR26.OG1', '3:HOH789.H1')]
+1600 157.0 -417341.4 [(1.888, 'A:THR26.HG1', '3:HOH1229.O'), (1.91, 'A:THR26.OG1', '3:HOH789.H1')]
+1775 156.9 -417342.6 [(1.888, 'A:THR26.HG1', '3:HOH1229.O'), (1.911, 'A:THR26.OG1', '3:HOH789.H1')]
+1950 156.8 -417343.8 [(1.888, 'A:THR26.HG1', '3:HOH1229.O'), (1.912, 'A:THR26.OG1', '3:HOH789.H1')]
+2125 156.7 -417345.0 [(1.888, 'A:THR26.HG1', '3:HOH1229.O'), (1.912, 'A:THR26.OG1', '3:HOH789.H1')]
+2300 156.6 -417346.2 [(1.888, 'A:THR26.HG1', '3:HOH1229.O'), (1.913, 'A:THR26.OG1', '3:HOH789.H1')]
+2475 156.5 -417347.4 [(1.888, 'A:THR26.HG1', '3:HOH1229.O'), (1.914, 'A:THR26.OG1', '3:HOH789.H1')]
+2650 156.4 -417348.4 [(1.888, 'A:THR26.HG1', '3:HOH1229.O'), (1.914, 'A:THR26.OG1', '3:HOH789.H1')]
+trace: /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/diagnostics/setup_stereo_20261013/P12Q_L10A_model02/trace.json

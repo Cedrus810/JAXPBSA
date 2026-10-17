@@ -1,0 +1,8 @@
+{
+  "verification": "passed: CSV identities, source-rechecked labels, explicit pending input states, unique run IDs and seeds, required-reading sections",
+  "labels": 8,
+  "planned_runs": 24,
+  "diagnostic_runs_planned": 9,
+  "molecular_computation": "none",
+  "production_readiness": "not_established"
+}

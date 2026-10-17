@@ -1,0 +1,115 @@
+{
+  "run_id": "S11M_L10A_v21m2_rep01",
+  "sample_id": "Li2021_MDM2_TSFAEYWNLAMP_Kd",
+  "peptide_name": "S11M_L10A",
+  "model_id": "v21m2",
+  "replica": 1,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/S11M_L10A/v21m2/setup",
+  "seeds": {
+    "velocity": 2026621061,
+    "integrator": 2026622061,
+    "barostat": 2026623061
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 500000,
+  "nvt_steps": 50000,
+  "npt_steps": 500000,
+  "eq_restraint_k": 0.0,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 20,
+  "prod_target_history": [
+    500000,
+    5000000,
+    10000000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 2026622061,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 2026629980,
+      "barostat_seed": 2026630980,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 2026637899,
+      "barostat_seed": 2026638899,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": 1,
+      "integrator_seed": 2026653737,
+      "barostat_seed": 2026654737,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": 10,
+      "integrator_seed": 2026725008,
+      "barostat_seed": 2026726008,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080 SUPER",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 8.87,
+    "npt": 103.5,
+    "prod_chunk_0000": 107.25,
+    "prod_chunk_0001": 107.14,
+    "prod_chunk_0002": 106.72,
+    "prod_chunk_0003": 106.83,
+    "prod_chunk_0004": 107.05,
+    "prod_chunk_0005": 106.91,
+    "prod_chunk_0006": 107.27,
+    "prod_chunk_0007": 107.42,
+    "prod_chunk_0008": 107.33,
+    "prod_chunk_0009": 107.42,
+    "prod_chunk_0010": 120.39,
+    "prod_chunk_0011": 120.19,
+    "prod_chunk_0012": 120.46,
+    "prod_chunk_0013": 121.08,
+    "prod_chunk_0014": 120.49,
+    "prod_chunk_0015": 120.49,
+    "prod_chunk_0016": 121.01,
+    "prod_chunk_0017": 120.95,
+    "prod_chunk_0018": 120.97,
+    "prod_chunk_0019": 120.56
+  },
+  "complete": true,
+  "openmm": "8.5.2",
+  "host": "yayoi43.cluster.local"
+}

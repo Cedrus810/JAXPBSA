@@ -1,0 +1,780 @@
+{
+ "source": "main",
+ "roots": [
+  "scores_1_20"
+ ],
+ "trend": {
+  "block_mean_over_48": [
+   -59.002,
+   -59.815,
+   -59.855,
+   -59.225,
+   -59.372,
+   -59.211
+  ],
+  "block_se_over_48": [
+   0.29,
+   0.376,
+   0.316,
+   0.288,
+   0.376,
+   0.365
+  ],
+  "blocks": [
+   "1-4",
+   "4-7",
+   "7-10",
+   "10-13",
+   "13-16",
+   "16-19"
+  ],
+  "d_7_10_minus_1_4": [
+   -0.8529930467090406,
+   0.2905057399974765,
+   31
+  ],
+  "d_16_19_minus_10_13": [
+   0.014059332708984554,
+   0.3285474929236429,
+   24
+  ],
+  "d_10_19_minus_1_10": [
+   0.2884342643693604,
+   0.2592923092255714,
+   21
+  ],
+  "note": "d = (mean, SE over 48 replicas, n replicas with negative difference)"
+ },
+ "windows": {
+  "1-10": {
+   "frames_per_replica": [
+    900
+   ],
+   "tau_ps_median": 154.72811087453965,
+   "tau_ps_max": 845.5121136888583,
+   "blocks_in_variance_split": [
+    "1-4",
+    "4-7",
+    "7-10"
+   ],
+   "sd_block_within_replica": 1.5352153757021125,
+   "sd_replica_within_start": 1.5047403877800558,
+   "sd_start_within_sample": 0.89999231097421,
+   "replica_excess_var_over_block_noise": 1.4786148846857468,
+   "start_excess_var_over_replica_noise": 0.055238281607208006,
+   "order_best_first": [
+    "PMI",
+    "A4L_L10A",
+    "S11M_L10A",
+    "PMI-L10A",
+    "PMI-M4",
+    "T1L_L10A",
+    "P12Q_L10A",
+    "N8A_L10A"
+   ],
+   "score_best_first": [
+    -61.44,
+    -60.72,
+    -60.51,
+    -59.99,
+    -59.88,
+    -58.38,
+    -58.17,
+    -57.38
+   ],
+   "spearman_m1_vs_m2": 0.6904761904761906,
+   "boot_spearman": {
+    "median": 0.9047619047619048,
+    "p5": 0.7380952380952381,
+    "p95": 0.9761904761904763
+   },
+   "n_pairs_keep_ge_0_95": 15,
+   "n_pairs": 28,
+   "pairs": [
+    {
+     "better": "PMI",
+     "worse": "A4L_L10A",
+     "diff": 0.7172816087528417,
+     "boot_keep": 0.73745
+    },
+    {
+     "better": "PMI",
+     "worse": "S11M_L10A",
+     "diff": 0.9277312176090291,
+     "boot_keep": 0.88825
+    },
+    {
+     "better": "PMI",
+     "worse": "PMI-L10A",
+     "diff": 1.448027949580947,
+     "boot_keep": 0.9254
+    },
+    {
+     "better": "PMI",
+     "worse": "PMI-M4",
+     "diff": 1.5603581873887862,
+     "boot_keep": 0.97865
+    },
+    {
+     "better": "PMI",
+     "worse": "T1L_L10A",
+     "diff": 3.0548039629538053,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI",
+     "worse": "P12Q_L10A",
+     "diff": 3.2678234050783317,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI",
+     "worse": "N8A_L10A",
+     "diff": 4.059695010382413,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "S11M_L10A",
+     "diff": 0.21044960885618735,
+     "boot_keep": 0.5906
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "PMI-L10A",
+     "diff": 0.7307463408281052,
+     "boot_keep": 0.723
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "PMI-M4",
+     "diff": 0.8430765786359444,
+     "boot_keep": 0.78465
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "T1L_L10A",
+     "diff": 2.3375223542009635,
+     "boot_keep": 0.986
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 2.55054179632549,
+     "boot_keep": 0.977
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "N8A_L10A",
+     "diff": 3.342413401629571,
+     "boot_keep": 0.99785
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "PMI-L10A",
+     "diff": 0.5202967319719178,
+     "boot_keep": 0.69505
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "PMI-M4",
+     "diff": 0.6326269697797571,
+     "boot_keep": 0.7932
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "T1L_L10A",
+     "diff": 2.127072745344776,
+     "boot_keep": 0.99995
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 2.3400921874693026,
+     "boot_keep": 0.9984
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "N8A_L10A",
+     "diff": 3.1319637927733837,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "PMI-M4",
+     "diff": 0.11233023780783924,
+     "boot_keep": 0.54385
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "T1L_L10A",
+     "diff": 1.6067760133728584,
+     "boot_keep": 0.9731
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "P12Q_L10A",
+     "diff": 1.8197954554973848,
+     "boot_keep": 0.9367
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "N8A_L10A",
+     "diff": 2.611667060801466,
+     "boot_keep": 0.9989
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "T1L_L10A",
+     "diff": 1.4944457755650191,
+     "boot_keep": 0.98975
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "P12Q_L10A",
+     "diff": 1.7074652176895455,
+     "boot_keep": 0.9624
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "N8A_L10A",
+     "diff": 2.4993368229936266,
+     "boot_keep": 0.9996
+    },
+    {
+     "better": "T1L_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 0.2130194421245264,
+     "boot_keep": 0.58285
+    },
+    {
+     "better": "T1L_L10A",
+     "worse": "N8A_L10A",
+     "diff": 1.0048910474286075,
+     "boot_keep": 0.9482
+    },
+    {
+     "better": "P12Q_L10A",
+     "worse": "N8A_L10A",
+     "diff": 0.7918716053040811,
+     "boot_keep": 0.7687
+    }
+   ]
+  },
+  "10-20": {
+   "frames_per_replica": [
+    1000
+   ],
+   "tau_ps_median": 108.62853638532276,
+   "tau_ps_max": 854.3827251266474,
+   "blocks_in_variance_split": [
+    "10-13",
+    "13-16",
+    "16-19"
+   ],
+   "sd_block_within_replica": 1.432407082439489,
+   "sd_replica_within_start": 1.3555175184749788,
+   "sd_start_within_sample": 0.9036871940946988,
+   "replica_excess_var_over_block_noise": 1.1534977262849617,
+   "start_excess_var_over_replica_noise": 0.20417463047322815,
+   "order_best_first": [
+    "PMI",
+    "A4L_L10A",
+    "S11M_L10A",
+    "PMI-L10A",
+    "PMI-M4",
+    "T1L_L10A",
+    "P12Q_L10A",
+    "N8A_L10A"
+   ],
+   "score_best_first": [
+    -61.38,
+    -60.48,
+    -60.08,
+    -59.66,
+    -59.64,
+    -59.46,
+    -57.04,
+    -56.38
+   ],
+   "spearman_m1_vs_m2": 0.6904761904761906,
+   "boot_spearman": {
+    "median": 0.9047619047619048,
+    "p5": 0.6666666666666669,
+    "p95": 0.9761904761904763
+   },
+   "n_pairs_keep_ge_0_95": 16,
+   "n_pairs": 28,
+   "pairs": [
+    {
+     "better": "PMI",
+     "worse": "A4L_L10A",
+     "diff": 0.9017793696884695,
+     "boot_keep": 0.87555
+    },
+    {
+     "better": "PMI",
+     "worse": "S11M_L10A",
+     "diff": 1.3013543945940569,
+     "boot_keep": 0.9667
+    },
+    {
+     "better": "PMI",
+     "worse": "PMI-L10A",
+     "diff": 1.7215843805218327,
+     "boot_keep": 0.99985
+    },
+    {
+     "better": "PMI",
+     "worse": "PMI-M4",
+     "diff": 1.7454061705047579,
+     "boot_keep": 0.9544
+    },
+    {
+     "better": "PMI",
+     "worse": "T1L_L10A",
+     "diff": 1.9228181466333325,
+     "boot_keep": 0.99045
+    },
+    {
+     "better": "PMI",
+     "worse": "P12Q_L10A",
+     "diff": 4.344095996047912,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI",
+     "worse": "N8A_L10A",
+     "diff": 5.005081130888065,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "S11M_L10A",
+     "diff": 0.3995750249055874,
+     "boot_keep": 0.68735
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "PMI-L10A",
+     "diff": 0.8198050108333632,
+     "boot_keep": 0.8661
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "PMI-M4",
+     "diff": 0.8436268008162884,
+     "boot_keep": 0.7807
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "T1L_L10A",
+     "diff": 1.021038776944863,
+     "boot_keep": 0.8794
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 3.4423166263594425,
+     "boot_keep": 0.99985
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "N8A_L10A",
+     "diff": 4.103301761199596,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "PMI-L10A",
+     "diff": 0.42022998592777583,
+     "boot_keep": 0.72785
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "PMI-M4",
+     "diff": 0.444051775910701,
+     "boot_keep": 0.67055
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "T1L_L10A",
+     "diff": 0.6214637520392756,
+     "boot_keep": 0.77945
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 3.042741601453855,
+     "boot_keep": 0.9998
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "N8A_L10A",
+     "diff": 3.7037267362940085,
+     "boot_keep": 0.99985
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "PMI-M4",
+     "diff": 0.023821789982925168,
+     "boot_keep": 0.52
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "T1L_L10A",
+     "diff": 0.2012337661114998,
+     "boot_keep": 0.62285
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "P12Q_L10A",
+     "diff": 2.6225116155260793,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "N8A_L10A",
+     "diff": 3.2834967503662327,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "T1L_L10A",
+     "diff": 0.17741197612857462,
+     "boot_keep": 0.55805
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "P12Q_L10A",
+     "diff": 2.598689825543154,
+     "boot_keep": 0.9958
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "N8A_L10A",
+     "diff": 3.2596749603833075,
+     "boot_keep": 0.9991
+    },
+    {
+     "better": "T1L_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 2.4212778494145795,
+     "boot_keep": 0.9987
+    },
+    {
+     "better": "T1L_L10A",
+     "worse": "N8A_L10A",
+     "diff": 3.082262984254733,
+     "boot_keep": 0.9999
+    },
+    {
+     "better": "P12Q_L10A",
+     "worse": "N8A_L10A",
+     "diff": 0.6609851348401534,
+     "boot_keep": 0.75705
+    }
+   ]
+  },
+  "1-20": {
+   "frames_per_replica": [
+    1900
+   ],
+   "tau_ps_median": 296.4276590489949,
+   "tau_ps_max": 1170.952946980543,
+   "blocks_in_variance_split": [
+    "1-4",
+    "4-7",
+    "7-10",
+    "10-13",
+    "13-16",
+    "16-19"
+   ],
+   "sd_block_within_replica": 1.6542089016192747,
+   "sd_replica_within_start": 1.1561589941331891,
+   "sd_start_within_sample": 0.6211161370952999,
+   "replica_excess_var_over_block_noise": 0.880635771348993,
+   "start_excess_var_over_replica_noise": -0.05978261747816843,
+   "order_best_first": [
+    "PMI",
+    "A4L_L10A",
+    "S11M_L10A",
+    "PMI-L10A",
+    "PMI-M4",
+    "T1L_L10A",
+    "P12Q_L10A",
+    "N8A_L10A"
+   ],
+   "score_best_first": [
+    -61.41,
+    -60.59,
+    -60.28,
+    -59.82,
+    -59.75,
+    -58.95,
+    -57.57,
+    -56.85
+   ],
+   "spearman_m1_vs_m2": 0.9285714285714287,
+   "boot_spearman": {
+    "median": 0.9523809523809524,
+    "p5": 0.7619047619047621,
+    "p95": 1.0
+   },
+   "n_pairs_keep_ge_0_95": 19,
+   "n_pairs": 28,
+   "pairs": [
+    {
+     "better": "PMI",
+     "worse": "A4L_L10A",
+     "diff": 0.8143856934558045,
+     "boot_keep": 0.8346
+    },
+    {
+     "better": "PMI",
+     "worse": "S11M_L10A",
+     "diff": 1.124374994969564,
+     "boot_keep": 0.98155
+    },
+    {
+     "better": "PMI",
+     "worse": "PMI-L10A",
+     "diff": 1.592005018497204,
+     "boot_keep": 0.99875
+    },
+    {
+     "better": "PMI",
+     "worse": "PMI-M4",
+     "diff": 1.6577518627129848,
+     "boot_keep": 0.98055
+    },
+    {
+     "better": "PMI",
+     "worse": "T1L_L10A",
+     "diff": 2.4590219543640828,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI",
+     "worse": "P12Q_L10A",
+     "diff": 3.8342826634833926,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI",
+     "worse": "N8A_L10A",
+     "diff": 4.55726665275381,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "S11M_L10A",
+     "diff": 0.3099893015137596,
+     "boot_keep": 0.67435
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "PMI-L10A",
+     "diff": 0.7776193250413996,
+     "boot_keep": 0.84465
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "PMI-M4",
+     "diff": 0.8433661692571803,
+     "boot_keep": 0.8148
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "T1L_L10A",
+     "diff": 1.6446362609082783,
+     "boot_keep": 0.96975
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 3.019896970027588,
+     "boot_keep": 0.99985
+    },
+    {
+     "better": "A4L_L10A",
+     "worse": "N8A_L10A",
+     "diff": 3.742880959298006,
+     "boot_keep": 0.9999
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "PMI-L10A",
+     "diff": 0.46763002352764005,
+     "boot_keep": 0.84385
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "PMI-M4",
+     "diff": 0.5333768677434207,
+     "boot_keep": 0.77625
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "T1L_L10A",
+     "diff": 1.3346469593945187,
+     "boot_keep": 0.99695
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 2.7099076685138286,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "S11M_L10A",
+     "worse": "N8A_L10A",
+     "diff": 3.4328916577842463,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "PMI-M4",
+     "diff": 0.0657468442157807,
+     "boot_keep": 0.54995
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "T1L_L10A",
+     "diff": 0.8670169358668787,
+     "boot_keep": 0.9644
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "P12Q_L10A",
+     "diff": 2.2422776449861885,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI-L10A",
+     "worse": "N8A_L10A",
+     "diff": 2.9652616342566063,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "T1L_L10A",
+     "diff": 0.801270091651098,
+     "boot_keep": 0.8678
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "P12Q_L10A",
+     "diff": 2.176530800770408,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "PMI-M4",
+     "worse": "N8A_L10A",
+     "diff": 2.8995147900408256,
+     "boot_keep": 1.0
+    },
+    {
+     "better": "T1L_L10A",
+     "worse": "P12Q_L10A",
+     "diff": 1.3752607091193099,
+     "boot_keep": 0.99845
+    },
+    {
+     "better": "T1L_L10A",
+     "worse": "N8A_L10A",
+     "diff": 2.0982446983897276,
+     "boot_keep": 0.99975
+    },
+    {
+     "better": "P12Q_L10A",
+     "worse": "N8A_L10A",
+     "diff": 0.7229839892704177,
+     "boot_keep": 0.8469
+    }
+   ]
+  }
+ },
+ "spearman_between_windows": {
+  "1-10_vs_10-20": 1.0,
+  "1-10_vs_1-20": 1.0,
+  "10-20_vs_1-20": 1.0
+ },
+ "structure": {
+  "n_frames": [
+   2000
+  ],
+  "stereo_change_frames_10_20": 0,
+  "junction_4sigma_frames_10_20": 163,
+  "min_contact_p5_10_20_range": [
+   2.5264265633901224,
+   2.6969857693519588
+  ],
+  "pep_rmsd_median_change_10_20_vs_0_10": {
+   "median": 0.12024854698013887,
+   "min": -0.36794194675121394,
+   "max": 1.3110875445711327
+  },
+  "pep_rmsd_rise_gt_0_5_A": [
+   "PMI-L10A/v21m2/rep02: 1.73->2.26",
+   "A4L_L10A/v21m1/rep03: 1.77->2.47",
+   "N8A_L10A/v21m2/rep01: 1.80->2.99",
+   "S11M_L10A/v21m1/rep01: 1.80->3.11",
+   "S11M_L10A/v21m2/rep02: 1.78->2.67",
+   "P12Q_L10A/v21m1/rep03: 2.07->2.69"
+  ],
+  "note": "0.5 \u00c5 groups the description only (as in V5); not a criterion"
+ },
+ "sizing_paired": {
+  "delta_g_mmpbsa_1_10": {
+   "n_frames": 43200,
+   "frame_diff_mean": -0.0019055357099093386,
+   "frame_diff_sd": 0.003415459920099058,
+   "frame_abs_diff_p95": 0.008934436636739195,
+   "frame_abs_diff_max": 0.029548054776569188,
+   "replica_mean_diff_range": [
+    -0.008379296872356822,
+    0.001159146989463693
+   ],
+   "replica_mean_abs_diff_median": 0.0005301460840715165
+  },
+  "delta_g_mmpbsa_10_20": {
+   "n_frames": 48000,
+   "frame_diff_mean": -0.0019089050154854294,
+   "frame_diff_sd": 0.0035731264042354253,
+   "frame_abs_diff_p95": 0.008726244178097878,
+   "frame_abs_diff_max": 0.037626583291739735,
+   "replica_mean_diff_range": [
+    -0.010428825074780747,
+    0.0005040530477210651
+   ],
+   "replica_mean_abs_diff_median": 0.00047509141733501894
+  },
+  "delta_g_pb_1_10": {
+   "n_frames": 43200,
+   "frame_diff_mean": -0.0019055937360445165,
+   "frame_diff_sd": 0.0034154474048050977,
+   "frame_abs_diff_p95": 0.0089344366367328,
+   "frame_abs_diff_max": 0.029548054776569188,
+   "replica_mean_diff_range": [
+    -0.00837929687235664,
+    0.0011591469894642614
+   ],
+   "replica_mean_abs_diff_median": 0.0005299002835530094
+  },
+  "delta_g_pb_10_20": {
+   "n_frames": 48000,
+   "frame_diff_mean": -0.0019089234505243215,
+   "frame_diff_sd": 0.003573129676343425,
+   "frame_abs_diff_p95": 0.008726244178097878,
+   "frame_abs_diff_max": 0.037626583291739735,
+   "replica_mean_diff_range": [
+    -0.010428825074780861,
+    0.000504053047721527
+   ],
+   "replica_mean_abs_diff_median": 0.00047509141733509353
+  },
+  "note": "single sizing (scores_1_20) minus split sizing (scores / scores_10_20), same frames, kcal/mol"
+ },
+ "note": "no experimental label read; replica means are the unit; bootstrap resamples starts then replicas"
+}

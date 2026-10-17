@@ -1,0 +1,65 @@
+== host fulda  2026-10-12T00:34:24+09:00  PY=/home/ruigengji/miniforge3/envs/openmm_dev/bin/python  DEV=0  DCD_PS=10
+index, name, memory.used [MiB], utilization.gpu [%]
+0, NVIDIA GeForce RTX 5090, 2 MiB, 0 %
+== [1/4] prep 2026-10-12T00:34:24+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"peptide_name": "PMI", "model_id": "model01", "n_atoms": 1644, "net_charge_complex": 4.0, "net_charge_peptide": -1.0, "his_states": {"A:HIS73": ["HD1"], "A:HIS96": ["HD1"]}, "wall_s": 7.15}
+== [2/4] setup 2026-10-12T00:34:35+09:00
+{"setup_done": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/model01/setup", "n_atoms": 24146, "added": {"HOH": 7486, "NA": 20, "CL": 24}, "E_min_kJ_mol": -404624.945908597, "wall_s": 20.45}
+== [3/4] run 1 ns 2026-10-12T00:34:58+09:00
+{"run_id": "PMI_model01_rep01", "chunk": 0, "of": 1, "wall_s": 111.46}
+{"run_id": "PMI_model01_rep01", "complete": true, "chunks_done": 1}
+== [4/4] strip 2026-10-12T00:38:46+09:00
+{"run_id": "PMI_model01_rep01", "frames_total": 100, "chunks_used": 1, "dry_frames": 100, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1644, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.703, "50": 0.836, "95": 0.985}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.04, "50": 1.31, "95": 1.598}, "peptide_CA12_shift_A": {"5": 1.986, "50": 3.168, "95": 4.128}, "min_rec_pep_heavy_A": {"5": 2.557, "50": 2.751, "95": 2.92}, "nearest_waterO_A_HOH1_A": {"5": 3.052, "50": 4.618, "95": 5.324}, "nearest_waterO_A_HOH185_A": {"5": 0.614, "50": 1.707, "95": 2.562}, "nearest_waterO_A_HOH186_A": {"5": 0.747, "50": 3.008, "95": 3.73}, "nearest_waterO_B_HOH74_A": {"5": 0.552, "50": 1.396, "95": 2.229}}, "log_means": {"T_K": 298.4645, "density": 1.0135}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== done 2026-10-12T00:38:53+09:00
+/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/model01/rep01:
+total 8084
+drwxr-xr-x. 4 3072 700     153 Oct 12 00:38 .
+drwxr-xr-x. 4 3072 700      44 Oct 12 00:34 ..
+drwxr-xr-x. 2 3072 700     125 Oct 12 00:38 analysis
+-rw-r--r--. 1 3072 700 4003366 Oct 12 00:36 npt_end.xml
+-rw-r--r--. 1 3072 700   10529 Oct 12 00:36 npt.log
+-rw-r--r--. 1 3072 700 4012485 Oct 12 00:35 nvt_end.xml
+-rw-r--r--. 1 3072 700    1184 Oct 12 00:35 nvt.log
+drwxr-xr-x. 2 3072 700      94 Oct 12 00:38 prod
+-rw-r--r--. 1 3072 700    1601 Oct 12 00:38 status.json
+
+/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/model01/rep01/analysis:
+total 2136
+drwxr-xr-x. 2 3072 700     125 Oct 12 00:38 .
+drwxr-xr-x. 4 3072 700     153 Oct 12 00:38 ..
+-rw-r--r--. 1 3072 700   16206 Oct 12 00:38 diagnostics.csv
+-rw-r--r--. 1 3072 700    1158 Oct 12 00:38 diagnostics_summary.json
+-rw-r--r--. 1 3072 700 1981076 Oct 12 00:38 solute_dry.dcd
+-rw-r--r--. 1 3072 700  133344 Oct 12 00:38 solute_dry.pdb
+
+/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/model01/rep01/prod:
+total 36944
+drwxr-xr-x. 2 3072 700       94 Oct 12 00:38 .
+drwxr-xr-x. 4 3072 700      153 Oct 12 00:38 ..
+-rw-r--r--. 1 3072 700 28983476 Oct 12 00:38 chunk_0000.dcd
+-rw-r--r--. 1 3072 700    10531 Oct 12 00:38 chunk_0000.log
+-rw-r--r--. 1 3072 700  3999865 Oct 12 00:38 chunk_0000_state.xml
+
+/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/model01/setup:
+total 14716
+drwxr-xr-x. 2 3072 700     140 Oct 12 00:34 .
+drwxr-xr-x. 4 3072 700      44 Oct 12 00:34 ..
+-rw-r--r--. 1 3072 700 3925243 Oct 12 00:34 minimized_state.xml
+-rw-r--r--. 1 3072 700    1486 Oct 12 00:34 setup_record.json
+-rw-r--r--. 1 3072 700 3088260 Oct 12 00:34 solvated.cif
+-rw-r--r--. 1 3072 700 1956059 Oct 12 00:34 solvated.pdb
+-rw-r--r--. 1 3072 700 6088178 Oct 12 00:34 system.xml
+
+/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/PMI/model01:
+total 2284
+drwxr-xr-x. 2 3072 700     147 Oct 12 00:34 .
+drwxr-xr-x. 3 3072 700      29 Oct 12 00:34 ..
+-rw-r--r--. 1 3072 700  208004 Oct 12 00:34 complex_dry.cif
+-rw-r--r--. 1 3072 700  133343 Oct 12 00:34 complex_dry.pdb
+-rw-r--r--. 1 3072 700  180312 Oct 12 00:34 parameters.npz
+-rw-r--r--. 1 3072 700    3462 Oct 12 00:34 prep_record.json
+-rw-r--r--. 1 3072 700 1806265 Oct 12 00:34 system_vacuum.xml

@@ -1,0 +1,135 @@
+{
+  "protocol": "v2_modeller",
+  "res12": "PRO",
+  "template": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/raw/mdm2_3EQS.pdb",
+  "template_clean": "ATOM only, chains A/B, altloc ' '/'A'; GAI and waters dropped (protocol \u00a71.2)",
+  "alignment": ">P1;tmpl\nstructureX:template_3eqs_clean:26:A:11:B::::\n-TLVRPKPLLLKLLKSVGAQKDTYTMKEVLFYLGQYIMTKRLYDEKQQHIVYCSNDLLGDLFGVPSFSVKEHRKIYTMIYRNLVV/TSFAEYWNLLS-*\n\n>P1;target\nsequence:target:::::::0.00: 0.00\nETLVRPKPLLLKLLKSVGAQKDTYTMKEVLFYLGQYIMTKRLYDEKQQHIVYCSNDLLGDLFGVPSFSVKEHRKIYTMIYRNLVV/TSFAEYWNLLSP*\n",
+  "optimised": "A:25 and B:12 only (AutoModel.select_atoms); all other atoms keep template xyz",
+  "seed_rule": "model i: Environ(rand_seed=-1000-i)",
+  "models": {
+    "model_01.pdb": {
+      "seed": -1001,
+      "molpdf": 10.578609466552734,
+      "dope": -103.86168670654297,
+      "wall_s": 1.17
+    },
+    "model_02.pdb": {
+      "seed": -1002,
+      "molpdf": 13.166125297546387,
+      "dope": -92.01326751708984,
+      "wall_s": 1.15
+    },
+    "model_03.pdb": {
+      "seed": -1003,
+      "molpdf": 11.708385467529297,
+      "dope": -121.30330657958984,
+      "wall_s": 0.87
+    },
+    "model_04.pdb": {
+      "seed": -1004,
+      "molpdf": 12.86378288269043,
+      "dope": -108.47208404541016,
+      "wall_s": 1.01
+    },
+    "model_05.pdb": {
+      "seed": -1005,
+      "molpdf": 13.106895446777344,
+      "dope": -91.5604476928711,
+      "wall_s": 1.22
+    },
+    "model_06.pdb": {
+      "seed": -1006,
+      "molpdf": 13.959811210632324,
+      "dope": -104.4780044555664,
+      "wall_s": 0.92
+    },
+    "model_07.pdb": {
+      "seed": -1007,
+      "molpdf": 11.937287330627441,
+      "dope": -109.094970703125,
+      "wall_s": 0.95
+    },
+    "model_08.pdb": {
+      "seed": -1008,
+      "molpdf": 10.395747184753418,
+      "dope": -120.70967864990234,
+      "wall_s": 0.9
+    },
+    "model_09.pdb": {
+      "seed": -1009,
+      "molpdf": 14.567256927490234,
+      "dope": -108.85955810546875,
+      "wall_s": 1.02
+    },
+    "model_10.pdb": {
+      "seed": -1010,
+      "molpdf": 10.012120246887207,
+      "dope": -129.3717041015625,
+      "wall_s": 0.86
+    },
+    "model_11.pdb": {
+      "seed": -1011,
+      "molpdf": 12.861071586608887,
+      "dope": -135.134765625,
+      "wall_s": 0.96
+    },
+    "model_12.pdb": {
+      "seed": -1012,
+      "molpdf": 15.240118980407715,
+      "dope": -111.32208251953125,
+      "wall_s": 0.92
+    },
+    "model_13.pdb": {
+      "seed": -1013,
+      "molpdf": 12.826268196105957,
+      "dope": -113.45557403564453,
+      "wall_s": 0.92
+    },
+    "model_14.pdb": {
+      "seed": -1014,
+      "molpdf": 12.721811294555664,
+      "dope": -101.7379379272461,
+      "wall_s": 1.06
+    },
+    "model_15.pdb": {
+      "seed": -1015,
+      "molpdf": 10.293148040771484,
+      "dope": -121.48754119873047,
+      "wall_s": 1.01
+    },
+    "model_16.pdb": {
+      "seed": -1016,
+      "molpdf": 16.05084228515625,
+      "dope": -120.72315216064453,
+      "wall_s": 0.97
+    },
+    "model_17.pdb": {
+      "seed": -1017,
+      "molpdf": 14.443765640258789,
+      "dope": -71.1368637084961,
+      "wall_s": 0.86
+    },
+    "model_18.pdb": {
+      "seed": -1018,
+      "molpdf": 11.848756790161133,
+      "dope": -94.88546752929688,
+      "wall_s": 1.31
+    },
+    "model_19.pdb": {
+      "seed": -1019,
+      "molpdf": 18.522987365722656,
+      "dope": -81.42051696777344,
+      "wall_s": 1.03
+    },
+    "model_20.pdb": {
+      "seed": -1020,
+      "molpdf": 15.69218635559082,
+      "dope": -104.4080581665039,
+      "wall_s": 0.96
+    }
+  },
+  "modeller": "MODELLER 10.8, 2025/11/04, r13157",
+  "python": "3.14.7",
+  "host": "kasuga01",
+  "dope_scope": "AutoModel DOPE over the optimised atoms only (A:25 + B:12; checked = Selection DOPE of those residues)"
+}

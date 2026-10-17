@@ -1,0 +1,33 @@
+#!/bin/zsh
+#PBS -N p2v2_V2V3
+#PBS -q default
+#PBS -l select=1:ncpus=32:ngpus=1:mem=60gb:host=yayoi40
+#PBS -l walltime=03:00:00
+#PBS -j oe
+# Prep protocol v2 validation V2 + V3 (docs/PUBLIC_DATA_PREP_V2_MODELLER_DESIGN.md §6) on yayoi40 (RTX 5080).
+#   V2: prep (C2) + setup (C3) for PMI, PMI-L10A, P12Q_L10A x v2m1, v2m2
+#   V3: rep01, 1 ns + strip (C4) for each of the six models
+# All work is done by p2_v2_validation.sh (bash, set -euo pipefail); its log is
+# p2_v2_validation.log in this directory.  Resumable: qsub this file again and finished
+# prep/setup/stages/chunks are skipped.
+# Walltime: 1 ns V3 took ~3.5 min per model on the 5090 (v1); 5080 speed not measured yet.
+#
+#   cd /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+#   qsub p2_v2_validation.pbs
+#
+# V4 (only after V3 is reviewed): PROD_NS=10 REPS="01 02 03", walltime by V3 timings.
+
+test $PBS_O_WORKDIR && cd $PBS_O_WORKDIR
+. /home/apps/Modules/init/profile.sh
+export MODULEPATH=/home/ruigengji/modulefiles:$MODULEPATH
+
+export MAMBA_EXE=/home/ruigengji/miniforge3/bin/mamba
+export MAMBA_ROOT_PREFIX=/home/ruigengji/miniforge3
+source /home/ruigengji/miniforge3/etc/profile.d/mamba.sh
+mamba activate openmm_dev
+
+P=/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+# 9950X3D: 16 physical cores; OpenMM runs on the GPU, threads only matter for prep/strip.
+export OMP_NUM_THREADS=16 MKL_NUM_THREADS=16
+# One GPU is allocated, so device index 0 is that GPU.
+PY="$(command -v python)" DEV=0 PROD_NS=1 REPS="01" bash $P/p2_v2_validation.sh

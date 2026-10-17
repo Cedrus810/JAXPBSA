@@ -1,0 +1,132 @@
+{
+  "sample_id": "Li2021_MDM2_TSFAEYWNLASP_Kd",
+  "peptide_name": "PMI-L10A",
+  "model_id": "v21m1",
+  "prepared": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/PMI-L10A/v21m1",
+  "solvation_seed": 20261011,
+  "forcefield": [
+    "amber/ff14SB.xml",
+    "amber/tip3p_standard.xml"
+  ],
+  "padding_nm": 1.2,
+  "ionic_strength_M": 0.15,
+  "neutralize": true,
+  "n_solute_atoms": 1635,
+  "n_atoms": 20591,
+  "added_residues": {
+    "HOH": 6306,
+    "NA": 17,
+    "CL": 21
+  },
+  "box_vectors_nm": [
+    [
+      6.1207,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      6.1207,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      6.1207
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "stage1": "omega + CA-chirality torsion restraints, k=10000.0 kJ/mol/rad^2, theta0=prepared",
+    "stage2": "unrestrained",
+    "E_before_kJ_mol": -238244.418889442,
+    "E_stage1_incl_restraint_kJ_mol": -340533.62752069416,
+    "E_after_kJ_mol": -340632.0546549952,
+    "max_force_after_kJ_mol_nm": 2226.71297429502,
+    "stereo_terms": 188,
+    "stereo_class_changes": 0,
+    "max_stereo_dihedral_shift_deg": 10.8,
+    "largest_solute_force_at_restraint_release_kJ_mol_nm": [
+      [
+        1215.6,
+        "A:THR49.OG1"
+      ],
+      [
+        1201.4,
+        "A:THR49.HG1"
+      ],
+      [
+        1096.6,
+        "A:TYR60.OH"
+      ],
+      [
+        1089.3,
+        "A:TYR60.HH"
+      ],
+      [
+        960.7,
+        "B:SER2.OG"
+      ]
+    ],
+    "c3_checks": {
+      "passed": true,
+      "focus_residues": [
+        "A:25",
+        "A:26",
+        "B:10",
+        "B:11",
+        "B:12"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.339,
+        "A25-A26 CA-C-N": 117.8,
+        "A25-A26 O-C-N": 122.5,
+        "A25-A26 C-N-CA": 124.8,
+        "B11-B12 C-N": 1.351,
+        "B11-B12 CA-C-N": 119.4,
+        "B11-B12 O-C-N": 121.3,
+        "B11-B12 C-N-CA": 124.4,
+        "B11-B12 C-N-CD": 125.9,
+        "A25 N-CA": 1.487,
+        "A25 N-CA-C": 111.0,
+        "A26 N-CA": 1.48,
+        "A26 N-CA-C": 113.8,
+        "B11 N-CA": 1.481,
+        "B11 N-CA-C": 113.9,
+        "B12 N-CA": 1.471,
+        "B12 N-CA-C": 114.1,
+        "B12 N-CD": 1.461,
+        "B12 CD-CG": 1.529,
+        "B12 CG-CB": 1.529,
+        "B12 CB-CA": 1.533,
+        "B12 CD-N-CA": 109.6,
+        "B12 N-CA-CB": 104.6,
+        "B12 CA-CB-CG": 103.1,
+        "B12 CB-CG-CD": 103.0,
+        "B12 CG-CD-N": 106.7,
+        "B12 ring_torsions_deg": [
+          33.3,
+          -35.1,
+          24.6,
+          -3.8,
+          -18.6
+        ],
+        "B12 pucker": "Cg-endo"
+      }
+    },
+    "wall_s": 2.84
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 4080",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "yayoi42.cluster.local",
+  "wall_s": 7.86
+}

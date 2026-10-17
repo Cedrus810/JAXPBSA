@@ -1,0 +1,3119 @@
+{
+  "sample": "PMI",
+  "model_id": "v2m2",
+  "watch": "B:SER11",
+  "platform": "CPU",
+  "n_atoms": 20591,
+  "solvation_seed": 20261011,
+  "start": {
+    "watch_chirality_deg": -121.7,
+    "E_kJ_mol": -238366.9,
+    "closest_contacts_A": [
+      [
+        2.27,
+        "B:SER11.H",
+        "B:LEU10.N"
+      ],
+      [
+        2.291,
+        "B:SER11.H",
+        "B:ASN8.O"
+      ],
+      [
+        2.442,
+        "B:SER11.HB2",
+        "A:LYS51.HG3"
+      ],
+      [
+        2.532,
+        "B:SER11.HA",
+        "B:SER11.HG"
+      ],
+      [
+        2.532,
+        "B:SER11.HG",
+        "B:SER11.HA"
+      ],
+      [
+        2.583,
+        "B:SER11.H",
+        "B:LEU10.H"
+      ],
+      [
+        2.587,
+        "B:SER11.CA",
+        "B:PRO12.HD2"
+      ],
+      [
+        2.602,
+        "B:SER11.HB3",
+        "B:SER11.O"
+      ],
+      [
+        2.602,
+        "B:SER11.O",
+        "B:SER11.HB3"
+      ],
+      [
+        2.666,
+        "B:SER11.HG",
+        "B:SER11.N"
+      ]
+    ],
+    "class_changes_vs_start": []
+  },
+  "stage1": {
+    "watch_chirality_deg": -123.0,
+    "E_kJ_mol": -339139.4,
+    "closest_contacts_A": [
+      [
+        1.745,
+        "B:SER11.O",
+        "3:HOH4225.H2"
+      ],
+      [
+        2.042,
+        "B:SER11.HG",
+        "B:LEU10.O"
+      ],
+      [
+        2.172,
+        "B:SER11.H",
+        "B:ASN8.O"
+      ],
+      [
+        2.29,
+        "B:SER11.HG",
+        "A:LEU54.HD12"
+      ],
+      [
+        2.38,
+        "B:SER11.H",
+        "B:LEU10.N"
+      ],
+      [
+        2.413,
+        "B:SER11.HG",
+        "B:LEU10.C"
+      ],
+      [
+        2.416,
+        "B:SER11.HB2",
+        "B:SER11.O"
+      ],
+      [
+        2.416,
+        "B:SER11.O",
+        "B:SER11.HB2"
+      ],
+      [
+        2.46,
+        "B:SER11.HG",
+        "A:LEU54.HD13"
+      ],
+      [
+        2.504,
+        "B:SER11.H",
+        "B:SER11.HB3"
+      ]
+    ],
+    "class_changes_vs_start": [],
+    "largest_restraint_deviation_deg": [
+      [
+        1.3,
+        "B:SER11",
+        "chirality"
+      ],
+      [
+        0.4,
+        "A:HIS73",
+        "chirality"
+      ],
+      [
+        0.4,
+        "A:LYS39-SER40",
+        "omega"
+      ],
+      [
+        0.3,
+        "A:ASP46",
+        "chirality"
+      ],
+      [
+        0.3,
+        "A:ARG105-ASN106",
+        "omega"
+      ],
+      [
+        0.3,
+        "A:VAL88-PRO89",
+        "omega"
+      ]
+    ],
+    "largest_unrestrained_force_near_watch_kJ_mol_nm": [
+      [
+        4721.3,
+        "B:SER11.CA"
+      ],
+      [
+        2149.6,
+        "3:HOH4110.O"
+      ],
+      [
+        2138.1,
+        "B:SER11.N"
+      ],
+      [
+        1608.6,
+        "B:SER11.CB"
+      ],
+      [
+        1571.4,
+        "3:HOH4110.H1"
+      ],
+      [
+        1539.6,
+        "B:SER11.C"
+      ],
+      [
+        1441.3,
+        "3:HOH4225.O"
+      ],
+      [
+        1101.8,
+        "3:HOH4225.H2"
+      ]
+    ],
+    "largest_unrestrained_force_anywhere_kJ_mol_nm": [
+      [
+        4721.3,
+        "B:SER11.CA"
+      ],
+      [
+        2511.8,
+        "3:HOH963.O"
+      ],
+      [
+        2350.5,
+        "3:HOH2715.O"
+      ],
+      [
+        2333.7,
+        "3:HOH2139.O"
+      ],
+      [
+        2310.7,
+        "3:HOH2641.O"
+      ]
+    ]
+  },
+  "stage2_single_call": {
+    "watch_chirality_deg": 141.7,
+    "E_kJ_mol": -339491.9,
+    "closest_contacts_A": [
+      [
+        1.707,
+        "B:SER11.O",
+        "3:HOH4225.H2"
+      ],
+      [
+        1.867,
+        "B:SER11.HG",
+        "B:LEU10.O"
+      ],
+      [
+        2.197,
+        "B:SER11.H",
+        "B:ASN8.O"
+      ],
+      [
+        2.232,
+        "B:SER11.H",
+        "B:LEU10.N"
+      ],
+      [
+        2.439,
+        "B:SER11.N",
+        "B:PRO12.HD2"
+      ],
+      [
+        2.465,
+        "B:SER11.OG",
+        "A:LYS51.HG3"
+      ]
+    ],
+    "class_changes_vs_start": [
+      {
+        "label": "B:SER11",
+        "kind": "chirality",
+        "before": -121.7,
+        "after": 141.7
+      }
+    ]
+  },
+  "stage2_pieces": [
+    {
+      "watch_chirality_deg": -175.3,
+      "E_kJ_mol": -339336.7,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          2.004,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.249,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.254,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [],
+      "iterations": 25
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339394.6,
+      "closest_contacts_A": [
+        [
+          1.785,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.87,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.174,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.324,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 50
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339395.0,
+      "closest_contacts_A": [
+        [
+          1.786,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.869,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.175,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.324,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 75
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339395.3,
+      "closest_contacts_A": [
+        [
+          1.786,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.869,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.176,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.323,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 100
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339395.6,
+      "closest_contacts_A": [
+        [
+          1.786,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.868,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.177,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.323,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 125
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339395.8,
+      "closest_contacts_A": [
+        [
+          1.786,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.867,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.178,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.322,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 150
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339396.0,
+      "closest_contacts_A": [
+        [
+          1.786,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.867,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.179,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.322,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 175
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339396.2,
+      "closest_contacts_A": [
+        [
+          1.785,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.866,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.18,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.322,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 200
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339396.4,
+      "closest_contacts_A": [
+        [
+          1.785,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.866,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.181,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.321,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 225
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339396.7,
+      "closest_contacts_A": [
+        [
+          1.785,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.865,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.182,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.321,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 250
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339396.8,
+      "closest_contacts_A": [
+        [
+          1.785,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.864,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.183,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.321,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 275
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339397.0,
+      "closest_contacts_A": [
+        [
+          1.785,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.864,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.184,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.32,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 300
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339397.2,
+      "closest_contacts_A": [
+        [
+          1.785,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.863,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.185,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.32,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 325
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339397.5,
+      "closest_contacts_A": [
+        [
+          1.785,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.863,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.185,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.319,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 350
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339397.7,
+      "closest_contacts_A": [
+        [
+          1.784,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.862,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.186,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.319,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 375
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339397.9,
+      "closest_contacts_A": [
+        [
+          1.784,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.861,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.187,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.319,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 400
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339398.1,
+      "closest_contacts_A": [
+        [
+          1.784,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.861,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.188,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.318,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 425
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339398.2,
+      "closest_contacts_A": [
+        [
+          1.784,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.86,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.188,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.318,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 450
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339398.4,
+      "closest_contacts_A": [
+        [
+          1.784,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.86,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.189,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.318,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 475
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339398.6,
+      "closest_contacts_A": [
+        [
+          1.784,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.859,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.19,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.317,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 500
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339398.8,
+      "closest_contacts_A": [
+        [
+          1.784,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.858,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.191,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.317,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 525
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339399.0,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.858,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.191,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.317,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 550
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339399.2,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.857,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.192,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.316,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 575
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339399.4,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.857,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.193,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.316,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 600
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339399.6,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.856,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.193,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.316,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 625
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339399.7,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.856,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.194,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.316,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 650
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339400.0,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.855,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.194,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.315,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 675
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339400.2,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.854,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.195,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.315,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 700
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339400.3,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.854,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.196,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.315,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 725
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339400.5,
+      "closest_contacts_A": [
+        [
+          1.783,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.853,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.196,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.314,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 750
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339400.6,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.853,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.197,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.314,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 775
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339400.8,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.852,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.197,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.314,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 800
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339401.0,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.852,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.198,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.314,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 825
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339401.1,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.851,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.198,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.313,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 850
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339401.3,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.851,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.199,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.313,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 875
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339401.5,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.85,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.199,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.313,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 900
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339401.7,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.849,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.2,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.313,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 925
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339401.8,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.849,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.2,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.312,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 950
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339401.9,
+      "closest_contacts_A": [
+        [
+          1.782,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.848,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.201,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.312,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 975
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339402.1,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.848,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.201,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.312,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1000
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339402.2,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.847,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.202,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.312,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1025
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339402.3,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.847,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.202,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.311,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1050
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339402.5,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.846,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.203,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.311,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1075
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339402.6,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.846,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.203,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.311,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1100
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339402.7,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.845,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.204,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.311,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1125
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339402.9,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.845,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.204,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.31,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1150
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339403.1,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.844,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.204,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.31,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1175
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339403.2,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.844,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.205,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.31,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1200
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339403.3,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.843,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.205,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.31,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1225
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339403.5,
+      "closest_contacts_A": [
+        [
+          1.781,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.843,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.206,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.31,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1250
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339403.7,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.842,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.206,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.309,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1275
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339403.9,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.842,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.206,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.309,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1300
+    },
+    {
+      "watch_chirality_deg": 157.7,
+      "E_kJ_mol": -339404.0,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.841,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.207,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.309,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.7
+        }
+      ],
+      "iterations": 1325
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339404.2,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.841,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.207,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.309,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1350
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339404.3,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.84,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.208,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.309,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1375
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339404.4,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.84,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.208,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.308,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1400
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339404.6,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.839,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.208,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.308,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1425
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339404.7,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.839,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.209,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.308,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1450
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339404.8,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.838,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.209,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.308,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1475
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339404.9,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.838,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.209,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.308,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1500
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339405.1,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.837,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.21,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.307,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1525
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339405.2,
+      "closest_contacts_A": [
+        [
+          1.78,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.837,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.21,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.307,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1550
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339405.3,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.836,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.21,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.307,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1575
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339405.5,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.836,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.211,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.307,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1600
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339405.6,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.836,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.211,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.307,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1625
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339405.7,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.835,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.211,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.307,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1650
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339405.8,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.835,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.212,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.306,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1675
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339405.9,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.834,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.212,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.306,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1700
+    },
+    {
+      "watch_chirality_deg": 157.6,
+      "E_kJ_mol": -339406.1,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.834,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.212,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.306,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.6
+        }
+      ],
+      "iterations": 1725
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339406.2,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.833,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.212,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.306,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1750
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339406.4,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.833,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.213,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.306,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1775
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339406.5,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.832,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.213,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.306,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1800
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339406.6,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.832,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.213,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.306,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1825
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339406.7,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.831,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.214,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.305,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1850
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339406.8,
+      "closest_contacts_A": [
+        [
+          1.779,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.831,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.214,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.305,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1875
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339406.9,
+      "closest_contacts_A": [
+        [
+          1.778,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.831,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.214,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.305,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1900
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339407.1,
+      "closest_contacts_A": [
+        [
+          1.778,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.83,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.214,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.305,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1925
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339407.2,
+      "closest_contacts_A": [
+        [
+          1.778,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.83,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.215,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.305,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1950
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339407.3,
+      "closest_contacts_A": [
+        [
+          1.778,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.829,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.215,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.305,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 1975
+    },
+    {
+      "watch_chirality_deg": 157.5,
+      "E_kJ_mol": -339407.4,
+      "closest_contacts_A": [
+        [
+          1.778,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.829,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.215,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.305,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.5
+        }
+      ],
+      "iterations": 2000
+    },
+    {
+      "watch_chirality_deg": 157.4,
+      "E_kJ_mol": -339407.6,
+      "closest_contacts_A": [
+        [
+          1.778,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.828,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.215,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.304,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.4
+        }
+      ],
+      "iterations": 2025
+    },
+    {
+      "watch_chirality_deg": 157.4,
+      "E_kJ_mol": -339407.6,
+      "closest_contacts_A": [
+        [
+          1.778,
+          "B:SER11.O",
+          "3:HOH4225.H2"
+        ],
+        [
+          1.828,
+          "B:SER11.HG",
+          "B:LEU10.O"
+        ],
+        [
+          2.216,
+          "B:SER11.H",
+          "B:LEU10.N"
+        ],
+        [
+          2.304,
+          "B:SER11.H",
+          "B:ASN8.O"
+        ]
+      ],
+      "class_changes_vs_start": [
+        {
+          "label": "B:SER11",
+          "kind": "chirality",
+          "before": -121.7,
+          "after": 157.4
+        }
+      ],
+      "iterations": 2050
+    }
+  ]
+}

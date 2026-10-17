@@ -1,0 +1,1463 @@
+{
+  "selection": {
+    "rule": "start1 = lowest DOPE among C1-passing models; start2 = among the next 4 passing by DOPE, largest heavy-atom RMSD of A:25+B:12 to start1 (no superposition)",
+    "n_models": 20,
+    "n_passing_c1": 20,
+    "excluded_cis_pro": [
+      "model_09.pdb",
+      "model_17.pdb"
+    ],
+    "n_candidates": 18,
+    "start1": "model_11.pdb",
+    "start2": "model_16.pdb",
+    "start2_candidates_rmsd_A": {
+      "model_10.pdb": 1.011,
+      "model_15.pdb": 1.43,
+      "model_03.pdb": 1.775,
+      "model_16.pdb": 1.883
+    },
+    "rmsd_start1_start2_A": 1.883
+  },
+  "models": {
+    "model_01.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.351,
+        "A25-A26 CA-C-N": 117.7,
+        "A25-A26 O-C-N": 122.2,
+        "A25-A26 C-N-CA": 121.4,
+        "B11-B12 C-N": 1.311,
+        "B11-B12 CA-C-N": 117.6,
+        "B11-B12 O-C-N": 122.5,
+        "B11-B12 C-N-CA": 118.5,
+        "B11-B12 C-N-CD": 117.7,
+        "A25 N-CA": 1.491,
+        "A25 N-CA-C": 109.4,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.436,
+        "B12 N-CA-C": 110.7,
+        "B12 N-CD": 1.453,
+        "B12 CD-CG": 1.533,
+        "B12 CG-CB": 1.538,
+        "B12 CB-CA": 1.533,
+        "B12 CD-N-CA": 110.7,
+        "B12 N-CA-CB": 106.6,
+        "B12 CA-CB-CG": 103.8,
+        "B12 CB-CG-CD": 103.4,
+        "B12 CG-CD-N": 107.0,
+        "B12 ring_torsions_deg": [
+          -25.7,
+          28.6,
+          -22.0,
+          6.4,
+          12.3
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": 176.8,
+        "B:SER11-PRO12": -179.9
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -25.7,
+          28.6,
+          -22.0,
+          6.4,
+          12.3
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.796,
+      "closest_pair": "A:GLU25.CA--A:GLU25.OE1",
+      "dope": -103.86168670654297,
+      "molpdf": 10.578609466552734,
+      "seed": -1001
+    },
+    "model_02.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.349,
+        "A25-A26 CA-C-N": 117.5,
+        "A25-A26 O-C-N": 121.9,
+        "A25-A26 C-N-CA": 116.7,
+        "B11-B12 C-N": 1.308,
+        "B11-B12 CA-C-N": 116.8,
+        "B11-B12 O-C-N": 123.2,
+        "B11-B12 C-N-CA": 118.6,
+        "B11-B12 C-N-CD": 118.7,
+        "A25 N-CA": 1.476,
+        "A25 N-CA-C": 112.5,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.438,
+        "B12 N-CA-C": 106.8,
+        "B12 N-CD": 1.455,
+        "B12 CD-CG": 1.535,
+        "B12 CG-CB": 1.536,
+        "B12 CB-CA": 1.525,
+        "B12 CD-N-CA": 111.0,
+        "B12 N-CA-CB": 107.0,
+        "B12 CA-CB-CG": 104.0,
+        "B12 CB-CG-CD": 103.3,
+        "B12 CG-CD-N": 105.4,
+        "B12 ring_torsions_deg": [
+          21.2,
+          -29.8,
+          28.2,
+          -15.8,
+          -3.4
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -172.3,
+        "B:SER11-PRO12": 178.3
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          21.2,
+          -29.8,
+          28.2,
+          -15.8,
+          -3.4
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.821,
+      "closest_pair": "B:LEU10.O--B:PRO12.CD",
+      "dope": -92.01326751708984,
+      "molpdf": 13.166125297546387,
+      "seed": -1002
+    },
+    "model_03.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.343,
+        "A25-A26 CA-C-N": 116.5,
+        "A25-A26 O-C-N": 122.4,
+        "A25-A26 C-N-CA": 117.8,
+        "B11-B12 C-N": 1.297,
+        "B11-B12 CA-C-N": 112.8,
+        "B11-B12 O-C-N": 126.6,
+        "B11-B12 C-N-CA": 121.7,
+        "B11-B12 C-N-CD": 120.1,
+        "A25 N-CA": 1.471,
+        "A25 N-CA-C": 111.0,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.426,
+        "B12 N-CA-C": 105.4,
+        "B12 N-CD": 1.449,
+        "B12 CD-CG": 1.531,
+        "B12 CG-CB": 1.532,
+        "B12 CB-CA": 1.532,
+        "B12 CD-N-CA": 111.7,
+        "B12 N-CA-CB": 106.4,
+        "B12 CA-CB-CG": 103.9,
+        "B12 CB-CG-CD": 103.0,
+        "B12 CG-CD-N": 105.0,
+        "B12 ring_torsions_deg": [
+          21.4,
+          -30.7,
+          29.4,
+          -17.0,
+          -2.8
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -178.8,
+        "B:SER11-PRO12": -179.9
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          21.4,
+          -30.7,
+          29.4,
+          -17.0,
+          -2.8
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.812,
+      "closest_pair": "B:LEU10.O--B:PRO12.CD",
+      "dope": -121.30330657958984,
+      "molpdf": 11.708385467529297,
+      "seed": -1003
+    },
+    "model_04.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.348,
+        "A25-A26 CA-C-N": 115.9,
+        "A25-A26 O-C-N": 122.9,
+        "A25-A26 C-N-CA": 119.2,
+        "B11-B12 C-N": 1.309,
+        "B11-B12 CA-C-N": 114.4,
+        "B11-B12 O-C-N": 125.5,
+        "B11-B12 C-N-CA": 124.3,
+        "B11-B12 C-N-CD": 120.2,
+        "A25 N-CA": 1.479,
+        "A25 N-CA-C": 111.4,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.437,
+        "B12 N-CA-C": 111.9,
+        "B12 N-CD": 1.449,
+        "B12 CD-CG": 1.534,
+        "B12 CG-CB": 1.537,
+        "B12 CB-CA": 1.532,
+        "B12 CD-N-CA": 112.8,
+        "B12 N-CA-CB": 105.2,
+        "B12 CA-CB-CG": 104.4,
+        "B12 CB-CG-CD": 104.2,
+        "B12 CG-CD-N": 105.5,
+        "B12 ring_torsions_deg": [
+          -24.5,
+          27.9,
+          -21.2,
+          6.1,
+          11.7
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -175.8,
+        "B:SER11-PRO12": -179.9
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -24.5,
+          27.9,
+          -21.2,
+          6.1,
+          11.7
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.82,
+      "closest_pair": "B:SER11.O--B:PRO12.OXT",
+      "dope": -108.47208404541016,
+      "molpdf": 12.86378288269043,
+      "seed": -1004
+    },
+    "model_05.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.341,
+        "A25-A26 CA-C-N": 114.9,
+        "A25-A26 O-C-N": 123.2,
+        "A25-A26 C-N-CA": 125.7,
+        "B11-B12 C-N": 1.316,
+        "B11-B12 CA-C-N": 116.9,
+        "B11-B12 O-C-N": 123.2,
+        "B11-B12 C-N-CA": 123.6,
+        "B11-B12 C-N-CD": 118.5,
+        "A25 N-CA": 1.475,
+        "A25 N-CA-C": 109.3,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.453,
+        "B12 N-CA-C": 115.8,
+        "B12 N-CD": 1.456,
+        "B12 CD-CG": 1.535,
+        "B12 CG-CB": 1.533,
+        "B12 CB-CA": 1.532,
+        "B12 CD-N-CA": 111.1,
+        "B12 N-CA-CB": 106.0,
+        "B12 CA-CB-CG": 103.5,
+        "B12 CB-CG-CD": 103.9,
+        "B12 CG-CD-N": 105.7,
+        "B12 ring_torsions_deg": [
+          26.3,
+          -31.2,
+          25.2,
+          -9.1,
+          -10.9
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -177.1,
+        "B:SER11-PRO12": -175.0
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          26.3,
+          -31.2,
+          25.2,
+          -9.1,
+          -10.9
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.62,
+      "closest_pair": "B:SER11.O--B:PRO12.O",
+      "dope": -91.5604476928711,
+      "molpdf": 13.106895446777344,
+      "seed": -1005
+    },
+    "model_06.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.345,
+        "A25-A26 CA-C-N": 115.3,
+        "A25-A26 O-C-N": 123.2,
+        "A25-A26 C-N-CA": 118.8,
+        "B11-B12 C-N": 1.312,
+        "B11-B12 CA-C-N": 116.2,
+        "B11-B12 O-C-N": 122.9,
+        "B11-B12 C-N-CA": 124.7,
+        "B11-B12 C-N-CD": 120.6,
+        "A25 N-CA": 1.483,
+        "A25 N-CA-C": 112.0,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.446,
+        "B12 N-CA-C": 114.4,
+        "B12 N-CD": 1.451,
+        "B12 CD-CG": 1.542,
+        "B12 CG-CB": 1.541,
+        "B12 CB-CA": 1.535,
+        "B12 CD-N-CA": 111.6,
+        "B12 N-CA-CB": 106.3,
+        "B12 CA-CB-CG": 104.8,
+        "B12 CB-CG-CD": 103.5,
+        "B12 CG-CD-N": 104.2,
+        "B12 ring_torsions_deg": [
+          -13.1,
+          26.7,
+          -30.7,
+          24.0,
+          -6.9
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -179.0,
+        "B:SER11-PRO12": -179.9
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -13.1,
+          26.7,
+          -30.7,
+          24.0,
+          -6.9
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.776,
+      "closest_pair": "B:SER11.O--B:PRO12.C",
+      "dope": -104.4780044555664,
+      "molpdf": 13.959811210632324,
+      "seed": -1006
+    },
+    "model_07.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.345,
+        "A25-A26 CA-C-N": 117.3,
+        "A25-A26 O-C-N": 122.5,
+        "A25-A26 C-N-CA": 120.8,
+        "B11-B12 C-N": 1.314,
+        "B11-B12 CA-C-N": 117.3,
+        "B11-B12 O-C-N": 122.9,
+        "B11-B12 C-N-CA": 119.6,
+        "B11-B12 C-N-CD": 119.3,
+        "A25 N-CA": 1.483,
+        "A25 N-CA-C": 111.3,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.436,
+        "B12 N-CA-C": 107.2,
+        "B12 N-CD": 1.452,
+        "B12 CD-CG": 1.534,
+        "B12 CG-CB": 1.536,
+        "B12 CB-CA": 1.532,
+        "B12 CD-N-CA": 110.5,
+        "B12 N-CA-CB": 107.3,
+        "B12 CA-CB-CG": 104.5,
+        "B12 CB-CG-CD": 102.9,
+        "B12 CG-CD-N": 105.9,
+        "B12 ring_torsions_deg": [
+          17.3,
+          -27.9,
+          29.2,
+          -19.5,
+          1.3
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": 178.2,
+        "B:SER11-PRO12": 180.0
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          17.3,
+          -27.9,
+          29.2,
+          -19.5,
+          1.3
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.807,
+      "closest_pair": "B:LEU10.O--B:PRO12.CD",
+      "dope": -109.094970703125,
+      "molpdf": 11.937287330627441,
+      "seed": -1007
+    },
+    "model_08.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.354,
+        "A25-A26 CA-C-N": 118.6,
+        "A25-A26 O-C-N": 121.8,
+        "A25-A26 C-N-CA": 120.7,
+        "B11-B12 C-N": 1.308,
+        "B11-B12 CA-C-N": 117.0,
+        "B11-B12 O-C-N": 123.2,
+        "B11-B12 C-N-CA": 119.8,
+        "B11-B12 C-N-CD": 121.1,
+        "A25 N-CA": 1.486,
+        "A25 N-CA-C": 110.9,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.438,
+        "B12 N-CA-C": 111.8,
+        "B12 N-CD": 1.454,
+        "B12 CD-CG": 1.534,
+        "B12 CG-CB": 1.537,
+        "B12 CB-CA": 1.527,
+        "B12 CD-N-CA": 111.9,
+        "B12 N-CA-CB": 106.2,
+        "B12 CA-CB-CG": 104.0,
+        "B12 CB-CG-CD": 104.0,
+        "B12 CG-CD-N": 105.5,
+        "B12 ring_torsions_deg": [
+          -23.9,
+          28.9,
+          -23.7,
+          9.2,
+          9.4
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": 179.3,
+        "B:SER11-PRO12": -180.0
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -23.9,
+          28.9,
+          -23.7,
+          9.2,
+          9.4
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.81,
+      "closest_pair": "B:LEU10.O--B:PRO12.CD",
+      "dope": -120.70967864990234,
+      "molpdf": 10.395747184753418,
+      "seed": -1008
+    },
+    "model_09.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.346,
+        "A25-A26 CA-C-N": 117.3,
+        "A25-A26 O-C-N": 122.1,
+        "A25-A26 C-N-CA": 119.3,
+        "B11-B12 C-N": 1.298,
+        "B11-B12 CA-C-N": 119.1,
+        "B11-B12 O-C-N": 121.0,
+        "B11-B12 C-N-CA": 119.1,
+        "B11-B12 C-N-CD": 117.5,
+        "A25 N-CA": 1.478,
+        "A25 N-CA-C": 109.4,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.432,
+        "B12 N-CA-C": 104.5,
+        "B12 N-CD": 1.457,
+        "B12 CD-CG": 1.535,
+        "B12 CG-CB": 1.535,
+        "B12 CB-CA": 1.534,
+        "B12 CD-N-CA": 111.1,
+        "B12 N-CA-CB": 107.1,
+        "B12 CA-CB-CG": 103.9,
+        "B12 CB-CG-CD": 103.6,
+        "B12 CG-CD-N": 105.5,
+        "B12 ring_torsions_deg": [
+          20.5,
+          -28.9,
+          27.3,
+          -15.2,
+          -3.4
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -169.5,
+        "B:SER11-PRO12": -4.7
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          20.5,
+          -28.9,
+          27.3,
+          -15.2,
+          -3.4
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.773,
+      "closest_pair": "B:LEU10.O--B:PRO12.C",
+      "dope": -108.85955810546875,
+      "molpdf": 14.567256927490234,
+      "seed": -1009
+    },
+    "model_10.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.341,
+        "A25-A26 CA-C-N": 116.5,
+        "A25-A26 O-C-N": 122.2,
+        "A25-A26 C-N-CA": 120.7,
+        "B11-B12 C-N": 1.301,
+        "B11-B12 CA-C-N": 115.8,
+        "B11-B12 O-C-N": 124.2,
+        "B11-B12 C-N-CA": 119.2,
+        "B11-B12 C-N-CD": 120.1,
+        "A25 N-CA": 1.48,
+        "A25 N-CA-C": 109.6,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.433,
+        "B12 N-CA-C": 107.6,
+        "B12 N-CD": 1.451,
+        "B12 CD-CG": 1.531,
+        "B12 CG-CB": 1.538,
+        "B12 CB-CA": 1.532,
+        "B12 CD-N-CA": 111.5,
+        "B12 N-CA-CB": 106.5,
+        "B12 CA-CB-CG": 104.5,
+        "B12 CB-CG-CD": 103.1,
+        "B12 CG-CD-N": 104.8,
+        "B12 ring_torsions_deg": [
+          16.6,
+          -28.5,
+          30.2,
+          -21.1,
+          2.7
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": 177.2,
+        "B:SER11-PRO12": -180.0
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          16.6,
+          -28.5,
+          30.2,
+          -21.1,
+          2.7
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.809,
+      "closest_pair": "B:LEU10.O--B:PRO12.CD",
+      "dope": -129.3717041015625,
+      "molpdf": 10.012120246887207,
+      "seed": -1010
+    },
+    "model_11.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.349,
+        "A25-A26 CA-C-N": 117.5,
+        "A25-A26 O-C-N": 122.8,
+        "A25-A26 C-N-CA": 123.2,
+        "B11-B12 C-N": 1.307,
+        "B11-B12 CA-C-N": 116.1,
+        "B11-B12 O-C-N": 123.9,
+        "B11-B12 C-N-CA": 118.6,
+        "B11-B12 C-N-CD": 118.7,
+        "A25 N-CA": 1.483,
+        "A25 N-CA-C": 108.4,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.433,
+        "B12 N-CA-C": 106.7,
+        "B12 N-CD": 1.449,
+        "B12 CD-CG": 1.534,
+        "B12 CG-CB": 1.534,
+        "B12 CB-CA": 1.537,
+        "B12 CD-N-CA": 111.6,
+        "B12 N-CA-CB": 106.7,
+        "B12 CA-CB-CG": 104.2,
+        "B12 CB-CG-CD": 103.7,
+        "B12 CG-CD-N": 105.3,
+        "B12 ring_torsions_deg": [
+          18.2,
+          -27.9,
+          27.9,
+          -17.5,
+          -0.5
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -176.0,
+        "B:SER11-PRO12": 179.9
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          18.2,
+          -27.9,
+          27.9,
+          -17.5,
+          -0.5
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.73,
+      "closest_pair": "A:GLU25.O--A:THR26.C",
+      "dope": -135.134765625,
+      "molpdf": 12.861071586608887,
+      "seed": -1011
+    },
+    "model_12.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.351,
+        "A25-A26 CA-C-N": 116.1,
+        "A25-A26 O-C-N": 123.4,
+        "A25-A26 C-N-CA": 127.4,
+        "B11-B12 C-N": 1.292,
+        "B11-B12 CA-C-N": 117.9,
+        "B11-B12 O-C-N": 122.0,
+        "B11-B12 C-N-CA": 118.2,
+        "B11-B12 C-N-CD": 121.6,
+        "A25 N-CA": 1.483,
+        "A25 N-CA-C": 113.6,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.433,
+        "B12 N-CA-C": 107.6,
+        "B12 N-CD": 1.451,
+        "B12 CD-CG": 1.538,
+        "B12 CG-CB": 1.539,
+        "B12 CB-CA": 1.531,
+        "B12 CD-N-CA": 112.6,
+        "B12 N-CA-CB": 105.8,
+        "B12 CA-CB-CG": 104.0,
+        "B12 CB-CG-CD": 104.3,
+        "B12 CG-CD-N": 105.4,
+        "B12 ring_torsions_deg": [
+          -25.2,
+          28.1,
+          -20.9,
+          5.3,
+          12.7
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -170.0,
+        "B:SER11-PRO12": 180.0
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -25.2,
+          28.1,
+          -20.9,
+          5.3,
+          12.7
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.876,
+      "closest_pair": "B:SER11.C--B:PRO12.O",
+      "dope": -111.32208251953125,
+      "molpdf": 15.240118980407715,
+      "seed": -1012
+    },
+    "model_13.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.344,
+        "A25-A26 CA-C-N": 117.8,
+        "A25-A26 O-C-N": 121.6,
+        "A25-A26 C-N-CA": 117.9,
+        "B11-B12 C-N": 1.302,
+        "B11-B12 CA-C-N": 117.8,
+        "B11-B12 O-C-N": 122.2,
+        "B11-B12 C-N-CA": 121.8,
+        "B11-B12 C-N-CD": 121.3,
+        "A25 N-CA": 1.481,
+        "A25 N-CA-C": 114.0,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.436,
+        "B12 N-CA-C": 109.2,
+        "B12 N-CD": 1.453,
+        "B12 CD-CG": 1.537,
+        "B12 CG-CB": 1.541,
+        "B12 CB-CA": 1.533,
+        "B12 CD-N-CA": 112.2,
+        "B12 N-CA-CB": 106.1,
+        "B12 CA-CB-CG": 104.7,
+        "B12 CB-CG-CD": 103.7,
+        "B12 CG-CD-N": 103.5,
+        "B12 ring_torsions_deg": [
+          13.3,
+          -27.2,
+          31.0,
+          -24.2,
+          7.0
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -178.9,
+        "B:SER11-PRO12": -180.0
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          13.3,
+          -27.2,
+          31.0,
+          -24.2,
+          7.0
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.931,
+      "closest_pair": "B:LEU10.O--B:PRO12.CD",
+      "dope": -113.45557403564453,
+      "molpdf": 12.826268196105957,
+      "seed": -1013
+    },
+    "model_14.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.346,
+        "A25-A26 CA-C-N": 115.0,
+        "A25-A26 O-C-N": 123.1,
+        "A25-A26 C-N-CA": 120.3,
+        "B11-B12 C-N": 1.3,
+        "B11-B12 CA-C-N": 119.3,
+        "B11-B12 O-C-N": 120.9,
+        "B11-B12 C-N-CA": 117.4,
+        "B11-B12 C-N-CD": 118.4,
+        "A25 N-CA": 1.477,
+        "A25 N-CA-C": 107.9,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.438,
+        "B12 N-CA-C": 113.2,
+        "B12 N-CD": 1.452,
+        "B12 CD-CG": 1.538,
+        "B12 CG-CB": 1.536,
+        "B12 CB-CA": 1.523,
+        "B12 CD-N-CA": 110.7,
+        "B12 N-CA-CB": 105.7,
+        "B12 CA-CB-CG": 102.9,
+        "B12 CB-CG-CD": 104.2,
+        "B12 CG-CD-N": 106.2,
+        "B12 ring_torsions_deg": [
+          -31.7,
+          29.6,
+          -17.4,
+          -2.6,
+          21.9
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -177.6,
+        "B:SER11-PRO12": -179.9
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -31.7,
+          29.6,
+          -17.4,
+          -2.6,
+          21.9
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.813,
+      "closest_pair": "B:LEU10.O--B:PRO12.CD",
+      "dope": -101.7379379272461,
+      "molpdf": 12.721811294555664,
+      "seed": -1014
+    },
+    "model_15.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.354,
+        "A25-A26 CA-C-N": 116.4,
+        "A25-A26 O-C-N": 122.3,
+        "A25-A26 C-N-CA": 119.9,
+        "B11-B12 C-N": 1.313,
+        "B11-B12 CA-C-N": 115.0,
+        "B11-B12 O-C-N": 125.2,
+        "B11-B12 C-N-CA": 123.3,
+        "B11-B12 C-N-CD": 120.1,
+        "A25 N-CA": 1.487,
+        "A25 N-CA-C": 110.0,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.441,
+        "B12 N-CA-C": 114.6,
+        "B12 N-CD": 1.458,
+        "B12 CD-CG": 1.533,
+        "B12 CG-CB": 1.534,
+        "B12 CB-CA": 1.533,
+        "B12 CD-N-CA": 111.7,
+        "B12 N-CA-CB": 105.9,
+        "B12 CA-CB-CG": 103.9,
+        "B12 CB-CG-CD": 103.8,
+        "B12 CG-CD-N": 105.3,
+        "B12 ring_torsions_deg": [
+          24.4,
+          -30.5,
+          25.8,
+          -11.0,
+          -8.5
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": 178.5,
+        "B:SER11-PRO12": -179.9
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          24.4,
+          -30.5,
+          25.8,
+          -11.0,
+          -8.5
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.737,
+      "closest_pair": "B:SER11.O--B:PRO12.C",
+      "dope": -121.48754119873047,
+      "molpdf": 10.293148040771484,
+      "seed": -1015
+    },
+    "model_16.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.348,
+        "A25-A26 CA-C-N": 116.1,
+        "A25-A26 O-C-N": 123.0,
+        "A25-A26 C-N-CA": 127.0,
+        "B11-B12 C-N": 1.31,
+        "B11-B12 CA-C-N": 114.6,
+        "B11-B12 O-C-N": 125.1,
+        "B11-B12 C-N-CA": 125.5,
+        "B11-B12 C-N-CD": 121.2,
+        "A25 N-CA": 1.476,
+        "A25 N-CA-C": 110.3,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.439,
+        "B12 N-CA-C": 112.2,
+        "B12 N-CD": 1.447,
+        "B12 CD-CG": 1.531,
+        "B12 CG-CB": 1.538,
+        "B12 CB-CA": 1.531,
+        "B12 CD-N-CA": 112.6,
+        "B12 N-CA-CB": 105.5,
+        "B12 CA-CB-CG": 104.8,
+        "B12 CB-CG-CD": 103.6,
+        "B12 CG-CD-N": 105.4,
+        "B12 ring_torsions_deg": [
+          -21.0,
+          28.1,
+          -25.1,
+          12.7,
+          5.3
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -178.3,
+        "B:SER11-PRO12": -179.5
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -21.0,
+          28.1,
+          -25.1,
+          12.7,
+          5.3
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.77,
+      "closest_pair": "B:SER11.O--B:PRO12.C",
+      "dope": -120.72315216064453,
+      "molpdf": 16.05084228515625,
+      "seed": -1016
+    },
+    "model_17.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.345,
+        "A25-A26 CA-C-N": 115.5,
+        "A25-A26 O-C-N": 123.4,
+        "A25-A26 C-N-CA": 121.4,
+        "B11-B12 C-N": 1.306,
+        "B11-B12 CA-C-N": 116.1,
+        "B11-B12 O-C-N": 124.0,
+        "B11-B12 C-N-CA": 114.7,
+        "B11-B12 C-N-CD": 113.9,
+        "A25 N-CA": 1.482,
+        "A25 N-CA-C": 112.8,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.438,
+        "B12 N-CA-C": 108.3,
+        "B12 N-CD": 1.46,
+        "B12 CD-CG": 1.54,
+        "B12 CG-CB": 1.535,
+        "B12 CB-CA": 1.521,
+        "B12 CD-N-CA": 109.9,
+        "B12 N-CA-CB": 107.0,
+        "B12 CA-CB-CG": 102.3,
+        "B12 CB-CG-CD": 103.6,
+        "B12 CG-CD-N": 106.0,
+        "B12 ring_torsions_deg": [
+          30.8,
+          -32.3,
+          23.2,
+          -4.2,
+          -17.0
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -176.9,
+        "B:SER11-PRO12": -1.5
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          30.8,
+          -32.3,
+          23.2,
+          -4.2,
+          -17.0
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.631,
+      "closest_pair": "A:TYR100.OH--B:PRO12.O",
+      "dope": -71.1368637084961,
+      "molpdf": 14.443765640258789,
+      "seed": -1017
+    },
+    "model_18.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.344,
+        "A25-A26 CA-C-N": 115.8,
+        "A25-A26 O-C-N": 123.0,
+        "A25-A26 C-N-CA": 119.1,
+        "B11-B12 C-N": 1.296,
+        "B11-B12 CA-C-N": 117.5,
+        "B11-B12 O-C-N": 122.7,
+        "B11-B12 C-N-CA": 117.5,
+        "B11-B12 C-N-CD": 119.9,
+        "A25 N-CA": 1.483,
+        "A25 N-CA-C": 110.0,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.431,
+        "B12 N-CA-C": 106.0,
+        "B12 N-CD": 1.456,
+        "B12 CD-CG": 1.54,
+        "B12 CG-CB": 1.536,
+        "B12 CB-CA": 1.527,
+        "B12 CD-N-CA": 111.6,
+        "B12 N-CA-CB": 106.4,
+        "B12 CA-CB-CG": 103.3,
+        "B12 CB-CG-CD": 104.1,
+        "B12 CG-CD-N": 105.5,
+        "B12 ring_torsions_deg": [
+          -27.3,
+          29.8,
+          -22.0,
+          5.2,
+          14.1
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -178.5,
+        "B:SER11-PRO12": 174.8
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -27.3,
+          29.8,
+          -22.0,
+          5.2,
+          14.1
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.736,
+      "closest_pair": "A:GLU25.O--A:THR26.C",
+      "dope": -94.88546752929688,
+      "molpdf": 11.848756790161133,
+      "seed": -1018
+    },
+    "model_19.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.335,
+        "A25-A26 CA-C-N": 115.8,
+        "A25-A26 O-C-N": 122.1,
+        "A25-A26 C-N-CA": 119.9,
+        "B11-B12 C-N": 1.325,
+        "B11-B12 CA-C-N": 118.5,
+        "B11-B12 O-C-N": 121.7,
+        "B11-B12 C-N-CA": 116.2,
+        "B11-B12 C-N-CD": 117.0,
+        "A25 N-CA": 1.485,
+        "A25 N-CA-C": 108.4,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.436,
+        "B12 N-CA-C": 105.3,
+        "B12 N-CD": 1.454,
+        "B12 CD-CG": 1.531,
+        "B12 CG-CB": 1.526,
+        "B12 CB-CA": 1.531,
+        "B12 CD-N-CA": 109.2,
+        "B12 N-CA-CB": 107.8,
+        "B12 CA-CB-CG": 104.5,
+        "B12 CB-CG-CD": 102.9,
+        "B12 CG-CD-N": 105.4,
+        "B12 ring_torsions_deg": [
+          -12.7,
+          26.9,
+          -32.2,
+          25.4,
+          -7.9
+        ],
+        "B12 pucker": "Cg-exo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -176.5,
+        "B:SER11-PRO12": 180.0
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          -12.7,
+          26.9,
+          -32.2,
+          25.4,
+          -7.9
+        ],
+        "pucker": "Cg-exo"
+      },
+      "closest_nonbonded_A": 2.733,
+      "closest_pair": "A:GLU25.CG--A:GLU25.O",
+      "dope": -81.42051696777344,
+      "molpdf": 18.522987365722656,
+      "seed": -1019
+    },
+    "model_20.pdb": {
+      "passed": true,
+      "failures": [],
+      "anchor_max_dev_A": 0.0,
+      "anchor_atoms_renamed": [
+        "A:60.CD1->CD2",
+        "A:60.CD2->CD1",
+        "A:60.CE1->CE2",
+        "A:60.CE2->CE1",
+        "A:91.CD1->CD2",
+        "A:91.CD2->CD1",
+        "A:91.CE1->CE2",
+        "A:91.CE2->CE1",
+        "A:95.OE1->OE2",
+        "A:95.OE2->OE1"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.346,
+        "A25-A26 CA-C-N": 115.6,
+        "A25-A26 O-C-N": 123.5,
+        "A25-A26 C-N-CA": 119.6,
+        "B11-B12 C-N": 1.305,
+        "B11-B12 CA-C-N": 115.8,
+        "B11-B12 O-C-N": 123.8,
+        "B11-B12 C-N-CA": 121.3,
+        "B11-B12 C-N-CD": 121.6,
+        "A25 N-CA": 1.474,
+        "A25 N-CA-C": 110.4,
+        "A26 N-CA": 1.509,
+        "A26 N-CA-C": 109.6,
+        "B11 N-CA": 1.445,
+        "B11 N-CA-C": 109.0,
+        "B12 N-CA": 1.437,
+        "B12 N-CA-C": 105.6,
+        "B12 N-CD": 1.45,
+        "B12 CD-CG": 1.537,
+        "B12 CG-CB": 1.54,
+        "B12 CB-CA": 1.532,
+        "B12 CD-N-CA": 111.7,
+        "B12 N-CA-CB": 106.4,
+        "B12 CA-CB-CG": 104.6,
+        "B12 CB-CG-CD": 103.7,
+        "B12 CG-CD-N": 103.6,
+        "B12 ring_torsions_deg": [
+          11.6,
+          -26.4,
+          31.6,
+          -25.8,
+          9.0
+        ],
+        "B12 pucker": "Cg-endo"
+      },
+      "omega": {
+        "A:GLU25-THR26": -177.1,
+        "B:SER11-PRO12": 169.3
+      },
+      "pro_ring": {
+        "ring_torsions_deg": [
+          11.6,
+          -26.4,
+          31.6,
+          -25.8,
+          9.0
+        ],
+        "pucker": "Cg-endo"
+      },
+      "closest_nonbonded_A": 2.69,
+      "closest_pair": "A:GLU25.N--A:GLU25.OE1",
+      "dope": -104.4080581665039,
+      "molpdf": 15.69218635559082,
+      "seed": -1020
+    }
+  }
+}

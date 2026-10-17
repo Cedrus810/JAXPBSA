@@ -1,0 +1,20 @@
+{
+  "workbook_rows": {
+    "main": 21845,
+    "branch": 3180,
+    "structure": 18005
+  },
+  "primary_inventory": "main",
+  "unique_record_ids": 21845,
+  "unique_peptide_sequences": 11425,
+  "assay_types": {
+    "manual_review": 582,
+    "Kd": 10513,
+    "IC50": 9038,
+    "Ki": 1712
+  },
+  "rows_with_raw_normalized_field_conflicts": 77,
+  "simple_linear_free_termini_exact_kd_rows": 4369,
+  "same_paper_target_groups_with_at_least_6_sequences": 94,
+  "independence_note": "Rows are measurements, not independent peptides; repeated assays and constructs remain explicit."
+}

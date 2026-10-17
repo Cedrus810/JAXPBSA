@@ -1,0 +1,43 @@
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+== PMI: passed (outputs in this directory)  (35.99 s)
+   MIRRORED overlay: {'target': 'new PRO oriented on B:SER11', 'n_points': 5, 'det': -1.0}
+   MIRRORED overlay: {'target': 'new PRO oriented on B:SER11', 'n_points': 5, 'det': -1.0}
+   placement              {} violations=[('B:PRO12', 121.7)] focus={'A:GLU25': -123.0, 'A:GLU25-THR26 omega': -118.4, 'B:SER11-PRO12 omega': 180.0, 'B:PRO12': 121.7}
+   nearest#0              {'C': 1.0, 'nearest_nm': 0.0169, 'kept': True} violations=[('B:PRO12', 70.4)] focus={'A:GLU25': -108.6, 'A:GLU25-THR26 omega': -177.9, 'B:SER11-PRO12 omega': 168.3, 'B:PRO12': 70.4}
+   nearest#1              {'C': 0.15, 'nearest_nm': 0.0825, 'kept': True} violations=[('A:GLU25', 151.7), ('B:PRO12', 35.9)] focus={'A:GLU25': 151.7, 'A:GLU25-THR26 omega': 175.0, 'B:SER11-PRO12 omega': 176.0, 'B:PRO12': 35.9}
+   nearest#2              {'C': 0.3, 'nearest_nm': 0.084, 'kept': True} violations=[('B:PRO12', 56.7)] focus={'A:GLU25': -106.7, 'A:GLU25-THR26 omega': -179.0, 'B:SER11-PRO12 omega': 172.4, 'B:PRO12': 56.7}
+   nearest#3              {'C': 0.45, 'nearest_nm': 0.1219, 'kept': True} violations=[] focus={'A:GLU25': -88.2, 'A:GLU25-THR26 omega': -172.6, 'B:SER11-PRO12 omega': 169.4, 'B:PRO12': -5.8}
+   nearest#4              {'C': 0.6, 'nearest_nm': 0.1479, 'kept': True} violations=[] focus={'A:GLU25': -121.5, 'A:GLU25-THR26 omega': -155.3, 'B:SER11-PRO12 omega': 178.8, 'B:PRO12': -75.0}
+   after_addMissingAtoms  {} violations=[] focus={'A:GLU25': -100.9, 'A:GLU25-THR26 omega': -176.3, 'B:SER11-PRO12 omega': 178.1, 'B:PRO12': -82.5}
+   after_addHydrogens     {} violations=[] focus={'A:GLU25': -100.9, 'A:GLU25-THR26 omega': -176.3, 'B:SER11-PRO12 omega': 178.1, 'B:PRO12': -82.5}
+   trace: /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/diagnostics/prep_stereo_20261012/PMI/trace.json
+== PMI-L10A: raised: prepared model has D-CA or cis non-Pro peptide bonds: [('A:GLU25', 142.5)]  (0.78 s)
+   MIRRORED overlay: {'target': 'new PRO oriented on B:SER11', 'n_points': 5, 'det': -1.0}
+   MIRRORED overlay: {'target': 'new PRO oriented on B:SER11', 'n_points': 5, 'det': -1.0}
+   placement              {} violations=[('B:PRO12', 121.7)] focus={'A:GLU25': -123.0, 'A:GLU25-THR26 omega': -118.4, 'B:SER11-PRO12 omega': -180.0, 'B:PRO12': 121.7}
+   nearest#0              {'C': 1.0, 'nearest_nm': 0.0209, 'kept': True} violations=[] focus={'A:GLU25': -111.1, 'A:GLU25-THR26 omega': -171.6, 'B:SER11-PRO12 omega': 135.8, 'B:PRO12': -125.3}
+   nearest#1              {'C': 0.15, 'nearest_nm': 0.0828, 'kept': True} violations=[('A:GLU25', 169.4)] focus={'A:GLU25': 169.4, 'A:GLU25-THR26 omega': 174.6, 'B:SER11-PRO12 omega': 167.1, 'B:PRO12': -11.3}
+   nearest#2              {'C': 0.3, 'nearest_nm': 0.1011, 'kept': True} violations=[] focus={'A:GLU25': -154.3, 'A:GLU25-THR26 omega': 166.3, 'B:SER11-PRO12 omega': 172.5, 'B:PRO12': -45.7}
+   nearest#3              {'C': 0.45, 'nearest_nm': 0.1608, 'kept': True} violations=[('A:GLU25', 142.3)] focus={'A:GLU25': 142.3, 'A:GLU25-THR26 omega': 177.4, 'B:SER11-PRO12 omega': 173.1, 'B:PRO12': -32.4}
+   after_addMissingAtoms  {} violations=[('A:GLU25', 142.5)] focus={'A:GLU25': 142.5, 'A:GLU25-THR26 omega': -175.2, 'B:SER11-PRO12 omega': 171.4, 'B:PRO12': -34.1}
+   after_addHydrogens     {} violations=[('A:GLU25', 142.5)] focus={'A:GLU25': 142.5, 'A:GLU25-THR26 omega': -175.2, 'B:SER11-PRO12 omega': 171.4, 'B:PRO12': -34.1}
+   trace: /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/diagnostics/prep_stereo_20261012/PMI-L10A/trace.json
+== P12Q_L10A: raised: prepared model has D-CA or cis non-Pro peptide bonds: [('A:GLU25', 108.7), ('B:GLN12', 73.4)]  (1.36 s)
+   MIRRORED overlay: {'target': 'new GLN oriented on B:SER11', 'n_points': 5, 'det': -1.0}
+   MIRRORED overlay: {'target': 'new GLN oriented on B:SER11', 'n_points': 5, 'det': -1.0}
+   placement              {} violations=[('B:GLN12', 130.3)] focus={'A:GLU25': -123.0, 'A:GLU25-THR26 omega': -118.4, 'B:SER11-GLN12 omega': 180.0, 'B:GLN12': 130.3}
+   nearest#0              {'C': 1.0, 'nearest_nm': 0.0085, 'kept': True} violations=[('B:GLN12', 152.7)] focus={'A:GLU25': -108.1, 'A:GLU25-THR26 omega': -174.4, 'B:SER11-GLN12 omega': -178.1, 'B:GLN12': 152.7}
+   nearest#1              {'C': 0.15, 'nearest_nm': 0.0214, 'kept': True} violations=[('B:GLN12', 115.6)] focus={'A:GLU25': -90.6, 'A:GLU25-THR26 omega': -174.1, 'B:SER11-GLN12 omega': 173.6, 'B:GLN12': 115.6}
+   nearest#2              {'C': 0.3, 'nearest_nm': 0.0442, 'kept': True} violations=[('B:GLN12', 75.5)] focus={'A:GLU25': -179.5, 'A:GLU25-THR26 omega': -169.5, 'B:SER11-GLN12 omega': 174.7, 'B:GLN12': 75.5}
+   nearest#3              {'C': 0.45, 'nearest_nm': 0.0582, 'kept': True} violations=[('B:GLN12', 114.6)] focus={'A:GLU25': -139.1, 'A:GLU25-THR26 omega': -173.7, 'B:SER11-GLN12 omega': -148.6, 'B:GLN12': 114.6}
+   nearest#4              {'C': 0.6, 'nearest_nm': 0.0715, 'kept': True} violations=[('A:GLU25', 127.1), ('B:GLN12', 53.1)] focus={'A:GLU25': 127.1, 'A:GLU25-THR26 omega': -145.6, 'B:SER11-GLN12 omega': -173.9, 'B:GLN12': 53.1}
+   nearest#5              {'C': 0.75, 'nearest_nm': 0.0803, 'kept': True} violations=[('A:GLU25', 104.6), ('B:GLN12', 118.2)] focus={'A:GLU25': 104.6, 'A:GLU25-THR26 omega': -172.9, 'B:SER11-GLN12 omega': -161.6, 'B:GLN12': 118.2}
+   nearest#6              {'C': 0.9, 'nearest_nm': 0.0689, 'kept': False} violations=[] focus={'A:GLU25': -52.2, 'A:GLU25-THR26 omega': 170.4, 'B:SER11-GLN12 omega': -171.3, 'B:GLN12': -105.5}
+   nearest#7              {'C': 1.05, 'nearest_nm': 0.0451, 'kept': False} violations=[('B:GLN12', 50.2)] focus={'A:GLU25': -68.3, 'A:GLU25-THR26 omega': 169.1, 'B:SER11-GLN12 omega': 177.0, 'B:GLN12': 50.2}
+   nearest#8              {'C': 1.2, 'nearest_nm': 0.0273, 'kept': False} violations=[('A:GLU25', 176.1)] focus={'A:GLU25': 176.1, 'A:GLU25-THR26 omega': 166.9, 'B:SER11-GLN12 omega': -167.9, 'B:GLN12': -89.8}
+   nearest#9              {'C': 1.35, 'nearest_nm': 0.0399, 'kept': False} violations=[('A:GLU25', 175.8)] focus={'A:GLU25': 175.8, 'A:GLU25-THR26 omega': -178.7, 'B:SER11-GLN12 omega': 178.0, 'B:GLN12': -11.8}
+   nearest#10             {'C': 1.5, 'nearest_nm': 0.0285, 'kept': False} violations=[] focus={'A:GLU25': -141.6, 'A:GLU25-THR26 omega': -168.7, 'B:SER11-GLN12 omega': -153.9, 'B:GLN12': -135.9}
+   after_addMissingAtoms  {} violations=[('A:GLU25', 108.7), ('B:GLN12', 73.4)] focus={'A:GLU25': 108.7, 'A:GLU25-THR26 omega': -173.2, 'B:SER11-GLN12 omega': -173.0, 'B:GLN12': 73.4}
+   after_addHydrogens     {} violations=[('A:GLU25', 108.7), ('B:GLN12', 73.4)] focus={'A:GLU25': 108.7, 'A:GLU25-THR26 omega': -173.2, 'B:SER11-GLN12 omega': -173.0, 'B:GLN12': 73.4}
+   trace: /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/diagnostics/prep_stereo_20261012/P12Q_L10A/trace.json

@@ -1,0 +1,32 @@
+#!/bin/zsh
+#PBS -N score_smoke
+#PBS -q default
+#PBS -l select=1:ncpus=32:ngpus=1:mem=60gb:host=yayoi28
+#PBS -l walltime=01:00:00
+#PBS -j oe
+# Scoring smoke (design §10, 2026-10-15 plan): one full replica, window 1-10 ns, every saved
+# frame (10 ps, 900 frames), frozen OnlineMMPBSA defaults.  Measures ms/frame on the 4080
+# and the autocorrelation of delta_g_mmpbsa, which set the frame spacing and the full
+# scoring budget.  Output: scores/PMI/v21m1/rep01/{frames.csv,summary.json};
+# log: score_smoke.log.  Resumable (frames already in frames.csv are skipped).
+# Time basis: README full delta_g_pb ~210 ms/frame on a 2080 Ti, 54-59 ms/frame on a 5090
+# (RESULTS §18.14); 4080 not measured -> 900 frames roughly 1-4 min + ~40 s warm-up.
+#
+#   cd /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+#   qsub score_smoke.pbs
+
+test $PBS_O_WORKDIR && cd $PBS_O_WORKDIR
+. /home/apps/Modules/init/profile.sh
+export MODULEPATH=/home/ruigengji/modulefiles:$MODULEPATH
+
+export MAMBA_EXE=/home/ruigengji/miniforge3/bin/mamba
+export MAMBA_ROOT_PREFIX=/home/ruigengji/miniforge3
+source /home/ruigengji/miniforge3/etc/profile.d/mamba.sh
+mamba activate openmm_dev
+
+P=/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+export OMP_NUM_THREADS=16 MKL_NUM_THREADS=16
+cd /home/ruigengji/JAXPBSA
+{ echo "== start $(hostname) $(date -Is)"; nvidia-smi --query-gpu=name,memory.used,utilization.gpu --format=csv
+  python scripts/score_peptide_replica.py --run-id PMI_v21m1_rep01; rc=$?
+  echo "== done $(date -Is) exit $rc"; } >> $P/score_smoke.log 2>&1

@@ -1,0 +1,204 @@
+{
+  "sample_id": "Li2021_MDM2_TSFAEYWNLLSP_Kd",
+  "peptide_name": "PMI",
+  "sequence": "TSFAEYWNLLSP",
+  "template_peptide": "TSFAEYWNLLSP",
+  "receptor_chain": "A",
+  "peptide_chain": "B",
+  "mutations": [],
+  "rebuilt_residues": [
+    {
+      "chain": "A",
+      "resnum": 25,
+      "template": "GLU",
+      "built": "GLU"
+    },
+    {
+      "chain": "B",
+      "resnum": 12,
+      "template": "PRO",
+      "built": "PRO"
+    }
+  ],
+  "model_id": "model02",
+  "prep_seed": 20261012,
+  "template": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/raw/mdm2_3EQS.pdb",
+  "heterogens_in_template": {
+    "GAI": 1,
+    "HOH": 117
+  },
+  "residue_names_removed": [
+    "GAI",
+    "HOH"
+  ],
+  "altloc_policy": "altloc A for all residues (protocol \u00a71.2)",
+  "altloc_A_max_dev_A": 1.7763568394002505e-15,
+  "pdbfixer_missing_residues": {
+    "(0, 0)": [
+      "GLU"
+    ],
+    "(1, 11)": [
+      "PRO"
+    ]
+  },
+  "missing_atoms_added": {},
+  "missing_terminals_added": {},
+  "termini": {
+    "A": {
+      "n_residue": "GLU25",
+      "n_H": [
+        "H",
+        "H2",
+        "H3"
+      ],
+      "c_residue": "VAL109",
+      "has_OXT": true
+    },
+    "B": {
+      "n_residue": "THR1",
+      "n_H": [
+        "H",
+        "H2",
+        "H3"
+      ],
+      "c_residue": "PRO12",
+      "has_OXT": true
+    }
+  },
+  "his_states": {
+    "A:HIS73": [
+      "HD1"
+    ],
+    "A:HIS96": [
+      "HD1"
+    ]
+  },
+  "chirality_repair": [
+    {
+      "residue": "A:GLU25",
+      "chirality_before_deg": 120.0,
+      "chirality_after_deg": -120.0,
+      "atoms_mirrored": [
+        "CB",
+        "CD",
+        "CG",
+        "OE1",
+        "OE2"
+      ]
+    },
+    {
+      "residue": "B:PRO12",
+      "chirality_before_deg": 130.6,
+      "chirality_after_deg": -130.6,
+      "atoms_mirrored": [
+        "CB",
+        "CD",
+        "CG"
+      ]
+    }
+  ],
+  "stereo_check": {
+    "terms": 188,
+    "violations": 0,
+    "rule": "all CA L; all non-Pro omega trans (peptide_geometry.py)"
+  },
+  "his_variants_returned": [
+    "HID",
+    "HID"
+  ],
+  "forcefield": "amber/ff14SB.xml",
+  "pH": 7.4,
+  "caps": "none: free termini (protocol \u00a71.1)",
+  "n_atoms": 1644,
+  "n_receptor_atoms": 1449,
+  "n_peptide_atoms": 195,
+  "net_charge_complex": 4.0,
+  "net_charge_receptor": 5.0,
+  "net_charge_peptide": -1.0,
+  "closest_nonbonded_heavy_contacts_of_rebuilt_or_mutated": [
+    {
+      "d_A": 1.334,
+      "a": "A:GLU25.OE2",
+      "b": "A:THR26.OG1"
+    },
+    {
+      "d_A": 1.361,
+      "a": "A:GLU25.CD",
+      "b": "A:GLU25.O"
+    },
+    {
+      "d_A": 1.527,
+      "a": "A:GLU25.OE2",
+      "b": "A:GLU25.O"
+    },
+    {
+      "d_A": 1.527,
+      "a": "B:PRO12.CG",
+      "b": "B:SER11.O"
+    },
+    {
+      "d_A": 1.566,
+      "a": "A:GLU25.OE2",
+      "b": "A:THR26.CA"
+    },
+    {
+      "d_A": 1.601,
+      "a": "A:GLU25.OE2",
+      "b": "A:THR26.CB"
+    },
+    {
+      "d_A": 1.795,
+      "a": "A:GLU25.OE1",
+      "b": "A:GLU25.O"
+    },
+    {
+      "d_A": 1.815,
+      "a": "A:GLU25.OE2",
+      "b": "A:THR26.N"
+    },
+    {
+      "d_A": 1.849,
+      "a": "A:GLU25.CD",
+      "b": "A:GLU25.C"
+    },
+    {
+      "d_A": 1.903,
+      "a": "A:GLU25.OE2",
+      "b": "A:GLU25.C"
+    },
+    {
+      "d_A": 2.019,
+      "a": "A:GLU25.CD",
+      "b": "A:THR26.OG1"
+    },
+    {
+      "d_A": 2.167,
+      "a": "B:PRO12.CD",
+      "b": "B:SER11.CB"
+    },
+    {
+      "d_A": 2.415,
+      "a": "A:GLU25.CG",
+      "b": "A:GLU25.O"
+    },
+    {
+      "d_A": 2.498,
+      "a": "A:GLU25.CD",
+      "b": "A:THR26.N"
+    },
+    {
+      "d_A": 2.545,
+      "a": "A:GLU25.CD",
+      "b": "A:THR26.CA"
+    }
+  ],
+  "minimisation": "none here; done in solvent by run_peptide_md.py setup",
+  "software": {
+    "openmm": "8.5.2",
+    "pdbfixer": "1.12.0",
+    "python": "3.12.13"
+  },
+  "host": "fulda",
+  "wall_s": 2.91,
+  "evidence_scope": "prepared template model input; not structure/parameter acceptance"
+}

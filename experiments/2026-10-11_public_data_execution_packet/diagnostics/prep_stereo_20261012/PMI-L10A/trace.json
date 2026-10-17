@@ -1,0 +1,228 @@
+{
+  "sample": "PMI-L10A",
+  "mutations": [
+    "LEU-10-ALA"
+  ],
+  "rebuilt_residues": [
+    {
+      "chain": "A",
+      "resnum": 25,
+      "template": "GLU",
+      "built": "GLU"
+    },
+    {
+      "chain": "B",
+      "resnum": 12,
+      "template": "PRO",
+      "built": "PRO"
+    }
+  ],
+  "seed": 20261011,
+  "overlay": [
+    {
+      "target": "new GLU oriented on A:THR26",
+      "n_points": 5,
+      "det": 1.0
+    },
+    {
+      "target": "new PRO oriented on B:SER11",
+      "n_points": 5,
+      "det": -1.0
+    },
+    {
+      "target": "new GLU oriented on A:THR26",
+      "n_points": 5,
+      "det": 1.0
+    },
+    {
+      "target": "new PRO oriented on B:SER11",
+      "n_points": 5,
+      "det": -1.0
+    }
+  ],
+  "stages": [
+    {
+      "stage": "placement",
+      "violations": [
+        [
+          "B:PRO12",
+          121.7
+        ]
+      ],
+      "focus": {
+        "A:GLU25": -123.0,
+        "A:GLU25-THR26 omega": -118.4,
+        "B:SER11-PRO12 omega": -180.0,
+        "B:PRO12": 121.7
+      },
+      "class_changes_vs_placement": []
+    },
+    {
+      "stage": "nearest#0",
+      "C": 1.0,
+      "nearest_nm": 0.0209,
+      "kept": true,
+      "violations": [],
+      "focus": {
+        "A:GLU25": -111.1,
+        "A:GLU25-THR26 omega": -171.6,
+        "B:SER11-PRO12 omega": 135.8,
+        "B:PRO12": -125.3
+      },
+      "class_changes_vs_placement": [
+        {
+          "label": "B:PRO12",
+          "kind": "chirality",
+          "before": 121.7,
+          "after": -125.3
+        }
+      ]
+    },
+    {
+      "stage": "nearest#1",
+      "C": 0.15,
+      "nearest_nm": 0.0828,
+      "kept": true,
+      "violations": [
+        [
+          "A:GLU25",
+          169.4
+        ]
+      ],
+      "focus": {
+        "A:GLU25": 169.4,
+        "A:GLU25-THR26 omega": 174.6,
+        "B:SER11-PRO12 omega": 167.1,
+        "B:PRO12": -11.3
+      },
+      "class_changes_vs_placement": [
+        {
+          "label": "A:GLU25",
+          "kind": "chirality",
+          "before": -123.0,
+          "after": 169.4
+        },
+        {
+          "label": "B:PRO12",
+          "kind": "chirality",
+          "before": 121.7,
+          "after": -11.3
+        }
+      ]
+    },
+    {
+      "stage": "nearest#2",
+      "C": 0.3,
+      "nearest_nm": 0.1011,
+      "kept": true,
+      "violations": [],
+      "focus": {
+        "A:GLU25": -154.3,
+        "A:GLU25-THR26 omega": 166.3,
+        "B:SER11-PRO12 omega": 172.5,
+        "B:PRO12": -45.7
+      },
+      "class_changes_vs_placement": [
+        {
+          "label": "B:PRO12",
+          "kind": "chirality",
+          "before": 121.7,
+          "after": -45.7
+        }
+      ]
+    },
+    {
+      "stage": "nearest#3",
+      "C": 0.45,
+      "nearest_nm": 0.1608,
+      "kept": true,
+      "violations": [
+        [
+          "A:GLU25",
+          142.3
+        ]
+      ],
+      "focus": {
+        "A:GLU25": 142.3,
+        "A:GLU25-THR26 omega": 177.4,
+        "B:SER11-PRO12 omega": 173.1,
+        "B:PRO12": -32.4
+      },
+      "class_changes_vs_placement": [
+        {
+          "label": "A:GLU25",
+          "kind": "chirality",
+          "before": -123.0,
+          "after": 142.3
+        },
+        {
+          "label": "B:PRO12",
+          "kind": "chirality",
+          "before": 121.7,
+          "after": -32.4
+        }
+      ]
+    },
+    {
+      "stage": "after_addMissingAtoms",
+      "heavy_atoms": 805,
+      "violations": [
+        [
+          "A:GLU25",
+          142.5
+        ]
+      ],
+      "focus": {
+        "A:GLU25": 142.5,
+        "A:GLU25-THR26 omega": -175.2,
+        "B:SER11-PRO12 omega": 171.4,
+        "B:PRO12": -34.1
+      },
+      "class_changes_vs_placement": [
+        {
+          "label": "A:GLU25",
+          "kind": "chirality",
+          "before": -123.0,
+          "after": 142.5
+        },
+        {
+          "label": "B:PRO12",
+          "kind": "chirality",
+          "before": 121.7,
+          "after": -34.1
+        }
+      ]
+    },
+    {
+      "stage": "after_addHydrogens",
+      "violations": [
+        [
+          "A:GLU25",
+          142.5
+        ]
+      ],
+      "focus": {
+        "A:GLU25": 142.5,
+        "A:GLU25-THR26 omega": -175.2,
+        "B:SER11-PRO12 omega": 171.4,
+        "B:PRO12": -34.1
+      },
+      "class_changes_vs_placement": [
+        {
+          "label": "A:GLU25",
+          "kind": "chirality",
+          "before": -123.0,
+          "after": 142.5
+        },
+        {
+          "label": "B:PRO12",
+          "kind": "chirality",
+          "before": 121.7,
+          "after": -34.1
+        }
+      ]
+    }
+  ],
+  "prepare_result": "raised: prepared model has D-CA or cis non-Pro peptide bonds: [('A:GLU25', 142.5)]",
+  "wall_s": 0.78
+}

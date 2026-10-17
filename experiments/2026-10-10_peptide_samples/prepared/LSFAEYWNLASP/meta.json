@@ -1,0 +1,48 @@
+{
+  "sample_id": "Li2021_MDM2_LSFAEYWNLASP_Kd",
+  "target": "MDM2",
+  "peptide_name": "",
+  "peptide_sequence": "LSFAEYWNLASP",
+  "metric": "Kd",
+  "value_nM": "123.0",
+  "reported_uncertainty_nM": "10.0",
+  "uncertainty_definition": "reported_plus_minus_definition_not_assumed",
+  "raw_measurement": "123\u00a0\u00b1\u00a010",
+  "source_table": "Table 2",
+  "source_doi": "10.1016/j.apsb.2021.06.010",
+  "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8463443/",
+  "assay": "competition_SPR",
+  "temperature_K": "298.15",
+  "pH": "7.4",
+  "salt_NaCl_M": "0.15",
+  "receptor_construct": "25-109",
+  "n_terminus": "free_assumption_from_synthesis_and_PPIKB_pending_mass_check",
+  "c_terminus": "free_assumption_from_synthesis_and_PPIKB_pending_mass_check",
+  "structure_status": "template_model_required_for_most_variants",
+  "template_pdb": "3EQS",
+  "receptor_chain": "A",
+  "peptide_chain": "B",
+  "missing_template_residues": {
+    "(0, 0)": [
+      "GLU"
+    ],
+    "(1, 11)": [
+      "PRO"
+    ]
+  },
+  "mutations": [
+    "THR-1-LEU",
+    "LEU-10-ALA"
+  ],
+  "receptor_residues": 85,
+  "peptide_residues": 12,
+  "n_atoms": 1640,
+  "forcefield": "amber/ff14SB.xml",
+  "prep_seed": 20261010,
+  "prep_platform": "Reference hydrogens; single-thread CPU minimization",
+  "caps": "none; free termini assumption, not yet confirmed by experimental mass data",
+  "net_charge_complex": 4.000000000000007,
+  "net_charge_peptide": -0.999999999999999,
+  "preparation_s": 20.80320732097607,
+  "evidence_scope": "sequence-specific prepared bound pose, no MD ensemble"
+}

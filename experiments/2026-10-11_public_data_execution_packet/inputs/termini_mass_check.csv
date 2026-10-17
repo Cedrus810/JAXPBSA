@@ -1,0 +1,9 @@
+sample_id,peptide_name,sequence,si_table_s1_name,si_table_s1_mass_Da,free_termini_avg_Da,diff_free_Da,c_amide_avg_Da,ac_n_c_amide_avg_Da,ace_nme_avg_Da,evidence
+Li2021_MDM2_TSFAEYWNLLSP_Kd,PMI,TSFAEYWNLLSP,PMI,1427.58,1427.58,+0.00,1426.59,1468.63,1482.63,direct_2021_SI_TableS1_declared_mass_matches_free_termini
+Li2021_MDM2_TSFAEYWNLASP_Kd,PMI-L10A,TSFAEYWNLASP,PMI-L10A,1385.5,1385.50,+0.00,1384.51,1426.55,1440.55,direct_2021_SI_TableS1_declared_mass_matches_free_termini
+Li2021_MDM2_LSFAEYWNLASP_Kd,T1L_L10A,LSFAEYWNLASP,PMI-1-5,1397.55,1397.55,+0.00,1396.57,1438.60,1452.61,direct_2021_SI_TableS1_declared_mass_matches_free_termini
+Li2021_MDM2_TSFLEYWNLASP_Kd,A4L_L10A,TSFLEYWNLASP,PMI-4-5,1427.58,1427.58,+0.00,1426.59,1468.63,1482.63,direct_2021_SI_TableS1_declared_mass_matches_free_termini
+Li2021_MDM2_TSFAEYWALASP_Kd,N8A_L10A,TSFAEYWALASP,PMI-8-1,1342.47,1342.47,-0.00,1341.49,1383.52,1397.53,direct_2021_SI_TableS1_declared_mass_matches_free_termini
+Li2021_MDM2_TSFAEYWNLAMP_Kd,S11M_L10A,TSFAEYWNLAMP,PMI-11-7,1429.62,1429.61,+0.01,1428.63,1470.66,1484.67,direct_2021_SI_TableS1_declared_mass_matches_free_termini
+Li2021_MDM2_TSFAEYWNLASQ_Kd,P12Q_L10A,TSFAEYWNLASQ,PMI-12-11,1416.51,1416.51,+0.00,1415.52,1457.56,1471.56,direct_2021_SI_TableS1_declared_mass_matches_free_termini
+Li2021_MDM2_LTFLEYWNLASP_Kd,PMI-M4,LTFLEYWNLASP,,,1453.66,,1452.67,1494.71,1508.71,absent_from_SI_TableS1; inference_same_paper_same_Boc_HF_route

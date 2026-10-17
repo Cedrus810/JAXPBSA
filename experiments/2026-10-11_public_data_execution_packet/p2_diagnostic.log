@@ -1,0 +1,416 @@
+== start host fulda 2026-10-12T00:45:36+09:00 PY=/home/ruigengji/miniforge3/envs/openmm_dev/bin/python DEV=0 PROD_NS=10 DCD_PS=10 pid 507442
+index, name, memory.used [MiB], utilization.gpu [%]
+0, NVIDIA GeForce RTX 5090, 2 MiB, 0 %
+== [PMI] prep 2026-10-12T00:45:37+09:00
+{"skip_prepared": "PMI", "out": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/PMI/model01"}
+== [PMI] setup 2026-10-12T00:45:40+09:00
+{"skip_setup_done": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/model01/setup"}
+== [PMI_model01_rep01] run 2026-10-12T00:45:41+09:00
+{"run_id": "PMI_model01_rep01", "chunk": 1, "of": 10, "wall_s": 124.37}
+{"run_id": "PMI_model01_rep01", "chunk": 2, "of": 10, "wall_s": 121.41}
+{"run_id": "PMI_model01_rep01", "chunk": 3, "of": 10, "wall_s": 126.93}
+{"run_id": "PMI_model01_rep01", "chunk": 4, "of": 10, "wall_s": 125.91}
+{"run_id": "PMI_model01_rep01", "chunk": 5, "of": 10, "wall_s": 128.3}
+{"run_id": "PMI_model01_rep01", "chunk": 6, "of": 10, "wall_s": 142.14}
+{"run_id": "PMI_model01_rep01", "chunk": 7, "of": 10, "wall_s": 150.91}
+{"run_id": "PMI_model01_rep01", "chunk": 8, "of": 10, "wall_s": 145.41}
+{"run_id": "PMI_model01_rep01", "chunk": 9, "of": 10, "wall_s": 130.5}
+{"run_id": "PMI_model01_rep01", "complete": true, "chunks_done": 10}
+== [PMI_model01_rep01] strip 2026-10-12T01:06:14+09:00
+{"run_id": "PMI_model01_rep01", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1644, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.75, "50": 0.913, "95": 1.152}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.231, "50": 2.185, "95": 3.165}, "peptide_CA12_shift_A": {"5": 2.323, "50": 6.236, "95": 8.755}, "min_rec_pep_heavy_A": {"5": 2.636, "50": 2.806, "95": 3.052}, "nearest_waterO_A_HOH1_A": {"5": 0.855, "50": 4.592, "95": 5.582}, "nearest_waterO_A_HOH185_A": {"5": 0.557, "50": 1.414, "95": 2.447}, "nearest_waterO_A_HOH186_A": {"5": 0.393, "50": 1.169, "95": 3.727}, "nearest_waterO_B_HOH74_A": {"5": 0.624, "50": 1.446, "95": 2.443}}, "log_means": {"T_K": 298.4478, "density": 1.0138}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_model01_rep02] run 2026-10-12T01:06:28+09:00
+{"run_id": "PMI_model01_rep02", "chunk": 0, "of": 10, "wall_s": 93.5}
+{"run_id": "PMI_model01_rep02", "chunk": 1, "of": 10, "wall_s": 93.62}
+{"run_id": "PMI_model01_rep02", "chunk": 2, "of": 10, "wall_s": 93.52}
+{"run_id": "PMI_model01_rep02", "chunk": 3, "of": 10, "wall_s": 93.59}
+{"run_id": "PMI_model01_rep02", "chunk": 4, "of": 10, "wall_s": 93.55}
+{"run_id": "PMI_model01_rep02", "chunk": 5, "of": 10, "wall_s": 93.63}
+{"run_id": "PMI_model01_rep02", "chunk": 6, "of": 10, "wall_s": 93.98}
+{"run_id": "PMI_model01_rep02", "chunk": 7, "of": 10, "wall_s": 93.94}
+{"run_id": "PMI_model01_rep02", "chunk": 8, "of": 10, "wall_s": 93.54}
+{"run_id": "PMI_model01_rep02", "chunk": 9, "of": 10, "wall_s": 94.08}
+{"run_id": "PMI_model01_rep02", "complete": true, "chunks_done": 10}
+== [PMI_model01_rep02] strip 2026-10-12T01:23:45+09:00
+{"run_id": "PMI_model01_rep02", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1644, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.775, "50": 1.034, "95": 1.302}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.201, "50": 1.978, "95": 3.057}, "peptide_CA12_shift_A": {"5": 2.025, "50": 4.089, "95": 6.765}, "min_rec_pep_heavy_A": {"5": 2.57, "50": 2.747, "95": 2.982}, "nearest_waterO_A_HOH1_A": {"5": 0.502, "50": 1.353, "95": 5.24}, "nearest_waterO_A_HOH185_A": {"5": 0.729, "50": 1.645, "95": 2.718}, "nearest_waterO_A_HOH186_A": {"5": 0.327, "50": 0.915, "95": 1.995}, "nearest_waterO_B_HOH74_A": {"5": 0.617, "50": 1.467, "95": 2.307}}, "log_means": {"T_K": 298.3861, "density": 1.0139}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_model01_rep03] run 2026-10-12T01:23:53+09:00
+{"run_id": "PMI_model01_rep03", "chunk": 0, "of": 10, "wall_s": 95.68}
+{"run_id": "PMI_model01_rep03", "chunk": 1, "of": 10, "wall_s": 95.33}
+{"run_id": "PMI_model01_rep03", "chunk": 2, "of": 10, "wall_s": 95.13}
+{"run_id": "PMI_model01_rep03", "chunk": 3, "of": 10, "wall_s": 95.68}
+{"run_id": "PMI_model01_rep03", "chunk": 4, "of": 10, "wall_s": 96.52}
+{"run_id": "PMI_model01_rep03", "chunk": 5, "of": 10, "wall_s": 95.75}
+{"run_id": "PMI_model01_rep03", "chunk": 6, "of": 10, "wall_s": 95.53}
+{"run_id": "PMI_model01_rep03", "chunk": 7, "of": 10, "wall_s": 95.61}
+{"run_id": "PMI_model01_rep03", "chunk": 8, "of": 10, "wall_s": 95.09}
+{"run_id": "PMI_model01_rep03", "chunk": 9, "of": 10, "wall_s": 95.45}
+{"run_id": "PMI_model01_rep03", "complete": true, "chunks_done": 10}
+== [PMI_model01_rep03] strip 2026-10-12T01:41:29+09:00
+{"run_id": "PMI_model01_rep03", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1644, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.725, "50": 0.927, "95": 1.173}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.273, "50": 1.5, "95": 1.878}, "peptide_CA12_shift_A": {"5": 2.014, "50": 3.155, "95": 4.027}, "min_rec_pep_heavy_A": {"5": 2.55, "50": 2.678, "95": 2.798}, "nearest_waterO_A_HOH1_A": {"5": 0.385, "50": 0.867, "95": 1.564}, "nearest_waterO_A_HOH185_A": {"5": 0.667, "50": 1.488, "95": 2.431}, "nearest_waterO_A_HOH186_A": {"5": 0.44, "50": 1.149, "95": 1.971}, "nearest_waterO_B_HOH74_A": {"5": 0.615, "50": 1.425, "95": 2.47}}, "log_means": {"T_K": 298.4503, "density": 1.0137}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A] prep 2026-10-12T01:41:36+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/ruigengji/JAXPBSA/scripts/prep_peptide_sample.py", line 283, in <module>
+    main()
+  File "/home/ruigengji/JAXPBSA/scripts/prep_peptide_sample.py", line 277, in main
+    rec = prepare(plan, a.template, tpl, a.model_id, a.seed)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ruigengji/JAXPBSA/scripts/prep_peptide_sample.py", line 169, in prepare
+    raise RuntimeError(f"prepared model has D-CA or cis non-Pro peptide bonds: "
+RuntimeError: prepared model has D-CA or cis non-Pro peptide bonds: [('A:GLU25', 142.5)]
+== start host fulda 2026-10-12T15:05:58+09:00 PY=/home/ruigengji/miniforge3/envs/openmm_dev/bin/python DEV=0 PROD_NS=10 DCD_PS=10 pid 574189
+index, name, memory.used [MiB], utilization.gpu [%]
+0, NVIDIA GeForce RTX 5090, 2 MiB, 0 %
+== [PMI] prep 2026-10-12T15:05:58+09:00
+{"skip_prepared": "PMI", "out": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/PMI/model01"}
+== [PMI] setup 2026-10-12T15:06:11+09:00
+{"skip_setup_done": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/model01/setup"}
+== [PMI_model01_rep01] run 2026-10-12T15:06:17+09:00
+{"run_id": "PMI_model01_rep01", "complete": true, "chunks_done": 10}
+== [PMI_model01_rep01] strip 2026-10-12T15:06:57+09:00
+{"run_id": "PMI_model01_rep01", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1644, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.75, "50": 0.913, "95": 1.152}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.231, "50": 2.185, "95": 3.165}, "peptide_CA12_shift_A": {"5": 2.323, "50": 6.236, "95": 8.755}, "min_rec_pep_heavy_A": {"5": 2.636, "50": 2.806, "95": 3.052}, "nearest_waterO_A_HOH1_A": {"5": 0.855, "50": 4.592, "95": 5.582}, "nearest_waterO_A_HOH185_A": {"5": 0.557, "50": 1.414, "95": 2.447}, "nearest_waterO_A_HOH186_A": {"5": 0.393, "50": 1.169, "95": 3.727}, "nearest_waterO_B_HOH74_A": {"5": 0.624, "50": 1.446, "95": 2.443}}, "log_means": {"T_K": 298.4478, "density": 1.0138}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_model01_rep02] run 2026-10-12T15:07:41+09:00
+{"run_id": "PMI_model01_rep02", "complete": true, "chunks_done": 10}
+== [PMI_model01_rep02] strip 2026-10-12T15:07:58+09:00
+{"run_id": "PMI_model01_rep02", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1644, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.775, "50": 1.034, "95": 1.302}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.201, "50": 1.978, "95": 3.057}, "peptide_CA12_shift_A": {"5": 2.025, "50": 4.089, "95": 6.765}, "min_rec_pep_heavy_A": {"5": 2.57, "50": 2.747, "95": 2.982}, "nearest_waterO_A_HOH1_A": {"5": 0.502, "50": 1.353, "95": 5.24}, "nearest_waterO_A_HOH185_A": {"5": 0.729, "50": 1.645, "95": 2.718}, "nearest_waterO_A_HOH186_A": {"5": 0.327, "50": 0.915, "95": 1.995}, "nearest_waterO_B_HOH74_A": {"5": 0.617, "50": 1.467, "95": 2.307}}, "log_means": {"T_K": 298.3861, "density": 1.0139}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_model01_rep03] run 2026-10-12T15:08:26+09:00
+{"run_id": "PMI_model01_rep03", "complete": true, "chunks_done": 10}
+== [PMI_model01_rep03] strip 2026-10-12T15:08:36+09:00
+{"run_id": "PMI_model01_rep03", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1644, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.725, "50": 0.927, "95": 1.173}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.273, "50": 1.5, "95": 1.878}, "peptide_CA12_shift_A": {"5": 2.014, "50": 3.155, "95": 4.027}, "min_rec_pep_heavy_A": {"5": 2.55, "50": 2.678, "95": 2.798}, "nearest_waterO_A_HOH1_A": {"5": 0.385, "50": 0.867, "95": 1.564}, "nearest_waterO_A_HOH185_A": {"5": 0.667, "50": 1.488, "95": 2.431}, "nearest_waterO_A_HOH186_A": {"5": 0.44, "50": 1.149, "95": 1.971}, "nearest_waterO_B_HOH74_A": {"5": 0.615, "50": 1.425, "95": 2.47}}, "log_means": {"T_K": 298.4503, "density": 1.0137}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A] prep 2026-10-12T15:08:58+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"peptide_name": "PMI-L10A", "model_id": "model01", "n_atoms": 1635, "net_charge_complex": 4.0, "net_charge_peptide": -1.0, "his_states": {"A:HIS73": ["HD1"], "A:HIS96": ["HD1"]}, "chirality_repair": [{"residue": "A:GLU25", "chirality_before_deg": 142.5, "chirality_after_deg": -142.5, "atoms_mirrored": ["CB", "CD", "CG", "OE1", "OE2"]}], "wall_s": 13.37}
+== [PMI-L10A] setup 2026-10-12T15:11:28+09:00
+{"setup_done": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI-L10A/model01/setup", "n_atoms": 23939, "added": {"HOH": 7420, "NA": 20, "CL": 24}, "E_min_kJ_mol": -401785.4001610009, "wall_s": 12.28}
+== [PMI-L10A_model01_rep01] run 2026-10-12T15:11:52+09:00
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 0, "of": 10, "wall_s": 97.77}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 1, "of": 10, "wall_s": 106.33}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 2, "of": 10, "wall_s": 94.45}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 3, "of": 10, "wall_s": 92.51}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 4, "of": 10, "wall_s": 94.1}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 5, "of": 10, "wall_s": 93.51}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 6, "of": 10, "wall_s": 92.52}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 7, "of": 10, "wall_s": 91.71}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 8, "of": 10, "wall_s": 92.13}
+{"run_id": "PMI-L10A_model01_rep01", "chunk": 9, "of": 10, "wall_s": 92.27}
+{"run_id": "PMI-L10A_model01_rep01", "complete": true, "chunks_done": 10}
+== [PMI-L10A_model01_rep01] strip 2026-10-12T15:29:56+09:00
+{"run_id": "PMI-L10A_model01_rep01", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1635, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.736, "50": 0.904, "95": 1.114}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.349, "50": 1.677, "95": 2.047}, "peptide_CA12_shift_A": {"5": 2.029, "50": 3.305, "95": 4.372}, "min_rec_pep_heavy_A": {"5": 2.551, "50": 2.679, "95": 2.838}, "nearest_waterO_A_HOH1_A": {"5": 0.443, "50": 1.041, "95": 4.069}, "nearest_waterO_A_HOH185_A": {"5": 0.599, "50": 1.488, "95": 2.574}, "nearest_waterO_A_HOH186_A": {"5": 0.427, "50": 1.088, "95": 4.013}, "nearest_waterO_B_HOH74_A": {"5": 0.594, "50": 1.438, "95": 2.301}}, "log_means": {"T_K": 298.444, "density": 1.0139}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A_model01_rep02] run 2026-10-12T15:30:24+09:00
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 0, "of": 10, "wall_s": 93.61}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 1, "of": 10, "wall_s": 94.04}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 2, "of": 10, "wall_s": 93.21}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 3, "of": 10, "wall_s": 93.22}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 4, "of": 10, "wall_s": 92.28}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 5, "of": 10, "wall_s": 92.48}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 6, "of": 10, "wall_s": 92.22}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 7, "of": 10, "wall_s": 93.0}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 8, "of": 10, "wall_s": 92.93}
+{"run_id": "PMI-L10A_model01_rep02", "chunk": 9, "of": 10, "wall_s": 93.48}
+{"run_id": "PMI-L10A_model01_rep02", "complete": true, "chunks_done": 10}
+== [PMI-L10A_model01_rep02] strip 2026-10-12T15:47:47+09:00
+{"run_id": "PMI-L10A_model01_rep02", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1635, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.866, "50": 1.1, "95": 1.291}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.474, "50": 1.914, "95": 2.29}, "peptide_CA12_shift_A": {"5": 1.757, "50": 2.91, "95": 4.03}, "min_rec_pep_heavy_A": {"5": 2.538, "50": 2.685, "95": 2.855}, "nearest_waterO_A_HOH1_A": {"5": 0.466, "50": 1.324, "95": 4.011}, "nearest_waterO_A_HOH185_A": {"5": 0.886, "50": 1.694, "95": 2.625}, "nearest_waterO_A_HOH186_A": {"5": 0.311, "50": 0.81, "95": 2.025}, "nearest_waterO_B_HOH74_A": {"5": 0.718, "50": 1.58, "95": 2.46}}, "log_means": {"T_K": 298.4269, "density": 1.0142}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A_model01_rep03] run 2026-10-12T15:48:04+09:00
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 0, "of": 10, "wall_s": 91.33}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 1, "of": 10, "wall_s": 91.04}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 2, "of": 10, "wall_s": 93.44}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 3, "of": 10, "wall_s": 92.13}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 4, "of": 10, "wall_s": 91.79}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 5, "of": 10, "wall_s": 92.16}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 6, "of": 10, "wall_s": 91.05}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 7, "of": 10, "wall_s": 91.41}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 8, "of": 10, "wall_s": 91.16}
+{"run_id": "PMI-L10A_model01_rep03", "chunk": 9, "of": 10, "wall_s": 91.21}
+{"run_id": "PMI-L10A_model01_rep03", "complete": true, "chunks_done": 10}
+== [PMI-L10A_model01_rep03] strip 2026-10-12T16:05:04+09:00
+{"run_id": "PMI-L10A_model01_rep03", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1635, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.731, "50": 0.901, "95": 1.127}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.298, "50": 1.679, "95": 2.322}, "peptide_CA12_shift_A": {"5": 1.709, "50": 2.596, "95": 4.041}, "min_rec_pep_heavy_A": {"5": 2.557, "50": 2.726, "95": 2.991}, "nearest_waterO_A_HOH1_A": {"5": 0.413, "50": 1.235, "95": 3.303}, "nearest_waterO_A_HOH185_A": {"5": 0.69, "50": 1.735, "95": 2.853}, "nearest_waterO_A_HOH186_A": {"5": 0.311, "50": 0.973, "95": 2.193}, "nearest_waterO_B_HOH74_A": {"5": 0.611, "50": 1.512, "95": 2.441}}, "log_means": {"T_K": 298.4846, "density": 1.014}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A] prep 2026-10-12T16:05:28+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"peptide_name": "P12Q_L10A", "model_id": "model01", "n_atoms": 1638, "net_charge_complex": 4.0, "net_charge_peptide": -1.0, "his_states": {"A:HIS73": ["HD1"], "A:HIS96": ["HD1"]}, "chirality_repair": [{"residue": "A:GLU25", "chirality_before_deg": 108.7, "chirality_after_deg": -108.7, "atoms_mirrored": ["CB", "CD", "CG", "OE1", "OE2"]}, {"residue": "B:GLN12", "chirality_before_deg": 73.4, "chirality_after_deg": -73.4, "atoms_mirrored": ["CB", "CD", "CG", "NE2", "OE1"]}], "wall_s": 8.83}
+== [P12Q_L10A] setup 2026-10-12T16:06:19+09:00
+{"setup_done": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/P12Q_L10A/model01/setup", "n_atoms": 24298, "added": {"HOH": 7538, "NA": 21, "CL": 25}, "E_min_kJ_mol": -407326.14878586493, "wall_s": 11.79}
+== [P12Q_L10A_model01_rep01] run 2026-10-12T16:06:42+09:00
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 0, "of": 10, "wall_s": 91.4}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 1, "of": 10, "wall_s": 92.18}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 2, "of": 10, "wall_s": 91.55}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 3, "of": 10, "wall_s": 97.03}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 4, "of": 10, "wall_s": 92.46}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 5, "of": 10, "wall_s": 92.82}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 6, "of": 10, "wall_s": 92.99}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 7, "of": 10, "wall_s": 94.3}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 8, "of": 10, "wall_s": 91.8}
+{"run_id": "P12Q_L10A_model01_rep01", "chunk": 9, "of": 10, "wall_s": 93.92}
+{"run_id": "P12Q_L10A_model01_rep01", "complete": true, "chunks_done": 10}
+== [P12Q_L10A_model01_rep01] strip 2026-10-12T16:24:01+09:00
+{"run_id": "P12Q_L10A_model01_rep01", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1638, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.774, "50": 0.932, "95": 1.153}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.049, "50": 1.351, "95": 1.779}, "peptide_CA12_shift_A": {"5": 0.879, "50": 1.709, "95": 2.761}, "min_rec_pep_heavy_A": {"5": 2.572, "50": 2.725, "95": 2.895}, "nearest_waterO_A_HOH1_A": {"5": 0.486, "50": 1.041, "95": 1.839}, "nearest_waterO_A_HOH185_A": {"5": 0.46, "50": 1.286, "95": 2.31}, "nearest_waterO_A_HOH186_A": {"5": 0.423, "50": 1.168, "95": 2.346}, "nearest_waterO_B_HOH74_A": {"5": 0.578, "50": 1.419, "95": 2.283}}, "log_means": {"T_K": 298.5261, "density": 1.0141}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A_model01_rep02] run 2026-10-12T16:24:33+09:00
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 0, "of": 10, "wall_s": 93.29}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 1, "of": 10, "wall_s": 91.92}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 2, "of": 10, "wall_s": 93.5}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 3, "of": 10, "wall_s": 92.06}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 4, "of": 10, "wall_s": 91.23}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 5, "of": 10, "wall_s": 92.48}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 6, "of": 10, "wall_s": 92.75}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 7, "of": 10, "wall_s": 95.09}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 8, "of": 10, "wall_s": 95.53}
+{"run_id": "P12Q_L10A_model01_rep02", "chunk": 9, "of": 10, "wall_s": 91.94}
+{"run_id": "P12Q_L10A_model01_rep02", "complete": true, "chunks_done": 10}
+== [P12Q_L10A_model01_rep02] strip 2026-10-12T16:42:21+09:00
+{"run_id": "P12Q_L10A_model01_rep02", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1638, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.797, "50": 0.988, "95": 1.24}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.146, "50": 1.565, "95": 2.109}, "peptide_CA12_shift_A": {"5": 0.87, "50": 1.658, "95": 2.902}, "min_rec_pep_heavy_A": {"5": 2.564, "50": 2.711, "95": 2.898}, "nearest_waterO_A_HOH1_A": {"5": 0.524, "50": 1.294, "95": 4.524}, "nearest_waterO_A_HOH185_A": {"5": 0.734, "50": 1.693, "95": 2.802}, "nearest_waterO_A_HOH186_A": {"5": 0.294, "50": 0.968, "95": 2.588}, "nearest_waterO_B_HOH74_A": {"5": 0.679, "50": 1.545, "95": 2.484}}, "log_means": {"T_K": 298.3858, "density": 1.0141}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A_model01_rep03] run 2026-10-12T16:43:50+09:00
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 0, "of": 10, "wall_s": 120.41}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 1, "of": 10, "wall_s": 102.27}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 2, "of": 10, "wall_s": 102.2}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 3, "of": 10, "wall_s": 90.74}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 4, "of": 10, "wall_s": 90.74}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 5, "of": 10, "wall_s": 92.12}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 6, "of": 10, "wall_s": 93.36}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 7, "of": 10, "wall_s": 91.38}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 8, "of": 10, "wall_s": 91.97}
+{"run_id": "P12Q_L10A_model01_rep03", "chunk": 9, "of": 10, "wall_s": 169.84}
+{"run_id": "P12Q_L10A_model01_rep03", "complete": true, "chunks_done": 10}
+== [P12Q_L10A_model01_rep03] strip 2026-10-12T17:03:15+09:00
+{"run_id": "P12Q_L10A_model01_rep03", "frames_total": 1000, "chunks_used": 10, "dry_frames": 1000, "dry_stride": 1, "diag_stride": 1, "n_solute_atoms": 1638, "quantiles_p5_p50_p95": {"receptor_CA_rmsd_A": {"5": 0.794, "50": 0.959, "95": 1.152}, "peptide_CA_rmsd_receptor_frame_A": {"5": 1.386, "50": 1.746, "95": 2.123}, "peptide_CA12_shift_A": {"5": 1.366, "50": 3.434, "95": 4.756}, "min_rec_pep_heavy_A": {"5": 2.549, "50": 2.691, "95": 2.832}, "nearest_waterO_A_HOH1_A": {"5": 0.431, "50": 1.064, "95": 4.486}, "nearest_waterO_A_HOH185_A": {"5": 1.085, "50": 2.097, "95": 3.585}, "nearest_waterO_A_HOH186_A": {"5": 0.387, "50": 1.192, "95": 4.628}, "nearest_waterO_B_HOH74_A": {"5": 0.659, "50": 1.485, "95": 2.432}}, "log_means": {"T_K": 298.5229, "density": 1.0138}, "stereo_terms": 188, "stereo_class_changes_frames_by_term": {}, "note": "diagnostic report only; no acceptance thresholds applied"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== all done 2026-10-12T17:04:30+09:00

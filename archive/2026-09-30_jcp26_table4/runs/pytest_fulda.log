@@ -1,0 +1,2 @@
+# fulda (RTX 5090), 2026-09-30, `python -m pytest -q tests`(含 gap_sigma=1.0 与最终版 NPB)。原样转录自终端 tail。
+53 passed, 1 skipped, 1 warning in 60.57s (0:01:00)

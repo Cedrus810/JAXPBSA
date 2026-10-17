@@ -1,0 +1,58 @@
+{
+  "run_id": "PMI-L10A_model02_rep03",
+  "frames_total": 1000,
+  "chunks_used": 10,
+  "dry_frames": 1000,
+  "dry_stride": 1,
+  "diag_stride": 1,
+  "n_solute_atoms": 1635,
+  "quantiles_p5_p50_p95": {
+    "receptor_CA_rmsd_A": {
+      "5": 0.843,
+      "50": 1.063,
+      "95": 1.263
+    },
+    "peptide_CA_rmsd_receptor_frame_A": {
+      "5": 1.22,
+      "50": 1.535,
+      "95": 2.013
+    },
+    "peptide_CA12_shift_A": {
+      "5": 1.511,
+      "50": 2.404,
+      "95": 3.602
+    },
+    "min_rec_pep_heavy_A": {
+      "5": 2.554,
+      "50": 2.693,
+      "95": 2.876
+    },
+    "nearest_waterO_A_HOH1_A": {
+      "5": 0.56,
+      "50": 1.198,
+      "95": 2.603
+    },
+    "nearest_waterO_A_HOH185_A": {
+      "5": 0.802,
+      "50": 1.781,
+      "95": 2.843
+    },
+    "nearest_waterO_A_HOH186_A": {
+      "5": 0.386,
+      "50": 1.055,
+      "95": 2.374
+    },
+    "nearest_waterO_B_HOH74_A": {
+      "5": 0.647,
+      "50": 1.535,
+      "95": 2.385
+    }
+  },
+  "log_means": {
+    "T_K": 298.5092,
+    "density": 1.0135
+  },
+  "stereo_terms": 188,
+  "stereo_class_changes_frames_by_term": {},
+  "note": "diagnostic report only; no acceptance thresholds applied"
+}

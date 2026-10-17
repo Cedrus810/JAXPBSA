@@ -1,0 +1,58 @@
+{
+  "sample_id": "Li2021_MDM2_TSFAEYWNLLSP_Kd",
+  "peptide_name": "PMI",
+  "model_id": "model01",
+  "prepared": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/PMI/model01",
+  "solvation_seed": 20261011,
+  "forcefield": [
+    "amber/ff14SB.xml",
+    "amber/tip3p_standard.xml"
+  ],
+  "padding_nm": 1.2,
+  "ionic_strength_M": 0.15,
+  "neutralize": true,
+  "n_solute_atoms": 1644,
+  "n_atoms": 24146,
+  "added_residues": {
+    "HOH": 7486,
+    "NA": 20,
+    "CL": 24
+  },
+  "box_vectors_nm": [
+    [
+      6.349,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      6.349,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      6.349
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "E_before_kJ_mol": 6632838.016975791,
+    "E_after_kJ_mol": -403705.1291367905,
+    "max_force_after_kJ_mol_nm": 2248.277106983587,
+    "wall_s": 2.85
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 5090",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "fulda",
+  "wall_s": 5.16
+}

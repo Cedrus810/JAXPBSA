@@ -1,0 +1,9 @@
+== start yayoi28.cluster.local 2026-10-15T14:36:18+09:00
+name, memory.used [MiB], utilization.gpu [%]
+NVIDIA GeForce RTX 3090, 0 MiB, 0 %
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI_v21m1_rep01", "n_frames_scored": 900, "n_valid": 900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.18206101582672, "block_means": {"1-4ns": -60.98325226103029, "4-7ns": -59.75214943480033, "7-10ns": -62.81078135164955}, "autocorr_lag_ps_below_1_over_e": 10.0, "ms_per_frame_this_call": {"median": 119.52, "n": 900}, "warmup_s": 194.74, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== done 2026-10-15T14:47:05+09:00 exit 0

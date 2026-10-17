@@ -1,0 +1,39 @@
+#!/bin/zsh
+#PBS -N p2v21_ext20
+#PBS -q default
+#PBS -l select=1:ncpus=32:ngpus=1:mem=60gb:host=yayoi43
+#PBS -l walltime=72:00:00
+#PBS -j oe
+# Extend the 48 v2.1 replicas from 10 to 20 ns (design §10, 2026-10-15: block means still
+# trend at 10 ns; user: "可以").  Same driver as V5: p2_v21_validation.sh with PROD_NS=20;
+# prep/setup/NVT/NPT and the first 10 chunks are done and skipped, chunks 10-19 are added,
+# then every replica is stripped again (solute_dry.dcd becomes 2000 frames, 0-20 ns).
+# Log appends to p2_v21_validation.log.  When every replica is complete, the same job scores
+# 10-20 ns (protocol §2.1 rules: every frame, frozen OnlineMMPBSA defaults) into
+# scores_10_20/<sample>/<model>/<rep>/ (1-10 ns stays in scores/); log score_ext20.log.
+# Node yayoi43 (RTX 4080 Super, Ryzen 5950X 16 cores), walltime 72 h (user, 2026-10-16).
+# First submission on yayoi26 (2026-10-15 18:58) failed at once: its 3090 was not visible
+# (nvidia-smi "No devices were found", OpenMM CUDA_ERROR_NO_DEVICE); no chunk was written.
+# Time basis: 4080 Super not measured; on the yayoi42 4080 (V5) production was 104.5 s/ns
+# (median of 480 chunks): 48 x 10 ns x 104.5 s = 13.9 h, strip ~1 h.  Scoring: not measured on a 4080;
+# on the yayoi28 3090 43200 frames took 2 h 16 min incl. init -> 48000 frames ~2.5 h there.
+# Resumable: qsub this file again (finished chunks and scored frames are skipped).
+#
+#   cd /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+#   qsub p2_v21_ext20.pbs
+
+test $PBS_O_WORKDIR && cd $PBS_O_WORKDIR
+. /home/apps/Modules/init/profile.sh
+export MODULEPATH=/home/ruigengji/modulefiles:$MODULEPATH
+
+export MAMBA_EXE=/home/ruigengji/miniforge3/bin/mamba
+export MAMBA_ROOT_PREFIX=/home/ruigengji/miniforge3
+source /home/ruigengji/miniforge3/etc/profile.d/mamba.sh
+mamba activate openmm_dev
+
+P=/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+# 32 threads allocated (5950X: 16 physical cores); OpenMM and scoring run on the GPU.
+export OMP_NUM_THREADS=16 MKL_NUM_THREADS=16
+# One GPU is allocated, so device index 0 is that GPU.
+PY="$(command -v python)" DEV=0 PROD_NS=20 REPS="01 02 03" bash $P/p2_v21_validation.sh && \
+  PY="$(command -v python)" START_NS=10 END_NS=20 OUT_ROOT=scores_10_20 LOG=score_ext20.log bash $P/score_all.sh

@@ -1,0 +1,28 @@
+{
+  "protocol": "v2.1_modeller_heavy_then_reduce",
+  "peptide_name": "PMI",
+  "sequence": "TSFAEYWNLLSP",
+  "models": {
+    "heavy_v2m1.pdb": {
+      "start": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v2/PRO/start_v2m1.pdb",
+      "seed": null,
+      "mutated_peptide_positions": [],
+      "method": "copy of stage-1 start (no mutation)",
+      "optimised": "side-chain atoms beyond CB of mutated residues; all other atoms = stage-1 xyz",
+      "molpdf": null,
+      "wall_s": 0.02
+    },
+    "heavy_v2m2.pdb": {
+      "start": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v2/PRO/start_v2m2.pdb",
+      "seed": null,
+      "mutated_peptide_positions": [],
+      "method": "copy of stage-1 start (no mutation)",
+      "optimised": "side-chain atoms beyond CB of mutated residues; all other atoms = stage-1 xyz",
+      "molpdf": null,
+      "wall_s": 0.01
+    }
+  },
+  "modeller": "MODELLER 10.8, 2025/11/04, r13157",
+  "python": "3.14.7",
+  "host": "kasuga01"
+}

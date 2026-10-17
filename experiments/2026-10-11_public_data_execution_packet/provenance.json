@@ -1,0 +1,49 @@
+{
+  "date_JST": "2026-10-11",
+  "scope": "stdlib table and PDB record audit; no molecular computation",
+  "verified_counts": {
+    "pilot_labels": 8,
+    "same_assay_competition_SPR_Kd": 8,
+    "structure_ready": 0,
+    "parameter_ready": 0,
+    "proposed_runs_not_submitted": 24
+  },
+  "sources": [
+    {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/raw/mdm2_article.html",
+      "sha256_for_provenance_only": "fd13dbc129b9b5de9a9ef82d4d4937b8177a6ea3a1152581d0d75299fb427aee"
+    },
+    {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/raw/mdm2_3EQS.pdb",
+      "sha256_for_provenance_only": "7086cf2bc4723ccbb4be5ff7f86a50d9db59bc307f4fbb0395a3c6ce3569827d"
+    },
+    {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/manifests/pilot_mdm2_8.csv",
+      "sha256_for_provenance_only": "314f9e955499664268a6da6ed2cf4cdcaf25cb067434b23d7b262adc6a769b4d"
+    },
+    {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/raw/li2021_si/si.zip",
+      "sha256_for_provenance_only": "7bf99da1c9160ceb2da2ac9e768cb54f06d259963497fcf4ab57943d909a7d00",
+      "note": "pre-existing local download (2026-10-11 21:39); zipfile.testzip() clean; contains mmc1.pdf + figures"
+    },
+    {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/sources/li2021_si_mmc1/mmc1.pdf",
+      "sha256_for_provenance_only": "40ea3e74fb5359570884690f8739af05b6dc7bfbc002a697b0eb16f78e59f2fe",
+      "note": "extracted from si.zip; 10 pages; Table S1 sequences and molecular masses"
+    }
+  ],
+  "chemistry_support": {
+    "historical_PAM_method_source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2856455/",
+    "historical_DOI": "10.1016/j.jmb.2010.03.005",
+    "verified": "2010 methods name PAM resin; 2021 Methods 2.1 omit resin identity and per_sample_terminal_mass_values",
+    "interpretation": "support for free termini is an inference, not direct 2021 per_sample confirmation",
+    "update_2026_10_11": "see inputs/termini_mass_check.csv and protocol.md 1.1; declared (calculated) masses, not per-sample observed ESI values"
+  },
+  "supplement_status": "2021 SI mmc1.pdf obtained from local si.zip (2026-10-11 update); Table S1 declared masses match free termini for 7/8 pilot samples; PMI-M4 absent from Table S1",
+  "legacy_preparation_complete_file_sets": 5,
+  "static_structure_audit": {
+    "script": "scripts/audit_3eqs_contacts.py",
+    "outputs": "inputs/3eqs_audit/",
+    "scope": "PDB text + numpy distances; no hydrogens, no force field"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "run_id": "A4L_L10A_v21m2_rep03",
+  "sample": "A4L_L10A",
+  "model": "v21m2",
+  "replica": "rep03",
+  "prepared": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/A4L_L10A/v21m2",
+  "dcd": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/A4L_L10A/v21m2/rep03/analysis/solute_dry.dcd",
+  "dcd_exists": true,
+  "replica_complete": true,
+  "window_ns": [
+    1.0,
+    20.0
+  ],
+  "stride_frames": 1,
+  "frame_ps": 10.0,
+  "out": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/scores_1_20/A4L_L10A/v21m2/rep03",
+  "n_frames_scored": 1900,
+  "n_valid": 1900,
+  "n_flagged": 0,
+  "flags": [],
+  "delta_g_mmpbsa_mean": -57.35920234309195,
+  "delta_g_mmpbsa_sd": 5.374455215332056,
+  "components_mean": {
+    "e_coul_rl": -197.2044944787659,
+    "e_lj_rl": -66.36739905676521,
+    "delta_g_pb": 212.66830314758548,
+    "delta_g_sa": -6.455611955146302
+  },
+  "block_means": {
+    "1-4ns": -55.962156433405426,
+    "4-7ns": -56.68458809903265,
+    "7-10ns": -57.61363532852095,
+    "10-13ns": -58.48283472341573,
+    "13-16ns": -59.11638354550626,
+    "16-19ns": -56.564243045363725,
+    "19-20ns": -56.553320993013
+  },
+  "autocorr_lag_ps_below_1_over_e": 10.0,
+  "autocorr_first_lags": [
+    1.0,
+    0.33,
+    0.272,
+    0.26,
+    0.225,
+    0.227,
+    0.172,
+    0.178,
+    0.217,
+    0.189,
+    0.15,
+    0.181,
+    0.195,
+    0.134,
+    0.116,
+    0.115,
+    0.108,
+    0.101,
+    0.09,
+    0.084,
+    0.131
+  ],
+  "autocorr_integrated_tau_ps": 103.3,
+  "autocorr_sokal_window_ps": 520.0,
+  "n_eff_estimate": 183.9,
+  "autocorr_note": "diagnostic of delta_g_mmpbsa over valid frames at the scored stride; sets the frame-spacing rule (design \u00a710, 2026-10-15), not a statistical weight",
+  "sizing": {
+    "source": "pilot 1900 \u5e27",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      161,
+      193,
+      161
+    ],
+    "grid_lig": [
+      193,
+      193,
+      193
+    ],
+    "min_margin_on_sizing_frames": 7.891786743088743,
+    "min_margin_lig_on_sizing_frames": 3.4318844410715554
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only pilot_coords_A given",
+  "init_incl_warmup_s": 4.98,
+  "warmup_s": 3.94,
+  "ms_per_frame_this_call": {
+    "median": 133.91,
+    "n": 1900
+  },
+  "device": "cuda:0",
+  "host": "yayoi31.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

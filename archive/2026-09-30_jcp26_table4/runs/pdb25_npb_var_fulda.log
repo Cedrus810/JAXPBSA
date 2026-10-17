@@ -1,0 +1,7 @@
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+host fulda  devices [CudaDevice(id=0)]  hs=(1.0, 0.5, 0.25)  NPB  phases=3
+PDB      G(h=1.0)    G(h=0.5)   G(h=0.25)  相对 0.25 的偏差(我们)        | JCP26 GEC(NPB) h=1/0.5/0.25 与相对偏差     | 我们/原文(0.25)  ms@0.5
+1C75_cym 失败 h=0.5: RuntimeError phase 2 it_s=2006 rr_s=3.45e+07 it_r=6 rr_r=3.48e-06 G=5136093191.21
+1TQG_altB     -925.36     -928.47     -931.11   -0.62%   -0.28%             |  -704.44  -733.07  -728.52   -3.31%  +0.62% |  1.278   516.5
+PDB25 DONE

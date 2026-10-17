@@ -1,0 +1,292 @@
+== start host yayoi31.cluster.local 2026-10-16T22:55:55+09:00 pid 1633430 window 1-20 ns out scores_1_20
+index, name, memory.used [MiB], utilization.gpu [%]
+0, NVIDIA GeForce RTX 4080 SUPER, 0 MiB, 2 %
+== [PMI_v21m1_rep01] score 2026-10-16T22:55:57+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI_v21m1_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.684271835341676, "block_means": {"1-4ns": -60.990378041666666, "4-7ns": -59.75788071903633, "7-10ns": -62.817791184270014, "10-13ns": -62.046536291003676, "13-16ns": -62.034637496435096, "16-19ns": -57.370929778832945, "19-20ns": -57.94670433775764}, "autocorr_integrated_tau_ps": 521.9, "ms_per_frame_this_call": {"median": 124.77, "n": 1900}, "warmup_s": 63.56, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_v21m1_rep02] score 2026-10-16T23:02:47+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI_v21m1_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.32962514769575, "block_means": {"1-4ns": -59.61974375853652, "4-7ns": -60.62426452941215, "7-10ns": -58.75603224227707, "10-13ns": -58.52428401715168, "13-16ns": -60.755142259327464, "16-19ns": -62.86257036539647, "19-20ns": -62.83676628991516}, "autocorr_integrated_tau_ps": 349.4, "ms_per_frame_this_call": {"median": 115.44, "n": 1900}, "warmup_s": 19.06, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_v21m1_rep03] score 2026-10-16T23:06:52+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI_v21m1_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.5326839754019, "block_means": {"1-4ns": -59.39361990998652, "4-7ns": -62.47937074034504, "7-10ns": -64.06939257446517, "10-13ns": -61.251620521829295, "13-16ns": -59.05615376395105, "16-19ns": -63.241812496133015, "19-20ns": -60.64508551250595}, "autocorr_integrated_tau_ps": 391.1, "ms_per_frame_this_call": {"median": 98.23, "n": 1900}, "warmup_s": 47.25, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_v21m2_rep01] score 2026-10-16T23:10:52+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI_v21m2_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.920496886171364, "block_means": {"1-4ns": -58.55357020172624, "4-7ns": -60.94275584495961, "7-10ns": -62.096536963770525, "10-13ns": -58.90687069713902, "13-16ns": -63.981574448387136, "16-19ns": -66.16109918211795, "19-20ns": -64.56221882295456}, "autocorr_integrated_tau_ps": 872.9, "ms_per_frame_this_call": {"median": 117.41, "n": 1900}, "warmup_s": 54.75, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_v21m2_rep02] score 2026-10-16T23:15:36+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI_v21m2_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.75271138237357, "block_means": {"1-4ns": -61.96271625694923, "4-7ns": -62.99424427823098, "7-10ns": -60.65273604572178, "10-13ns": -61.551838219166214, "13-16ns": -62.2426676210293, "16-19ns": -61.21909168656019, "19-20ns": -61.43163394212465}, "autocorr_integrated_tau_ps": 69.0, "ms_per_frame_this_call": {"median": 134.2, "n": 1900}, "warmup_s": 27.21, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI_v21m2_rep03] score 2026-10-16T23:20:24+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI_v21m2_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -62.235074346698745, "block_means": {"1-4ns": -61.91104502933663, "4-7ns": -64.37781241833117, "7-10ns": -63.86738044176055, "10-13ns": -60.66782976058634, "13-16ns": -61.0017951187938, "16-19ns": -61.414051534244365, "19-20ns": -62.746669678117385}, "autocorr_integrated_tau_ps": 496.0, "ms_per_frame_this_call": {"median": 115.71, "n": 1900}, "warmup_s": 44.95, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A_v21m1_rep01] score 2026-10-16T23:24:55+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-L10A_v21m1_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.6467162498525, "block_means": {"1-4ns": -56.90101131645092, "4-7ns": -59.41808498016817, "7-10ns": -59.633801984783254, "10-13ns": -61.44393210284618, "13-16ns": -58.76980012408637, "16-19ns": -61.10920755689939, "19-20ns": -61.46009455149464}, "autocorr_integrated_tau_ps": 251.9, "ms_per_frame_this_call": {"median": 122.88, "n": 1900}, "warmup_s": 31.8, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A_v21m1_rep02] score 2026-10-16T23:29:26+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-L10A_v21m1_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.12860277397555, "block_means": {"1-4ns": -63.30429005893526, "4-7ns": -59.74892293343294, "7-10ns": -58.62637658387647, "10-13ns": -60.06496360794413, "13-16ns": -59.43943980680936, "16-19ns": -59.839522400828464, "19-20ns": -59.37290653005552}, "autocorr_integrated_tau_ps": 190.6, "ms_per_frame_this_call": {"median": 115.64, "n": 1900}, "warmup_s": 50.22, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A_v21m1_rep03] score 2026-10-16T23:34:02+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-L10A_v21m1_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.149454046766266, "block_means": {"1-4ns": -58.66998178117637, "4-7ns": -58.11674548664428, "7-10ns": -57.13236356329512, "10-13ns": -58.46212153416225, "13-16ns": -62.53598447545793, "16-19ns": -60.22931571956556, "19-20ns": -58.40008920765447}, "autocorr_integrated_tau_ps": 305.8, "ms_per_frame_this_call": {"median": 126.19, "n": 1900}, "warmup_s": 55.56, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A_v21m2_rep01] score 2026-10-16T23:39:04+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-L10A_v21m2_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.892728607014014, "block_means": {"1-4ns": -59.385156073005795, "4-7ns": -64.40692641887554, "7-10ns": -62.46588349815103, "10-13ns": -61.350527316461715, "13-16ns": -60.14273188233436, "16-19ns": -58.63781448411607, "19-20ns": -57.79472451443264}, "autocorr_integrated_tau_ps": 741.0, "ms_per_frame_this_call": {"median": 106.16, "n": 1900}, "warmup_s": 43.6, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A_v21m2_rep02] score 2026-10-16T23:43:16+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-L10A_v21m2_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.41307732547765, "block_means": {"1-4ns": -61.065873312295174, "4-7ns": -61.869360537253186, "7-10ns": -61.87129935268303, "10-13ns": -60.50429084853839, "13-16ns": -59.2454439240047, "16-19ns": -58.631884553205914, "19-20ns": -58.28401160013418}, "autocorr_integrated_tau_ps": 271.8, "ms_per_frame_this_call": {"median": 126.1, "n": 1900}, "warmup_s": 14.82, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-L10A_v21m2_rep03] score 2026-10-16T23:47:36+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-L10A_v21m2_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -58.672254459613804, "block_means": {"1-4ns": -59.621509516873026, "4-7ns": -58.06550893658585, "7-10ns": -59.4996717538397, "10-13ns": -60.86504013848686, "13-16ns": -58.324834200471756, "16-19ns": -56.551414763612215, "19-20ns": -55.988896803054104}, "autocorr_integrated_tau_ps": 389.6, "ms_per_frame_this_call": {"median": 136.95, "n": 1900}, "warmup_s": 52.13, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [T1L_L10A_v21m1_rep01] score 2026-10-16T23:52:55+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "T1L_L10A_v21m1_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.18898091373954, "block_means": {"1-4ns": -57.06190451149836, "4-7ns": -57.93411199510743, "7-10ns": -58.685821520896425, "10-13ns": -60.93329255803704, "13-16ns": -60.4464848885744, "16-19ns": -59.854468194460566, "19-20ns": -59.84238635532864}, "autocorr_integrated_tau_ps": 347.8, "ms_per_frame_this_call": {"median": 134.1, "n": 1900}, "warmup_s": 36.11, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [T1L_L10A_v21m1_rep02] score 2026-10-16T23:57:54+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "T1L_L10A_v21m1_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -58.3406588760755, "block_means": {"1-4ns": -56.514385425374456, "4-7ns": -61.26798889726948, "7-10ns": -56.97444570515958, "10-13ns": -59.441828679457615, "13-16ns": -58.33620607702172, "16-19ns": -57.4551515461459, "19-20ns": -58.502499654148195}, "autocorr_integrated_tau_ps": 317.3, "ms_per_frame_this_call": {"median": 133.96, "n": 1900}, "warmup_s": 4.07, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [T1L_L10A_v21m1_rep03] score 2026-10-17T00:02:20+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "T1L_L10A_v21m1_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.67463238175284, "block_means": {"1-4ns": -58.57631107134747, "4-7ns": -61.86798578795724, "7-10ns": -58.4779913993169, "10-13ns": -59.2458601203879, "13-16ns": -58.51303275107968, "16-19ns": -60.54092178535489, "19-20ns": -62.15170650697188}, "autocorr_integrated_tau_ps": 229.7, "ms_per_frame_this_call": {"median": 106.22, "n": 1900}, "warmup_s": 52.33, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [T1L_L10A_v21m2_rep01] score 2026-10-17T00:06:40+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "T1L_L10A_v21m2_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.452723676818934, "block_means": {"1-4ns": -57.611477543673715, "4-7ns": -55.85528938977133, "7-10ns": -62.16045439911136, "10-13ns": -60.93490600227371, "13-16ns": -62.933075661407834, "16-19ns": -62.86524463467112, "19-20ns": -61.52040696683262}, "autocorr_integrated_tau_ps": 1171.0, "ms_per_frame_this_call": {"median": 122.87, "n": 1900}, "warmup_s": 4.02, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [T1L_L10A_v21m2_rep02] score 2026-10-17T00:10:49+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "T1L_L10A_v21m2_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -58.16446706281163, "block_means": {"1-4ns": -56.47323519247766, "4-7ns": -57.83961315861668, "7-10ns": -60.44814771652552, "10-13ns": -58.04606324582603, "13-16ns": -58.17507264226124, "16-19ns": -58.13813763521173, "19-20ns": -57.764065420664444}, "autocorr_integrated_tau_ps": 209.3, "ms_per_frame_this_call": {"median": 127.63, "n": 1900}, "warmup_s": 54.7, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [T1L_L10A_v21m2_rep03] score 2026-10-17T00:15:59+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "T1L_L10A_v21m2_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -57.879268936300036, "block_means": {"1-4ns": -58.552912944537034, "4-7ns": -57.108829582364486, "7-10ns": -57.469893606608494, "10-13ns": -56.399268203382405, "13-16ns": -58.777909454451, "16-19ns": -58.565609469172415, "19-20ns": -59.08284000815318}, "autocorr_integrated_tau_ps": 59.3, "ms_per_frame_this_call": {"median": 117.4, "n": 1900}, "warmup_s": 10.99, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [A4L_L10A_v21m1_rep01] score 2026-10-17T00:20:00+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "A4L_L10A_v21m1_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.53376843935838, "block_means": {"1-4ns": -59.5419209644403, "4-7ns": -58.163175823415706, "7-10ns": -58.97726757835723, "10-13ns": -59.2394721516318, "13-16ns": -59.441963181529076, "16-19ns": -61.08556882271787, "19-20ns": -61.79349478153331}, "autocorr_integrated_tau_ps": 100.9, "ms_per_frame_this_call": {"median": 115.44, "n": 1900}, "warmup_s": 4.18, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [A4L_L10A_v21m1_rep02] score 2026-10-17T00:23:55+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "A4L_L10A_v21m1_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.982550284437465, "block_means": {"1-4ns": -60.613839147507555, "4-7ns": -61.33796619962801, "7-10ns": -59.364901770949025, "10-13ns": -58.54623825736446, "13-16ns": -62.68546888721241, "16-19ns": -62.2538460062602, "19-20ns": -64.26167459754681}, "autocorr_integrated_tau_ps": 287.1, "ms_per_frame_this_call": {"median": 114.89, "n": 1900}, "warmup_s": 43.9, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [A4L_L10A_v21m1_rep03] score 2026-10-17T00:28:23+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "A4L_L10A_v21m1_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.72418821959216, "block_means": {"1-4ns": -61.71378617407537, "4-7ns": -65.07576385783157, "7-10ns": -62.746369464067456, "10-13ns": -61.4865811858665, "13-16ns": -62.037451040459516, "16-19ns": -58.70096345358555, "19-20ns": -57.47683064459321}, "autocorr_integrated_tau_ps": 563.6, "ms_per_frame_this_call": {"median": 115.0, "n": 1900}, "warmup_s": 4.11, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [A4L_L10A_v21m2_rep01] score 2026-10-17T00:32:11+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "A4L_L10A_v21m2_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.078828541266176, "block_means": {"1-4ns": -60.94052912518892, "4-7ns": -61.54454607978084, "7-10ns": -64.03687198481613, "10-13ns": -62.127665743362144, "13-16ns": -60.91876135248801, "16-19ns": -57.70439122723922, "19-20ns": -58.679445745431465}, "autocorr_integrated_tau_ps": 794.5, "ms_per_frame_this_call": {"median": 106.14, "n": 1900}, "warmup_s": 3.88, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [A4L_L10A_v21m2_rep02] score 2026-10-17T00:35:42+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "A4L_L10A_v21m2_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -62.89001158520205, "block_means": {"1-4ns": -59.33993987758441, "4-7ns": -64.36469479259195, "7-10ns": -64.93424952203762, "10-13ns": -62.92131692568551, "13-16ns": -63.821886890447324, "16-19ns": -63.15962449246627, "19-20ns": -59.28508261639977}, "autocorr_integrated_tau_ps": 528.4, "ms_per_frame_this_call": {"median": 106.5, "n": 1900}, "warmup_s": 3.86, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [A4L_L10A_v21m2_rep03] score 2026-10-17T00:39:15+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "A4L_L10A_v21m2_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -57.35920234309195, "block_means": {"1-4ns": -55.962156433405426, "4-7ns": -56.68458809903265, "7-10ns": -57.61363532852095, "10-13ns": -58.48283472341573, "13-16ns": -59.11638354550626, "16-19ns": -56.564243045363725, "19-20ns": -56.553320993013}, "autocorr_integrated_tau_ps": 103.3, "ms_per_frame_this_call": {"median": 133.91, "n": 1900}, "warmup_s": 3.94, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [N8A_L10A_v21m1_rep01] score 2026-10-17T00:43:41+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "N8A_L10A_v21m1_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -55.346714260803545, "block_means": {"1-4ns": -54.798382666828864, "4-7ns": -54.11988749487933, "7-10ns": -57.07129527965618, "10-13ns": -56.183865777999735, "13-16ns": -54.900260725653986, "16-19ns": -54.39435150814327, "19-20ns": -57.1834405957833}, "autocorr_integrated_tau_ps": 179.8, "ms_per_frame_this_call": {"median": 115.01, "n": 1900}, "warmup_s": 62.46, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [N8A_L10A_v21m1_rep02] score 2026-10-17T00:48:34+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "N8A_L10A_v21m1_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -56.237361910207575, "block_means": {"1-4ns": -55.57807949752627, "4-7ns": -57.214968968316725, "7-10ns": -58.178311230975645, "10-13ns": -55.79130565854636, "13-16ns": -55.778845275985525, "16-19ns": -54.5999014066734, "19-20ns": -57.08564017987227}, "autocorr_integrated_tau_ps": 231.4, "ms_per_frame_this_call": {"median": 115.03, "n": 1900}, "warmup_s": 3.69, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [N8A_L10A_v21m1_rep03] score 2026-10-17T00:52:28+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "N8A_L10A_v21m1_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -56.65566658874277, "block_means": {"1-4ns": -56.68222405696788, "4-7ns": -59.68947785116103, "7-10ns": -57.10174369311319, "10-13ns": -55.063827771368366, "13-16ns": -55.4292159252156, "16-19ns": -56.38397878218924, "19-20ns": -55.4062609460665}, "autocorr_integrated_tau_ps": 517.6, "ms_per_frame_this_call": {"median": 126.32, "n": 1900}, "warmup_s": 55.06, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [N8A_L10A_v21m2_rep01] score 2026-10-17T00:57:40+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "N8A_L10A_v21m2_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -56.87832760435014, "block_means": {"1-4ns": -57.106305978462686, "4-7ns": -57.011614429165675, "7-10ns": -58.580425741556624, "10-13ns": -56.77807071839361, "13-16ns": -55.75906424748139, "16-19ns": -56.21370929522086, "19-20ns": -56.34065325181021}, "autocorr_integrated_tau_ps": 203.0, "ms_per_frame_this_call": {"median": 124.47, "n": 1900}, "warmup_s": 12.62, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [N8A_L10A_v21m2_rep02] score 2026-10-17T01:01:58+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "N8A_L10A_v21m2_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -58.21952001763537, "block_means": {"1-4ns": -56.947521525193125, "4-7ns": -58.75578230593244, "7-10ns": -57.08783863666523, "10-13ns": -59.02385933798243, "13-16ns": -57.94157910359376, "16-19ns": -59.19647280876321, "19-20ns": -59.311719180681415}, "autocorr_integrated_tau_ps": 91.0, "ms_per_frame_this_call": {"median": 134.15, "n": 1900}, "warmup_s": 35.01, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [N8A_L10A_v21m2_rep03] score 2026-10-17T01:07:05+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "N8A_L10A_v21m2_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -57.773673275420734, "block_means": {"1-4ns": -57.43251362534397, "4-7ns": -60.80928145694978, "7-10ns": -58.62710655520413, "10-13ns": -57.15768266765641, "13-16ns": -56.645816922483256, "16-19ns": -56.714490578594294, "19-20ns": -55.539116814298325}, "autocorr_integrated_tau_ps": 394.3, "ms_per_frame_this_call": {"median": 122.76, "n": 1900}, "warmup_s": 3.74, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [S11M_L10A_v21m1_rep01] score 2026-10-17T01:11:12+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "S11M_L10A_v21m1_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.076022546341335, "block_means": {"1-4ns": -61.03491714180789, "4-7ns": -61.324966975713664, "7-10ns": -59.81392789946795, "10-13ns": -58.60739016511089, "13-16ns": -57.33913101033004, "16-19ns": -57.485443818726345, "19-20ns": -55.627097347015}, "autocorr_integrated_tau_ps": 822.8, "ms_per_frame_this_call": {"median": 106.2, "n": 1900}, "warmup_s": 73.34, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [S11M_L10A_v21m1_rep02] score 2026-10-17T01:15:56+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "S11M_L10A_v21m1_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.3434949271115, "block_means": {"1-4ns": -58.72476859828118, "4-7ns": -58.74130461310283, "7-10ns": -59.97824593042513, "10-13ns": -61.86137115420779, "13-16ns": -59.81653775385139, "16-19ns": -61.638041822004546, "19-20ns": -64.24559399949999}, "autocorr_integrated_tau_ps": 279.8, "ms_per_frame_this_call": {"median": 117.4, "n": 1900}, "warmup_s": 15.11, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [S11M_L10A_v21m1_rep03] score 2026-10-17T01:20:16+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "S11M_L10A_v21m1_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.50185239067646, "block_means": {"1-4ns": -60.2091287863789, "4-7ns": -59.00698402817051, "7-10ns": -60.30274675634419, "10-13ns": -59.771052987853906, "13-16ns": -61.98009438164046, "16-19ns": -61.50535854386964, "19-20ns": -61.209098970079864}, "autocorr_integrated_tau_ps": 157.6, "ms_per_frame_this_call": {"median": 115.93, "n": 1900}, "warmup_s": 118.22, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [S11M_L10A_v21m2_rep01] score 2026-10-17T01:26:13+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "S11M_L10A_v21m2_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.166289408073325, "block_means": {"1-4ns": -60.24826423209973, "4-7ns": -62.556850452842845, "7-10ns": -60.14164684976719, "10-13ns": -60.96800853121446, "13-16ns": -60.93331563381304, "16-19ns": -61.507220489874996, "19-20ns": -63.09358018455639}, "autocorr_integrated_tau_ps": 59.4, "ms_per_frame_this_call": {"median": 117.38, "n": 1900}, "warmup_s": 3.63, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [S11M_L10A_v21m2_rep02] score 2026-10-17T01:30:15+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "S11M_L10A_v21m2_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.84026927992879, "block_means": {"1-4ns": -59.82246548196073, "4-7ns": -61.020687401930495, "7-10ns": -59.711127248084715, "10-13ns": -59.71263731524992, "13-16ns": -59.60450650841427, "16-19ns": -59.789707138126396, "19-20ns": -57.98172303734737}, "autocorr_integrated_tau_ps": 39.3, "ms_per_frame_this_call": {"median": 115.54, "n": 1900}, "warmup_s": 47.62, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [S11M_L10A_v21m2_rep03] score 2026-10-17T01:34:52+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "S11M_L10A_v21m2_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -60.780685051734174, "block_means": {"1-4ns": -61.51051664339274, "4-7ns": -62.2614368533884, "7-10ns": -62.75812337066061, "10-13ns": -59.62910346003271, "13-16ns": -60.38265434877396, "16-19ns": -58.54997721049936, "19-20ns": -59.55758032270586}, "autocorr_integrated_tau_ps": 275.9, "ms_per_frame_this_call": {"median": 117.28, "n": 1900}, "warmup_s": 3.64, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A_v21m1_rep01] score 2026-10-17T01:38:44+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "P12Q_L10A_v21m1_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -58.19657736113957, "block_means": {"1-4ns": -59.34585189250492, "4-7ns": -59.3546511457284, "7-10ns": -57.802775749282226, "10-13ns": -56.853027952198424, "13-16ns": -58.43577547286453, "16-19ns": -57.638095057792235, "19-20ns": -57.44443805053952}, "autocorr_integrated_tau_ps": 90.9, "ms_per_frame_this_call": {"median": 122.93, "n": 1900}, "warmup_s": 31.05, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A_v21m1_rep02] score 2026-10-17T01:43:14+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "P12Q_L10A_v21m1_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -57.1715889553929, "block_means": {"1-4ns": -58.05083800596408, "4-7ns": -60.093763204152125, "7-10ns": -59.512413243763575, "10-13ns": -55.443687198912585, "13-16ns": -53.5721545715367, "16-19ns": -56.69722654814759, "19-20ns": -56.149941835035094}, "autocorr_integrated_tau_ps": 1013.5, "ms_per_frame_this_call": {"median": 143.88, "n": 1900}, "warmup_s": 10.91, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A_v21m1_rep03] score 2026-10-17T01:48:04+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "P12Q_L10A_v21m1_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -57.83039364261877, "block_means": {"1-4ns": -60.37098179044441, "4-7ns": -59.54095699801827, "7-10ns": -59.5296120258929, "10-13ns": -57.48725139512649, "13-16ns": -54.76301396104966, "16-19ns": -55.192236984466085, "19-20ns": -58.12531974476333}, "autocorr_integrated_tau_ps": 1060.9, "ms_per_frame_this_call": {"median": 153.71, "n": 1900}, "warmup_s": 19.41, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A_v21m2_rep01] score 2026-10-17T01:53:21+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "P12Q_L10A_v21m2_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -58.450195214920264, "block_means": {"1-4ns": -56.816128055020584, "4-7ns": -56.149921421919835, "7-10ns": -60.51955228927858, "10-13ns": -59.33446630568845, "13-16ns": -60.53922232848748, "16-19ns": -57.69683437548799, "19-20ns": -57.38533475583624}, "autocorr_integrated_tau_ps": 425.5, "ms_per_frame_this_call": {"median": 134.1, "n": 1900}, "warmup_s": 11.46, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A_v21m2_rep02] score 2026-10-17T01:57:53+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "P12Q_L10A_v21m2_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -56.33061234401835, "block_means": {"1-4ns": -55.314184281105724, "4-7ns": -55.05397422170137, "7-10ns": -56.01132752698315, "10-13ns": -58.002659078802246, "13-16ns": -55.146531146405465, "16-19ns": -57.64773369645198, "19-20ns": -58.75240468199875}, "autocorr_integrated_tau_ps": 251.7, "ms_per_frame_this_call": {"median": 115.23, "n": 1900}, "warmup_s": 43.71, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [P12Q_L10A_v21m2_rep03] score 2026-10-17T02:02:22+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "P12Q_L10A_v21m2_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -57.469800074692856, "block_means": {"1-4ns": -58.125112183824484, "4-7ns": -57.85761530871373, "7-10ns": -57.59679054507376, "10-13ns": -58.11248456671131, "13-16ns": -57.04759232340468, "16-19ns": -56.45433248399541, "19-20ns": -56.344419183994205}, "autocorr_integrated_tau_ps": 37.1, "ms_per_frame_this_call": {"median": 115.49, "n": 1900}, "warmup_s": 43.43, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-M4_v21m1_rep01] score 2026-10-17T02:06:51+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-M4_v21m1_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.6902081684229, "block_means": {"1-4ns": -61.89615974976977, "4-7ns": -57.425638516516074, "7-10ns": -59.17343140523129, "10-13ns": -58.47161727226527, "13-16ns": -62.21474488824458, "16-19ns": -59.675658418586025, "19-20ns": -57.542204448196046}, "autocorr_integrated_tau_ps": 420.7, "ms_per_frame_this_call": {"median": 115.29, "n": 1900}, "warmup_s": 51.5, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-M4_v21m1_rep02] score 2026-10-17T02:11:28+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-M4_v21m1_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -59.04917077774208, "block_means": {"1-4ns": -60.66936835167423, "4-7ns": -59.452632637364815, "7-10ns": -61.81651540392117, "10-13ns": -56.62939513721651, "13-16ns": -58.178569037445556, "16-19ns": -57.77311567682783, "19-20ns": -58.37545604374929}, "autocorr_integrated_tau_ps": 368.9, "ms_per_frame_this_call": {"median": 114.98, "n": 1900}, "warmup_s": 4.1, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-M4_v21m1_rep03] score 2026-10-17T02:15:17+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-M4_v21m1_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -58.614094509692194, "block_means": {"1-4ns": -59.40203449557807, "4-7ns": -59.51748904031386, "7-10ns": -58.29856843435327, "10-13ns": -57.43408787091784, "13-16ns": -55.70525537893344, "16-19ns": -60.33951998857786, "19-20ns": -61.57693005812865}, "autocorr_integrated_tau_ps": 418.8, "ms_per_frame_this_call": {"median": 115.7, "n": 1900}, "warmup_s": 50.35, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-M4_v21m2_rep01] score 2026-10-17T02:19:53+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-M4_v21m2_rep01", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.48399757170431, "block_means": {"1-4ns": -59.64477765162832, "4-7ns": -64.65248016858992, "7-10ns": -60.99699238078828, "10-13ns": -62.0940141945519, "13-16ns": -62.470121705429726, "16-19ns": -59.17284679267832, "19-20ns": -61.10225518138247}, "autocorr_integrated_tau_ps": 387.1, "ms_per_frame_this_call": {"median": 115.1, "n": 1900}, "warmup_s": 4.1, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-M4_v21m2_rep02] score 2026-10-17T02:23:42+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-M4_v21m2_rep02", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -58.37888591006107, "block_means": {"1-4ns": -57.51861595261155, "4-7ns": -57.2065486980386, "7-10ns": -58.02211514575238, "10-13ns": -58.09191599540752, "13-16ns": -60.20354091317095, "16-19ns": -59.17960309707504, "19-20ns": -58.53181288499232}, "autocorr_integrated_tau_ps": 95.5, "ms_per_frame_this_call": {"median": 125.02, "n": 1900}, "warmup_s": 43.33, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== [PMI-M4_v21m2_rep03] score 2026-10-17T02:28:29+09:00
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"run_id": "PMI-M4_v21m2_rep03", "n_frames_scored": 1900, "n_valid": 1900, "n_flagged": 0, "delta_g_mmpbsa_mean": -61.29199545978255, "block_means": {"1-4ns": -60.58101419763699, "4-7ns": -60.46327635342713, "7-10ns": -61.04316522458828, "10-13ns": -60.8500718865691, "13-16ns": -62.31797963395215, "16-19ns": -62.52044792502566, "19-20ns": -61.22004807227057}, "autocorr_integrated_tau_ps": 55.4, "ms_per_frame_this_call": {"median": 122.96, "n": 1900}, "warmup_s": 23.01, "device": "cuda:0"}
+dcdplugin) detected standard 32-bit DCD file of native endianness
+dcdplugin) CHARMM format DCD file (also NAMD 2.1 and later)
+== all done 2026-10-17T02:32:51+09:00

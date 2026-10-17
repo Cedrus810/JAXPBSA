@@ -1,0 +1,206 @@
+{
+  "sample_id": "Li2021_MDM2_TSFAEYWNLASP_Kd",
+  "peptide_name": "PMI-L10A",
+  "sequence": "TSFAEYWNLASP",
+  "template_peptide": "TSFAEYWNLLSP",
+  "receptor_chain": "A",
+  "peptide_chain": "B",
+  "mutations": [
+    "LEU-10-ALA"
+  ],
+  "rebuilt_residues": [
+    {
+      "chain": "A",
+      "resnum": 25,
+      "template": "GLU",
+      "built": "GLU"
+    },
+    {
+      "chain": "B",
+      "resnum": 12,
+      "template": "PRO",
+      "built": "PRO"
+    }
+  ],
+  "model_id": "model02",
+  "prep_seed": 20261012,
+  "template": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/raw/mdm2_3EQS.pdb",
+  "heterogens_in_template": {
+    "GAI": 1,
+    "HOH": 117
+  },
+  "residue_names_removed": [
+    "GAI",
+    "HOH"
+  ],
+  "altloc_policy": "altloc A for all residues (protocol \u00a71.2)",
+  "altloc_A_max_dev_A": 1.7763568394002505e-15,
+  "pdbfixer_missing_residues": {
+    "(0, 0)": [
+      "GLU"
+    ],
+    "(1, 11)": [
+      "PRO"
+    ]
+  },
+  "missing_atoms_added": {},
+  "missing_terminals_added": {},
+  "termini": {
+    "A": {
+      "n_residue": "GLU25",
+      "n_H": [
+        "H",
+        "H2",
+        "H3"
+      ],
+      "c_residue": "VAL109",
+      "has_OXT": true
+    },
+    "B": {
+      "n_residue": "THR1",
+      "n_H": [
+        "H",
+        "H2",
+        "H3"
+      ],
+      "c_residue": "PRO12",
+      "has_OXT": true
+    }
+  },
+  "his_states": {
+    "A:HIS73": [
+      "HD1"
+    ],
+    "A:HIS96": [
+      "HD1"
+    ]
+  },
+  "chirality_repair": [
+    {
+      "residue": "A:GLU25",
+      "chirality_before_deg": 132.7,
+      "chirality_after_deg": -132.7,
+      "atoms_mirrored": [
+        "CB",
+        "CD",
+        "CG",
+        "OE1",
+        "OE2"
+      ]
+    },
+    {
+      "residue": "B:PRO12",
+      "chirality_before_deg": 135.2,
+      "chirality_after_deg": -135.2,
+      "atoms_mirrored": [
+        "CB",
+        "CD",
+        "CG"
+      ]
+    }
+  ],
+  "stereo_check": {
+    "terms": 188,
+    "violations": 0,
+    "rule": "all CA L; all non-Pro omega trans (peptide_geometry.py)"
+  },
+  "his_variants_returned": [
+    "HID",
+    "HID"
+  ],
+  "forcefield": "amber/ff14SB.xml",
+  "pH": 7.4,
+  "caps": "none: free termini (protocol \u00a71.1)",
+  "n_atoms": 1635,
+  "n_receptor_atoms": 1449,
+  "n_peptide_atoms": 186,
+  "net_charge_complex": 4.0,
+  "net_charge_receptor": 5.0,
+  "net_charge_peptide": -1.0,
+  "closest_nonbonded_heavy_contacts_of_rebuilt_or_mutated": [
+    {
+      "d_A": 1.117,
+      "a": "A:GLU25.OE1",
+      "b": "A:GLU25.C"
+    },
+    {
+      "d_A": 1.302,
+      "a": "A:GLU25.OE1",
+      "b": "A:GLU25.O"
+    },
+    {
+      "d_A": 1.479,
+      "a": "A:GLU25.CA",
+      "b": "A:GLU25.OE1"
+    },
+    {
+      "d_A": 1.712,
+      "a": "A:GLU25.OE2",
+      "b": "A:THR26.OG1"
+    },
+    {
+      "d_A": 1.725,
+      "a": "B:PRO12.CG",
+      "b": "B:SER11.O"
+    },
+    {
+      "d_A": 1.998,
+      "a": "A:GLU25.OE1",
+      "b": "A:THR26.N"
+    },
+    {
+      "d_A": 2.003,
+      "a": "A:GLU25.CD",
+      "b": "A:GLU25.C"
+    },
+    {
+      "d_A": 2.171,
+      "a": "B:PRO12.CD",
+      "b": "B:SER11.CB"
+    },
+    {
+      "d_A": 2.448,
+      "a": "A:GLU25.CD",
+      "b": "A:GLU25.O"
+    },
+    {
+      "d_A": 2.513,
+      "a": "B:ALA10.O",
+      "b": "A:TYR100.OH"
+    },
+    {
+      "d_A": 2.608,
+      "a": "A:GLU25.CD",
+      "b": "A:THR26.N"
+    },
+    {
+      "d_A": 2.704,
+      "a": "B:PRO12.CD",
+      "b": "B:SER11.N"
+    },
+    {
+      "d_A": 2.733,
+      "a": "A:GLU25.N",
+      "b": "A:GLU25.OE1"
+    },
+    {
+      "d_A": 2.748,
+      "a": "A:GLU25.OE2",
+      "b": "A:GLU25.C"
+    },
+    {
+      "d_A": 2.754,
+      "a": "A:GLU25.CD",
+      "b": "A:THR26.OG1"
+    }
+  ],
+  "minimisation": "none here; done in solvent by run_peptide_md.py setup",
+  "software": {
+    "openmm": "8.5.2",
+    "pdbfixer": "1.12.0",
+    "python": "3.12.13"
+  },
+  "host": "fulda",
+  "wall_s": 3.94,
+  "evidence_scope": "prepared template model input; not structure/parameter acceptance"
+}

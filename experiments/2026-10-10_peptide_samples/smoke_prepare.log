@@ -1,0 +1,7 @@
+/home/ruigengji/miniforge3/envs/openmm_dev/lib/python3.12/site-packages/jaxlib/plugin_support.py:91: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.11.1 is installed, but it is not compatible with the installed jaxlib version 0.10.2, so it will not be used.
+  warnings.warn(
+{"prepared": "TSFAEYWNLLSP", "atoms": 1644, "seconds": 16.468303587986156}
+{"prepared": "TSFAEYWNLASP", "atoms": 1635, "seconds": 14.215244221035391}
+{"prepared": "LSFAEYWNLASP", "atoms": 1640, "seconds": 20.80320732097607}
+{"prepared": "TSFLEYWNLASP", "atoms": 1644, "seconds": 18.46019942604471}
+{"prepared": "TSFAEYWALASP", "atoms": 1631, "seconds": 19.851353970938362}

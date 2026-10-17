@@ -1,0 +1,102 @@
+{
+  "run_id": "PMI_v21m1_rep02",
+  "sample_id": "Li2021_MDM2_TSFAEYWNLLSP_Kd",
+  "peptide_name": "PMI",
+  "model_id": "v21m1",
+  "replica": 2,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/md/PMI/v21m1/setup",
+  "seeds": {
+    "velocity": 2026611012,
+    "integrator": 2026612012,
+    "barostat": 2026613012
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 500000,
+  "nvt_steps": 50000,
+  "npt_steps": 500000,
+  "eq_restraint_k": 0.0,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 20,
+  "prod_target_history": [
+    5000000,
+    10000000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 2026612012,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 2026619931,
+      "barostat_seed": 2026620931,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 2026627850,
+      "barostat_seed": 2026628850,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": 10,
+      "integrator_seed": 2026714959,
+      "barostat_seed": 2026715959,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 4080 SUPER",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 8.66,
+    "npt": 100.28,
+    "prod_chunk_0000": 103.91,
+    "prod_chunk_0001": 103.81,
+    "prod_chunk_0002": 104.35,
+    "prod_chunk_0003": 104.22,
+    "prod_chunk_0004": 104.2,
+    "prod_chunk_0005": 103.99,
+    "prod_chunk_0006": 104.11,
+    "prod_chunk_0007": 104.23,
+    "prod_chunk_0008": 104.21,
+    "prod_chunk_0009": 104.25,
+    "prod_chunk_0010": 116.81,
+    "prod_chunk_0011": 117.27,
+    "prod_chunk_0012": 119.28,
+    "prod_chunk_0013": 118.51,
+    "prod_chunk_0014": 118.0,
+    "prod_chunk_0015": 117.09,
+    "prod_chunk_0016": 118.36,
+    "prod_chunk_0017": 118.05,
+    "prod_chunk_0018": 119.38,
+    "prod_chunk_0019": 118.1
+  },
+  "complete": true,
+  "openmm": "8.5.2",
+  "host": "yayoi43.cluster.local"
+}

@@ -1,0 +1,34 @@
+{
+  "protocol": "v2.1_modeller_heavy_then_reduce",
+  "peptide_name": "A4L_L10A",
+  "sequence": "TSFLEYWNLASP",
+  "models": {
+    "heavy_v2m1.pdb": {
+      "start": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v2/PRO/start_v2m1.pdb",
+      "seed": -3000,
+      "mutated_peptide_positions": [
+        4,
+        10
+      ],
+      "method": "AutoModel (heavy atoms)",
+      "optimised": "side-chain atoms beyond CB of mutated residues; all other atoms = stage-1 xyz",
+      "molpdf": 0.5695140361785889,
+      "wall_s": 0.83
+    },
+    "heavy_v2m2.pdb": {
+      "start": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/inputs/modeller_v2/PRO/start_v2m2.pdb",
+      "seed": -3000,
+      "mutated_peptide_positions": [
+        4,
+        10
+      ],
+      "method": "AutoModel (heavy atoms)",
+      "optimised": "side-chain atoms beyond CB of mutated residues; all other atoms = stage-1 xyz",
+      "molpdf": 0.5695140361785889,
+      "wall_s": 0.78
+    }
+  },
+  "modeller": "MODELLER 10.8, 2025/11/04, r13157",
+  "python": "3.14.7",
+  "host": "kasuga01"
+}

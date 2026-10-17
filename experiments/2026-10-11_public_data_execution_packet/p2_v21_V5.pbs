@@ -1,0 +1,31 @@
+#!/bin/zsh
+#PBS -N p2v21_V5
+#PBS -q default
+#PBS -l select=1:ncpus=20:ngpus=1:mem=60gb:host=yayoi42
+#PBS -l walltime=20:00:00
+#PBS -j oe
+# Prep protocol v2.1, V5 (docs/PUBLIC_DATA_PREP_V2_MODELLER_DESIGN.md §6, §10): 8 samples x v21m1, v21m2
+# x rep01-03 x 10 ns = 48 replicas on yayoi42 (RTX 4080).  rep01 already has 1 ns (V3) and is
+# extended to 10 ns; rep02/rep03 are new.  Every replica is stripped (C4 per-frame record).
+# All work is done by p2_v21_validation.sh (prep/setup are done and skipped); log appends to
+# p2_v21_validation.log.  Resumable: qsub this file again; finished stages/chunks are skipped.
+# Walltime: measured on this 4080 (V3, 2026-10-14) 1 ns production 103-110 s, NVT+NPT ~109 s:
+# 16 x 9 ns x 105 s = 4.2 h (rep01 extension) + 32 x (109 s + 10 x 105 s) = 10.3 h -> ~14.5 h.
+#
+#   cd /home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+#   qsub p2_v21_V5.pbs
+
+test $PBS_O_WORKDIR && cd $PBS_O_WORKDIR
+. /home/apps/Modules/init/profile.sh
+export MODULEPATH=/home/ruigengji/modulefiles:$MODULEPATH
+
+export MAMBA_EXE=/home/ruigengji/miniforge3/bin/mamba
+export MAMBA_ROOT_PREFIX=/home/ruigengji/miniforge3
+source /home/ruigengji/miniforge3/etc/profile.d/mamba.sh
+mamba activate openmm_dev
+
+P=/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet
+# 20 cores allocated; OpenMM runs on the GPU, threads only matter for strip.
+export OMP_NUM_THREADS=16 MKL_NUM_THREADS=16
+# One GPU is allocated, so device index 0 is that GPU.
+PY="$(command -v python)" DEV=0 PROD_NS=10 REPS="01 02 03" bash $P/p2_v21_validation.sh

@@ -1,0 +1,208 @@
+{
+  "sample_id": "Li2021_MDM2_TSFAEYWNLASQ_Kd",
+  "peptide_name": "P12Q_L10A",
+  "sequence": "TSFAEYWNLASQ",
+  "template_peptide": "TSFAEYWNLLSP",
+  "receptor_chain": "A",
+  "peptide_chain": "B",
+  "mutations": [
+    "LEU-10-ALA"
+  ],
+  "rebuilt_residues": [
+    {
+      "chain": "A",
+      "resnum": 25,
+      "template": "GLU",
+      "built": "GLU"
+    },
+    {
+      "chain": "B",
+      "resnum": 12,
+      "template": "PRO",
+      "built": "GLN"
+    }
+  ],
+  "model_id": "model02",
+  "prep_seed": 20261012,
+  "template": "/home/ruigengji/JAXPBSA/experiments/2026-10-10_peptide_samples/raw/mdm2_3EQS.pdb",
+  "heterogens_in_template": {
+    "GAI": 1,
+    "HOH": 117
+  },
+  "residue_names_removed": [
+    "GAI",
+    "HOH"
+  ],
+  "altloc_policy": "altloc A for all residues (protocol \u00a71.2)",
+  "altloc_A_max_dev_A": 1.7763568394002505e-15,
+  "pdbfixer_missing_residues": {
+    "(0, 0)": [
+      "GLU"
+    ],
+    "(1, 11)": [
+      "PRO"
+    ]
+  },
+  "missing_atoms_added": {},
+  "missing_terminals_added": {},
+  "termini": {
+    "A": {
+      "n_residue": "GLU25",
+      "n_H": [
+        "H",
+        "H2",
+        "H3"
+      ],
+      "c_residue": "VAL109",
+      "has_OXT": true
+    },
+    "B": {
+      "n_residue": "THR1",
+      "n_H": [
+        "H",
+        "H2",
+        "H3"
+      ],
+      "c_residue": "GLN12",
+      "has_OXT": true
+    }
+  },
+  "his_states": {
+    "A:HIS73": [
+      "HD1"
+    ],
+    "A:HIS96": [
+      "HD1"
+    ]
+  },
+  "chirality_repair": [
+    {
+      "residue": "A:GLU25",
+      "chirality_before_deg": 96.2,
+      "chirality_after_deg": -96.2,
+      "atoms_mirrored": [
+        "CB",
+        "CD",
+        "CG",
+        "OE1",
+        "OE2"
+      ]
+    },
+    {
+      "residue": "B:GLN12",
+      "chirality_before_deg": 144.6,
+      "chirality_after_deg": -144.6,
+      "atoms_mirrored": [
+        "CB",
+        "CD",
+        "CG",
+        "NE2",
+        "OE1"
+      ]
+    }
+  ],
+  "stereo_check": {
+    "terms": 188,
+    "violations": 0,
+    "rule": "all CA L; all non-Pro omega trans (peptide_geometry.py)"
+  },
+  "his_variants_returned": [
+    "HID",
+    "HID"
+  ],
+  "forcefield": "amber/ff14SB.xml",
+  "pH": 7.4,
+  "caps": "none: free termini (protocol \u00a71.1)",
+  "n_atoms": 1638,
+  "n_receptor_atoms": 1449,
+  "n_peptide_atoms": 189,
+  "net_charge_complex": 4.0,
+  "net_charge_receptor": 5.0,
+  "net_charge_peptide": -1.0,
+  "closest_nonbonded_heavy_contacts_of_rebuilt_or_mutated": [
+    {
+      "d_A": 1.826,
+      "a": "B:GLN12.NE2",
+      "b": "B:ASN8.O"
+    },
+    {
+      "d_A": 1.916,
+      "a": "B:GLN12.C",
+      "b": "B:SER11.O"
+    },
+    {
+      "d_A": 2.087,
+      "a": "B:GLN12.CB",
+      "b": "B:SER11.O"
+    },
+    {
+      "d_A": 2.199,
+      "a": "B:GLN12.O",
+      "b": "B:SER11.O"
+    },
+    {
+      "d_A": 2.278,
+      "a": "A:GLU25.O",
+      "b": "A:THR26.CB"
+    },
+    {
+      "d_A": 2.321,
+      "a": "B:GLN12.NE2",
+      "b": "B:GLN12.C"
+    },
+    {
+      "d_A": 2.338,
+      "a": "B:GLN12.O",
+      "b": "B:SER11.C"
+    },
+    {
+      "d_A": 2.339,
+      "a": "A:GLU25.O",
+      "b": "A:THR26.OG1"
+    },
+    {
+      "d_A": 2.402,
+      "a": "B:GLN12.NE2",
+      "b": "B:GLN12.OXT"
+    },
+    {
+      "d_A": 2.513,
+      "a": "B:ALA10.O",
+      "b": "A:TYR100.OH"
+    },
+    {
+      "d_A": 2.57,
+      "a": "B:GLN12.O",
+      "b": "B:LEU9.O"
+    },
+    {
+      "d_A": 2.629,
+      "a": "B:GLN12.CD",
+      "b": "B:GLN12.OXT"
+    },
+    {
+      "d_A": 2.682,
+      "a": "A:GLU25.C",
+      "b": "A:THR26.OG1"
+    },
+    {
+      "d_A": 2.693,
+      "a": "B:GLN12.CA",
+      "b": "B:GLN12.NE2"
+    },
+    {
+      "d_A": 2.738,
+      "a": "B:GLN12.NE2",
+      "b": "B:ASN8.C"
+    }
+  ],
+  "minimisation": "none here; done in solvent by run_peptide_md.py setup",
+  "software": {
+    "openmm": "8.5.2",
+    "pdbfixer": "1.12.0",
+    "python": "3.12.13"
+  },
+  "host": "fulda",
+  "wall_s": 1.88,
+  "evidence_scope": "prepared template model input; not structure/parameter acceptance"
+}
