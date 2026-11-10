@@ -2,6 +2,126 @@
 
 对应两份 code review 的回应 + 后续实测。所有性能数字见 [RESULTS.md](./RESULTS.md)。
 
+## 2026-11-06 · 在线方法论文本地收尾
+
+- 正文/SI 更新至 v0.2：采用修正阿普唑仑的 BRD4 v2；更正实验值对应、逐帧残差范围、网格收敛和 worker/cache 表述；保留 Hou 改善与 BRD4 无增益的结果。
+- `scripts/build_paper_assets.py`：从存量报告生成五张 PDF/PNG 主图、图源 CSV、标签/成本/42 副本附表，拒绝缺副本、标记丢失与旧输入混入。
+- `scripts/reproduce_paper.py`、`scripts/build_review_bundle.py`：当前源码/报告快照、文件摘要、元数据与独立解包报告/作图复现；不冒充完整原始分子数据公开包。
+- 软件能力/文献核查、复现说明、收尾记录、README 中英与任务索引已同步。25 项相关测试通过；解包核对及 22 个 CSV 复现通过，见 RESULTS §21.8。
+- 未修改核心方法、环境和历史科学产物；未启动分子计算或 PPI 线。提交仅写草稿。
+
+## 2026-11-02 · P3 W1/W3：证据清单、统计复现、成本表
+
+- 包内 `scripts/reproduce_reports.py`：在仓库外镜像包里重跑全部已记录的汇总/统计命令并逐文件比对；`scripts/cost_table.py`：从 setup/status/summary/prep 记录抽取按 GPU 分组的成本。产物 `reports/evidence_20261102/`（RESULTS §21.7）。
+- 修 `scripts/diag_hou_replicas.py`（固定 rep01–03、(0, 5] ns）与 `scripts/summarize_hou_online_acc.py`（只取验收的 10 个 chunk），使其在后来延长过的数据上仍复现原表。
+
+## 2026-11-02 · BRD4 标签原文核对
+
+- 用用户提供的论文与 SI 逐条核对 BRD4 十条实验标签，写 `reports/brd4_statistics_20261101_v2/label_verification_20261102.csv` 与报告末节（RESULTS §21.6）。BRD4-4 的值在所引论文中找不到；统计产物未改。
+
+## 2026-11-01 · B1 最小化敏感性
+
+- 包内 `b1_repeat.sh/.pbs`（只用现有入口，独立包 `b1_minimisation_repeat_20261101/`）在 yayoi37 重做 17 条最小化并评 B1；包内 `scripts/compare_b1_repeat.py` 对比正式 B1。另加只读分项脚本 `scripts/diag_brd4_8.py`。结果 RESULTS §21.4–§21.5。
+
+## 2026-11-01 · BRD4-5 重跑完成，P1/P2 v2
+
+- yayoi28 作业 22051 完成 BRD4-5（阿普唑仑）准备、3 × 5 ns、默认与 h0.4 评分和 B1（RESULTS §21.4）。
+- 包内 `scripts/brd4_statistics.py`、`scripts/compare_baselines.py` 加 `--out` 和协议 `sample_sources`（指定样本改读独立包）；默认行为不变，对 v1 输入逐位复现 v1。新产物 `reports/{baseline,brd4_statistics}_20261101_v2/`，v1 保留。
+
+## 2026-11-01 · BRD4-5 改用阿普唑仑重新准备（冒烟）
+
+- 包内 `scripts/prepare_brd4_5_alprazolam.py`：上游 BRD4-5 配体删 H8/H9、NAL=CAO 双键，InChIKey 须为阿普唑仑；AM1-BCC/GAFF + parmchk2 + tleap；ParmEd 只替换配体，其余与上游 prmtop 逐项核对并记录。输出到独立包，不改主包 `manifests/runs.csv`。
+- `scripts/score_smallmol_start.py` 加 `--model-id`、`--inputs`（默认不变）。
+- 新增包内 `brd4_5_smoke.sh`、`brd4_5_full.sh/.pbs`。183 冒烟通过（`docs/BRD4_5_REPREP_PLAN_20261101.md` §8）；正式作业未提交。
+
+## 2026-11-01 · P2 BRD4 标签审计与分组统计
+
+- 读取 6 篇原文（PMC/Europe PMC，存 `sources/brd4/papers/`），写 `reports/brd4_statistics_20261101/label_audit.csv`；10 条配体的 InChIKey 与 PubChem/CCD 逐条比对，发现 BRD4-5 上游输入为 5,6-二氢阿普唑仑。
+- 包内 `scripts/brd4_statistics.py`：按审计后写定的 `protocol.json` 对默认与 h0.4 网格分别算分组 ρ/τ-b/成对/精确 p、副本＋连续时间块重采样与候选重采样（复用 `rank_hou_sampling.py` 的函数），并作图。结果 RESULTS §21.3。
+
+## 2026-11-01 · P1 基线：输入清单与最小化起点评分（B1）
+
+- 包内 `scripts/build_baseline_inventory.py`：只读生成 `reports/baseline_20261101/inventory.csv`（17 条候选的身份、来源、R/L 范围、标签、起点、键级来源、已有 B2 分数和缺口）。
+- 新增 `scripts/score_smallmol_start.py`：用冻结默认 `OnlineMMPBSA` 给 `setup/solute_reference.npz`（无约束最小化后的溶质）打一帧分，分析器构造与 `score_smallmol_replica.py` 相同。冻结代码拒收单帧 pilot（在线帧会超出单帧的涨落），这里只评这一帧，所以不传 pilot、传 `fluctuation_allowance=0`，网格按该结构定尺、边界余量仍为默认 `margin_min`。未改 `jaxpbsa/`。
+- 新增包内 `start_full.sh/.pbs`、`scripts/collect_start_scores.py`。183 冒烟后在 yayoi43 跑完 17/17（RESULTS §21.1）。
+- 补取 BRD4 上游配体 `sources/brd4/{sdf,mol2}/`（commit 5233e0a，`sources/retrieval_brd4_ligands.json`）；包内 `scripts/check_brd4_ligand_files.py` 核对与 prmtop 一致（`reports/baseline_20261101/brd4_ligand_file_check.csv`）。inventory 重新生成。
+- 包内 `scripts/compare_baselines.py` 与 `reports/baseline_20261101/protocol.json`：按统计前写定的协议算 B0 描述符（RDKit，可旋转键 Strict）和 B0/B1/B2 对实验的 ρ、τ-b、成对次序、精确 p；Hou B2 自检复现 `ranking.json`。结果 RESULTS §21.2。
+
+## 2026-11-01 · 后续执行计划落盘
+
+- 新增 `docs/BRD4_HOU_NEXT_STEPS_PLAN_20261101.md` 和根目录 `TODO.md`：将基线对照、BRD4 分组统计、可复现验收包/论文收口及条件性的独立系列验证写成执行顺序、输入清单、交付和完成条件。
+- 同步项目规则中的计划入口、BRD4/Hou 交接及论文框架 §8。保留 Hou 既有预算和评分来源、BRD4 两网格的展示与未决边界；未修改方法、代码或历史产物，未执行新计算。
+
+## 2026-10-31 · 在线 MM/PBSA 方法论文框架
+
+- 新增 `docs/ONLINE_MMPBSA_PAPER_OUTLINE.md`：按用户同意的定位建立主张/证据表、摘要与正文骨架、五张主图和 SI 计划、收口顺序与未决事项。区分数值、在线成本和应用排序证据，保留 Hou 网格未见收敛、a6 错序及 39 在线 + 3 离线恢复的来源边界。
+- 同步 BRD4/Hou 执行入口及历史多肽框架的写作指向。未修改代码、默认参数或历史结果，未运行新的分子计算。
+
+## 2026-10-30 · Hou 固定采样预算收尾审计与离线恢复入口
+
+- 后续：已存在的 `scores/window10_default/` 恢复产物通过严格输入/模型/精度/覆盖复核（42/42 副本、42,000 帧可用）；新增 `scripts/rank_hou_sampling.py` 按设计 §9 计算同系列、全七条与补充组的 Spearman/τ-b/21 对次序，穷举小样本精确 p，分开做副本＋时间块和候选组成重采样。报告采用冻结默认网格，h0.4 保留为数值敏感性。结果、图、来源和限制在 `reports/hou_ranking_20261030/`、RESULTS §20.10；排序与完整性回归共 20 passed。未新增 MD/PBSA，未修改原在线标记。
+- 新增 stdlib-only `scripts/summarize_hou_sampling.py`：严格核对 42 个副本的在线提交覆盖与 strip 时间映射，输出逐副本/时间块/固定 cohort/成对差异和 97 个越界帧；有坏帧或缺副本时不生成完整窗口均值。历史 3 × 5 ns 基线使用原始在线值，不被恢复结果覆盖。
+- 新增 `hou_recover_margin_20261030.sh`：默认 dry-run；对 3 个越界副本各重评完整 10 ns，输出到新目录。后续汇总只接纳完整、有效、模型精度及输入绑定一致的 whole-replica 离线恢复，单列与原有效/无效帧的配对差异。不改默认模型、原 MD 或在线 CSV。GPU 恢复本次尚未启动。
+- 新增保护回归 13 项通过；实测收尾和待运行计划见 `RESULTS.md` §20.9 与 `docs/HOU_SAMPLING_RECOVERY_HANDOFF_20261030.md`。
+
+## 2026-10-29 · 在线覆盖核对的时间容差
+
+- `scripts/smallmol_records.online_rows`：核对在线行的时间与 step × dt 时，容差从 `abs_tol=1e-6` 改为 `0.25 * dt`。OpenMM 的时间是每步累加 dt，Hou 延长到 10 ns 时在 9.91 ns 偏差 1.0003e-6 ps，导致 41 个已跑完的副本收尾失败（`docs/HOU_BOUNDED_SAMPLING_PLAN_20261028.md` §7.3）。只要偏差小于 dt/2，仍能唯一对应一个 step。`scored_frames` / `sensitivity_frames` 比较的是 strip 写出的同一个四舍五入值，没有改。
+- 10-28 的脚本改动：`online_overhead.py` 加 `--hou-run-id/--grid/--cache-dir`；`score_smallmol_replica.py` 加 `--pilot npt`；`grid_sensitivity_smallmol.py` 加 `h0.3` 配置（RESULTS §20.7、§20.8）。
+
+## 2026-10-26 · Hou 同帧 Amber/网格对照（D3）
+
+- `amber_reference_smallmol.py`、`grid_sensitivity_smallmol.py` 加 `--ours online`（Hou 只有在线分数）；`smallmol_records.online_rows_by_frame`；包内 `summarize_reference_q3.py` 可选 `hou`。新增 `hou_ref.sh/.pbs`。yayoi10 跑完 63 帧，结果见 RESULTS §20.4。
+- 新增 `hou_h04.sh/.pbs`：Hou 21 副本 × 500 帧按 `--grid h0.4` 重评，yayoi10 约 40 min、0 FAIL；包内 `scripts/compare_hou_grids.py`。修正 −1.64…+3.48，次序 Spearman 0.893（RESULTS §20.5）。
+
+## 2026-10-25 · BRD4 15 000 帧 h0.4 重评完成
+
+- yayoi04，约 1 h，0 FAIL / 0 标记；q3 90 帧与 h0.4 参照逐位一致。样本次序与默认网格相同（Spearman 1.000），修正量 −0.35…+2.30（RESULTS §19.8）。新增包内 `scripts/compare_brd4_grids.py`。
+
+## 2026-10-25 · 评分脚本加 `--grid h0.4`（BRD4 重评用）
+
+- `score_smallmol_replica.py --grid {default,h0.4}`：h0.4 = C/R 0.4 / 配体 0.2，输出 `scores/h0.4/`；default 不变。汇总脚本可指定 grid。新增 `brd4_h04.sh/.pbs`。183 冒烟：帧 124 与已有 h0.4 参照的 ΔG_MMPBSA 差 1.2e-4。计划 `docs/BRD4_H04_RESCORE_PLAN_20261025.md`。
+
+## 2026-10-25 · BRD4 默认网格偏差诊断 D0、D1 完成
+
+- D1（183，11.5 min）：相位平均后偏差仍在；C−R 偏差最大的一项是配体电荷在 C/R 0.5 网格上的自项 LL_C（BRD4-3/6/8 为 +2.1～2.6），受体项随样本变号（RESULTS §19.7）。
+
+- D0（只读）：BRD4-3/6 的偏差全在 C−R，9/9 帧同号；3 个随机转动的平均不能把它消掉，所以排除"相位冻结"，是真离散误差（RESULTS §19.6）。
+- 新增 `scripts/grid_diag_smallmol.py`（D1）：直接调用 TripletSolver，把 C−R 拆成 RR_C−G_R、LL_C、RL_C 三项，另做 8 个亚格点平移和 tol 1e-6 对照。183 冒烟通过，和已有同帧值相差 ≤0.0015；正式运行交 PBS（`experiments/…/grid_diag.pbs`）。更正 RESULTS §19.5 和 `grid_sensitivity_smallmol.py` 头注释里"无法施加亚格点平移"的说法。
+
+## 2026-10-25 · 评分续跑不再按 DCD 内容摘要绑定
+
+- `score_smallmol_replica.py`、`grid_sensitivity_smallmol.py` 的 protocol 升到 schema 2：不再对 `solute_dry.dcd`/`frame_times.csv` 算 SHA256（strip 每次调用都重写 DCD，文件头里带创建时间，重新 qsub 或 MD 延长后评分续跑会被误拒）；改为按路径和原子数绑定，逐帧 step/time 照旧核对，网格敏感性额外记录参考帧的 step/time。详见工程修复交接 §7。
+
+## 2026-10-24 · 工程完整性、输入绑定与参考时间修复
+
+- 第二轮：setup 缓存与当前来源/R-L 选择核对；在线生产绑定 NPT pilot、实际分析默认参数与精度；完整 CSV schema/提交范围/边界阈值检查；拒绝非整步时间与不足两帧的 pilot；修复离线延长的生产 step/time 恢复。完整工程回归 131 passed / 2 deselected。详见交接 §6。
+
+- 修复在线续跑在 MD 完成、尾部 worker 失败后错误标记完成；保存失败 session，按已提交 step 检查评分覆盖。
+- 新评分目录在首帧前记录输入/协议绑定；检查重复、残缺和时间错配的 CSV。历史未绑定评分保留，新评分使用新 `--out`。
+- 修复 Amber 对照 `used[j-1]` 时间错位；备份并修正 q3 30 份对照表的 90 帧时间标签，逐字段确认能量不变。
+- reporter/预热增加非有限能量检查；warm trajectory 不再传递失败势；拒绝不支持的非键表示、跨 R/L 例外与错误索引。
+- 网格敏感性逐帧续跑；Hou 汇总严格检查覆盖和有效性，修复时间块边界重复纳入。Hou 样本分数/排序不变。
+- 验证、兼容性和待节点验收事项见 [工程修复交接](docs/ENGINEERING_REPAIR_HANDOFF_20261024.md)。
+
+## 2026-10-23 · Hou α-thrombin 准备与 MD 中在线评分（不改方法与默认参数）
+
+- `scripts/run_smallmol_md.py run --online`：生产段挂 `AsyncPBSAReporter`（同卡 worker，MPS 线程上限 `--mps-percentage`，默认 30），每个保存帧评一次；NPT 阶段存的 1 ns 溶质帧作为 `pilot_coords_A`；每个进程写自己的 `online/pbsa_from_chunk_NNNN.csv`，续跑后 step/time 接得上。不加 `--online` 时行为不变。
+- 数据包 `scripts/prepare_hou_thrombin.py`：Hou a1–a7 → ff14SB/GAFF2/AM1-BCC/TIP3P 的 prmtop（CCD 键级与立体化学、pH 7.4 配体态、reduce 定 His、ACE/NME、SSBOND、0.15 M NaCl），清单 `manifests/hou_inputs.csv`；`make_runs_csv.py` 追加 Hou 21 行（BRD4 行不变）。
+- 作业 `hou_online.pbs` / `hou_online.sh`。准备结果、冒烟与耗时见 `docs/BRD4_HOU_EXECUTION_HANDOFF.md` §7.12。
+
+## 2026-10-19 – 10-21 · 小分子基准的入口与同帧对照脚本（不改方法与默认参数）
+
+- `scripts/run_smallmol_md.py`、`scripts/score_smallmol_replica.py`：从 Amber prmtop/crds 跑 setup、MD、strip 和逐帧评分（时间轴 (k+1)×5000 步，窗口 (start, end]）。
+- `scripts/amber_reference_smallmol.py`：同帧 Amber MM/PBSA + MM/GBSA（ante-MMPBSA.py 拆拓扑，RADII 改写为我们的 mbondi2，-eo 逐帧输出）。
+- `scripts/grid_sensitivity_smallmol.py`：在固定帧上测 PB 网格加密（h0.4/0.2、h0.35/0.167）和刚体转动的影响。
+- 数据包 `experiments/2026-10-17_small_molecule_benchmark/scripts/`：`make_runs_csv.py`、`summarize_brd4_round1.py`、`summarize_reference_q3.py`、`build_thrombin_loop_modeller.py`。
+- 结果见 RESULTS.md §19，执行记录见 `docs/BRD4_HOU_EXECUTION_HANDOFF.md` §7。
+
+## 2026-10-18 · OnlineMMPBSA 溶质净电荷整数检查放宽到 1e-2 e（BRD4 体系测试发现的 bug）
+
+- `jaxpbsa/online.py`：`OnlineMMPBSA.__init__` 的「净电荷非整数」检查容差从 1e-3 改为 1e-2 e。公开 BRD4（MobleyLab benchmarksets）AM1-BCC 配体自带舍入残差，最大 0.0050 e，1e-3 把 BRD4-1/5/6/7/10 的正常输入全部拦下（首轮 15/30 副本评分失败）。1e-2 是实测最大残差的 2 倍；切片错位的典型偏差（多切进离子 ±1、水 O −0.834、漏掉末端配体原子 0.05–0.42 e）仍远大于它。只影响是否接受输入，不改变任何能量值；已评分的副本无需重算。依据与结果见 `docs/BRD4_HOU_EXECUTION_HANDOFF.md` §7.4、§7.8。2026-10-19 在 yayoi04 补评：首轮被拦的 15 个副本全部通过，500/500 帧有效。
+
 ## 2026-10-06 · 投稿审查（docs/JCIM_SUBMISSION_REVIEW.md §5）的两处修复
 
 - `scripts/validate_mmpbsa.py`：逐帧检查 converged / margin_A / margin_lig_A（判据同在线

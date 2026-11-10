@@ -1,7 +1,12 @@
 # 公开实验数据复算：执行交接（首轮 MDM2 / PMI 八样本）
 
 日期：2026-10-11 建立，2026-10-17 整理（JST）。
+
+> **2026-11-06 接续入口：** 用户重新提出多肽结构问题，现已整理 [PPI结构诊断与接续计划](PPI_STRUCTURE_RECOVERY_PLAN_20261106.md)。当前下一项为 PMI、PMI-L10A、P12Q_L10A 三个代表、六模型的逐阶段问题定位；本轮只完成记录整理和计划，未进行新几何验收或分子计算。2026-11-07 R0/R1 已完成（16 个模型）：未定位到 v2.1 硬错误，偏离在 B1–B3、B11–B12 和 A25，见 `experiments/2026-11-06_ppi_structure_review/r0r1/structure_diagnosis.md`。下文 P4 停点与 ready 状态保留为原执行快照；后续是否复用或重跑由具体结构证据决定。
+
 本文件是当前的接手入口，按主题写现状。2026-10-11 至 10-17 的逐条执行日志（v1 冒烟、P2 诊断、PDBFixer 问题的排查过程等）保存在 `docs/archive/PUBLIC_DATA_EXECUTION_HANDOFF_full_log_20261017.md`。
+
+> 2026-10-17 后续决定：本文件继续作为**多肽线**证据和交接入口。用户要求先写较简单的蛋白–小分子基准设计，计算留给后续执行；新路线见 [SMALL_MOLECULE_BENCHMARK_DESIGN.md](/home/ruigengji/JAXPBSA/docs/SMALL_MOLECULE_BENCHMARK_DESIGN.md)。旧数据与未完成的数值对照保留，不因此判定采样或 PBSA 模型为已确认根因，也不自动扩大多肽运行。
 
 ## 必读（开工前全部读完）
 

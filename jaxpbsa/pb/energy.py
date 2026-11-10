@@ -217,6 +217,15 @@ class PBParams:
     max_iter: int = 2000
 
 
+def _scan_warm_frames(frame_impl, coords_traj, q, radii, state):
+    """Carry only a successful finite potential; failed frames restart from zero."""
+    def step(carry, x):
+        out, u, _ = frame_impl(x, q, radii, carry)
+        safe = out["converged"] & jnp.all(jnp.isfinite(u))
+        return jnp.where(safe, u, jnp.zeros_like(u)), out
+    return jax.lax.scan(step, state, coords_traj)
+
+
 def make_frame_solver(
     grid: GridSpec,
     radii,  # [N] Å —— 只用于确定静态 offset 尺寸(host 侧取 max)
@@ -414,10 +423,7 @@ def make_frame_solver(
         return {**out, "u_solvent": u} if return_potential else out
 
     def _scan_warm(coords_traj, q, radii, state):
-        def step(carry, x):
-            out, u, _ = _frame_impl(x, q, radii, carry)
-            return u, out
-        return jax.lax.scan(step, state, coords_traj)
+        return _scan_warm_frames(_frame_impl, coords_traj, q, radii, state)
 
     def _scan_cold(coords_traj, q, radii, state):
         """冷启动: **每帧都从零势出发**, 既不用上一帧的解, 也不用 initial_state。

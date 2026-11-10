@@ -5,10 +5,21 @@ GPU Poisson–Boltzmann / MM-PBSA binding-energy analysis in JAX. Two modes:
 - **offline** — batch over OpenMM trajectories: `ΔG_PB = G_C − G_R − G_L` per frame,
 - **online** — ΔG_MM/PBSA(t) computed frame-by-frame *while the MD runs*, on the same GPU.
 
-**Status: research code.** APIs move; packaging/CI come later. What is stable is the
-measurement discipline: every number in [`RESULTS.md`](./RESULTS.md) is measured, split
-into *machine-invariant* and *machine-specific*, and reproducible from
-`scripts/benchmark.py`.
+**Status: research code with a local manuscript/review bundle.** Measured results and
+scope are recorded in [`RESULTS.md`](./RESULTS.md). Different measurements have different
+reproduction entry points; `scripts/benchmark.py` covers solver benchmarks, while the
+[paper reproduction guide](docs/PAPER_REPRODUCIBILITY.md) covers archived reports and figures.
+The [manuscript](docs/ONLINE_MMPBSA_PAPER_DRAFT.md), [SI](docs/ONLINE_MMPBSA_PAPER_SI_DRAFT.md)
+and [closeout record](docs/PAPER_CLOSEOUT_20261106.md) use the corrected BRD4 v2 data.
+
+```bash
+# CPU report checks + five paper figures; no molecular calculation or JAX import
+python scripts/reproduce_paper.py --out experiments/2026-11-06_paper_closeout/reproduction
+```
+
+This entry needs numpy, scipy and matplotlib. The compact local review bundle freezes
+source and reports; full MD/PBSA regeneration requires the separately retained inputs,
+trajectories and per-frame records. A public data archive has not been published.
 
 ## What it computes
 
@@ -132,16 +143,20 @@ with AsyncPBSAReporter.from_system(
 Enable NVIDIA MPS **before creating the OpenMM CUDA Context** for this example.
 The thread limit and priority apply only to the PBSA process; the reporter keeps
 the MD callback short and the worker flushes results to CSV. `close()` (also called
-by the context manager) drains all submitted frames. A full queue raises by
+by the context manager) drains accepted frames. A timeout can be retried; context exit
+uses a 60 s timeout by default and does not kill an active worker. A full queue raises by
 default rather than silently dropping samples. Omitting both MPS options enables
 ordinary process-based async analysis, without claiming resource limits.
 
 See [single-GPU scheduling](docs/ONLINE_SCHEDULING.md) for setup, backlog/error
-handling and the sync/async contention benchmark. Measured MD overhead at a
+handling and the sync/async contention benchmark. Historical MD overhead at a
 5000-step interval (S4, one run per configuration): RTX 2080 Ti, 50k steps (RESULTS
 §18.22): sync 15% → MPS 30% ~10% (max latency 0.68 s); RTX 4090, 200k steps (§18.23):
 sync 11.8% → MPS 30% 3.9% (max latency 0.20 s). Unlimited async overlaps little
-(+1–1.5% over sync) on both cards; 20/30/40% are within noise, 50% is worse.
+(+1–1.5% over sync) in those S4 runs; these are configuration-specific observations.
+The production-aligned Hou/RTX 3090 test (RESULTS §20.8) measured 3.2–5.4% overhead
+at the default grid and 7.5–11.6% at h0.4, every 10 ps. Mode differences were comparable
+to initialization-order effects; no stable scheduling winner is claimed.
 
 ```bash
 python scripts/benchmark.py --csv out.csv   # h × {fp32,fp64} × {jacobi,mg,auto}

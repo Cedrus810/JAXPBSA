@@ -78,6 +78,7 @@ from openmm import unit
 
 from .mm import mm_cross_prepared, prepare_cross
 from .openmm_io import MMParams, assign_radii, extract_nonbonded
+from .openmm_io.system import validate_cross_exceptions
 from .constants import debye_kappa2
 from .pb import PBParams, TripletSolver, recenter_com
 from .sa import BETA_INP1, GAMMA_INP1, delta_g_sa
@@ -142,8 +143,18 @@ class OnlineMMPBSA:
         radii_model: str = "mbondi2",
         net_charge: float | None = None,
     ):
-        solute_idx = np.asarray(solute_idx, dtype=int)
-        lig = np.asarray(ligand_local_idx, dtype=int)
+        def indices(values, limit, name):
+            raw = np.asarray(values)
+            if (raw.ndim != 1 or not raw.size or raw.dtype.kind not in "iu"
+                    or (raw < 0).any() or (raw >= limit).any()
+                    or np.unique(raw).size != raw.size):
+                raise ValueError(f"{name} must contain distinct integer indices in [0, {limit})")
+            return raw.astype(int)
+
+        if topology.getNumAtoms() != system.getNumParticles():
+            raise ValueError("topology atom count differs from System particle count")
+        solute_idx = indices(solute_idx, system.getNumParticles(), "solute_idx")
+        lig = indices(ligand_local_idx, solute_idx.size, "ligand_local_idx")
         ref = np.asarray(ref_coords_A, dtype=np.float64)
         if ref.ndim != 2 or ref.shape[1] != 3 or ref.shape[0] != solute_idx.size:
             raise ValueError(
@@ -159,6 +170,12 @@ class OnlineMMPBSA:
         # ---- S1: 参数装配, 全部 host 侧一次性 ----
         params = pb_params if pb_params is not None else PBParams(precond="auto")
         mmp = extract_nonbonded(system)  # 全溶剂化体系
+        validate_cross_exceptions(mmp, solute_idx[lig], solute_idx[rec])
+        lig_global, rec_global = set(solute_idx[lig]), set(solute_idx[rec])
+        if any((a.index in lig_global and b.index in rec_global)
+               or (b.index in lig_global and a.index in rec_global)
+               for a, b in topology.bonds()):
+            raise ValueError("covalent bonds cross the receptor-ligand boundary")
         q = np.asarray(mmp.charge)[solute_idx]
         solute_mm = MMParams(  # exceptions 只服务 v1 cross-energy, 逐帧用不到
             charge=q, sigma=np.asarray(mmp.sigma)[solute_idx],
@@ -174,7 +191,12 @@ class OnlineMMPBSA:
         # 一次性检查(不是每帧): 净电荷非整数值 = 切片索引错位的最便宜信号。
         # S4 之外更严格的对照(与 canonical 的净电荷/radii 逐位相等)在
         # tests/test_online.py 里 —— 那些需要 load_canonical, 类不该依赖它。
-        if abs(q.sum() - round(q.sum())) > 1e-3:
+        # 容差 1e-2 e(2026-10-18, 原 1e-3): 公开 AM1-BCC 配体输入自带舍入残差,
+        # BRD4 benchmarksets 实测 |残差| 最大 0.0050 e(BRD4-10), 1e-3 拦下 5/10 条正常输入。
+        # 1e-2 = 2x 实测最大残差; 切片错位在溶剂化体系里表现为多切进离子(±1)/水 O(-0.834)
+        # 或漏掉末端配体原子(BRD4 实测 0.05-0.42 e), 都远大于 1e-2, 仍能拦住。
+        # 漏掉 |q|<1e-2 的单个原子(BRD4 溶质约 4% 原子)本来在 1e-3 下也有一部分拦不住。
+        if abs(q.sum() - round(q.sum())) > 1e-2:
             raise ValueError(
                 f"溶质净电荷 {q.sum():+.6f} e 不是整数 —— solute_idx 切错的大概率"
                 "是把水/抗衡离子切进来了或把溶质原子漏了")
@@ -264,6 +286,10 @@ class OnlineMMPBSA:
         warm = self(ref)
         self.warmup_time_s = time.perf_counter() - t0
         problems = []
+        if any(not np.isfinite(warm[k]) for k in
+               ("e_coul_rl", "e_lj_rl", "g_pb_complex", "g_pb_receptor", "g_pb_ligand",
+                "delta_g_pb", "delta_g_sa", "delta_g_mmpbsa")):
+            problems.append("预热帧能量含 NaN/Inf")
         if min(warm["margin_A"], warm["margin_lig_A"]) < 0:  # nan(共用网格) 不触发
             problems.append(
                 f"padding 不足: 预热帧 margin_A = {warm['margin_A']:.2f} / "
@@ -371,6 +397,8 @@ class PBSAReporter:
         # analyzer.margin_flag(0.1κ⁻¹: 该处 ΔG_PB 边界误差 ≤ 0.073 kcal/mol, RESULTS §18.17),
         # 不是定尺目标 analyzer.margin_min(1.0κ⁻¹, 还兼作未见涨落的缓冲)。0 只查丢原子。
         self.margin_min = float(analyzer.margin_flag if margin_min is None else margin_min)
+        if not np.isfinite(self.margin_min) or self.margin_min < 0:
+            raise ValueError("margin_min must be finite and nonnegative")
         self._fh = open(out_csv, "w", buffering=1) if out_csv else None
         self._csv = None
         self.n_reports = 0
@@ -390,8 +418,18 @@ class PBSAReporter:
         return (steps, True, False, False, False, False)
 
     def _violation(self, out: dict) -> str | None:
+        # A converged PB solve does not certify MM or the final cancellation.
+        # Check available energy/area fields too; small test analyzers may omit
+        # diagnostics, and NaN ligand margin is intentional for a shared grid.
+        for key in ("e_coul_rl", "e_lj_rl", "g_pb_complex", "g_pb_receptor",
+                    "g_pb_ligand", "delta_g_pb", "delta_g_sa", "delta_g_mmpbsa",
+                    "sasa_complex", "sasa_receptor", "sasa_ligand", "margin_A"):
+            if key in out and not np.isfinite(out[key]):
+                return f"{key} contains NaN/Inf: 本帧不可用"
+        if np.isinf(out["margin_lig_A"]):
+            return "margin_lig_A contains Inf: 本帧不可用"
         m = out["margin_A"]
-        if m < min(self.margin_min, 0.0):
+        if m < 0:
             return (f"margin_A = {m:.2f} Å < 0: 溶质已触到网格边界, 越界原子被 "
                     "clip+权重置零悄悄丢掉(pb/charges.py), 本帧 delta_g_pb "
                     "偏小, 不可用")

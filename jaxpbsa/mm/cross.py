@@ -5,7 +5,7 @@ import jax
 import jax.numpy as jnp
 
 from .. import dtype as _dtype
-from ..openmm_io.system import MMParams
+from ..openmm_io.system import MMParams, validate_cross_exceptions
 from .coulomb import coulomb_from_d2
 from .lj import lj_from_d2
 
@@ -35,6 +35,7 @@ def prepare_cross(params: MMParams, ligand_idx, receptor_idx):
     实测这让 fp32 的 MM 比 fp64 还慢(3.06 ms vs 2.31 ms), 因为 fp64 路径
     不需要转换。轨迹分析里 topology 是固定的, 这些应该只做一次。
     """
+    validate_cross_exceptions(params, ligand_idx, receptor_idx)
     dt = _dtype()
     return (jnp.asarray(params.charge, dt), jnp.asarray(params.sigma, dt),
             jnp.asarray(params.epsilon, dt), jnp.asarray(ligand_idx),

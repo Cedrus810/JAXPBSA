@@ -7,6 +7,13 @@
     python scripts/online_overhead.py --order jax           # 先预热 JAX 再建 OpenMM Context
     python scripts/online_overhead.py --mode both           # 同步 vs 常驻后台 worker
     python scripts/online_overhead.py --mode both --mps-percentage 20 --mps-priority 1
+    python scripts/online_overhead.py --hou-run-id a1_ph74_gaff2_rep01 --config 5000 --grid h0.4 ...
+
+`--hou-run-id`(docs/HOU_ONLINE_COST_ACCEPTANCE_PLAN_20261028.md §3): 小分子包里一个 Hou 副本的体系,
+与生产入口 run_smallmol_md.py 对齐 —— setup/system.xml + MonteCarloBarostat(1 atm, 298.15 K)、CUDA mixed
+精度、从该副本 npt_end.xml 出发、pilot = npt_solute_A.npy、ref = pilot[-1]。不给时 S4 路径不变。
+`--grid h0.4` 只改 h/h_lig(0.4/0.2, 同 score_smallmol_replica.py 的 GRIDS)。`--cache-dir` 指定 XLA
+编译缓存目录(冷启动 / 命中缓存分开测)。
 
 配置 = reporter 间隔: baseline(无 reporter) / 5000 / 10000 / 25000 步
 (plan §21.5 约束 4 的表期望 18% / 9% / 3.6%, 前提 t_step=247 µs @ 2080 Ti)。
@@ -42,6 +49,34 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 与 run_s4_md.py 一致(同成本结构才有可比的 t_step)
 T_K, DT_PS, FRICTION = 298.15, 0.002, 1.0
 INTERVALS = (5000, 10000, 25000)
+GRIDS = {"default": {}, "h0.4": dict(h=0.4, h_lig=0.2)}
+PACKAGE = os.path.join(ROOT, "experiments", "2026-10-17_small_molecule_benchmark")
+
+
+def _hou_system(run_id: str):
+    """Hou replica as run by run_smallmol_md.py: (system, topology, state0, solute_idx, lig_local,
+    pilot_A, platform_properties).  Read-only."""
+    import csv
+    import json
+    import numpy as np
+    import openmm as mm
+    import openmm.app as app
+    from openmm import unit
+    run = next(r for r in csv.DictReader(open(os.path.join(PACKAGE, "manifests", "runs.csv")))
+               if r["run_id"] == run_id)
+    inp = next(r for r in csv.DictReader(open(os.path.join(PACKAGE, "manifests", "hou_inputs.csv")))
+               if r["sample"] == run["sample_id"])
+    rep = os.path.join(PACKAGE, run["output_directory"])
+    setup = os.path.join(os.path.dirname(rep), "setup")
+    srec = json.load(open(os.path.join(setup, "setup_record.json")))
+    system = mm.XmlSerializer.deserialize(open(os.path.join(setup, "system.xml")).read())
+    system.addForce(mm.MonteCarloBarostat(1.0 * unit.atmosphere, T_K * unit.kelvin))
+    state0 = mm.XmlSerializer.deserialize(open(os.path.join(rep, "npt_end.xml")).read())
+    top = app.AmberPrmtopFile(inp["prmtop"]).topology
+    pilot = np.load(os.path.join(rep, "npt_solute_A.npy")).astype(np.float64)
+    n_sol = int(srec["n_solute_atoms"])
+    return (system, top, state0, np.arange(n_sol), np.arange(*srec["ligand_local_idx"]), pilot,
+            {"CudaPrecision": "mixed"})
 
 
 def _verify_mps_clients(expected_pids):
@@ -91,7 +126,8 @@ def _pilot():
 
 
 def _worker(cfg: str, steps: int, order: str, mode: str,
-            mps_percentage: int | None, mps_priority: int | None) -> None:
+            mps_percentage: int | None, mps_priority: int | None,
+            hou_run_id: str | None = None, grid: str = "default", cache_dir: str | None = None) -> None:
     os.environ.setdefault("XLA_PYTHON_CLIENT_PREALLOCATE", "false")
 
     import numpy as np
@@ -99,37 +135,46 @@ def _worker(cfg: str, steps: int, order: str, mode: str,
     import openmm.app as app
     from openmm import unit
 
-    pdb = app.PDBFile(os.path.join(ROOT, "data", "md", "S4_solvated.pdb"))
-    state0 = mm.XmlSerializer.deserialize(
-        open(os.path.join(ROOT, "data", "md", "S4_prod_final.xml")).read())
-    ff = app.ForceField("amber/ff14SB.xml", "amber/phosaa14SB.xml",
-                        "amber/tip3p_standard.xml")
-    system = ff.createSystem(pdb.topology, nonbondedMethod=app.PME,
-                             nonbondedCutoff=1.0 * unit.nanometer,
-                             constraints=app.HBonds)
-    pos_A = np.asarray(state0.getPositions(asNumpy=True).value_in_unit(
-        unit.angstrom), dtype=np.float64)
+    if hou_run_id:
+        system, topology, state0, solute_idx, lig_local, pilot, props = _hou_system(hou_run_id)
+        ref_A = pilot[-1]
+    else:
+        pdb = app.PDBFile(os.path.join(ROOT, "data", "md", "S4_solvated.pdb"))
+        topology = pdb.topology
+        state0 = mm.XmlSerializer.deserialize(
+            open(os.path.join(ROOT, "data", "md", "S4_prod_final.xml")).read())
+        ff = app.ForceField("amber/ff14SB.xml", "amber/phosaa14SB.xml",
+                            "amber/tip3p_standard.xml")
+        system = ff.createSystem(pdb.topology, nonbondedMethod=app.PME,
+                                 nonbondedCutoff=1.0 * unit.nanometer,
+                                 constraints=app.HBonds)
+        pos_A = np.asarray(state0.getPositions(asNumpy=True).value_in_unit(
+            unit.angstrom), dtype=np.float64)
 
-    # 溶质 = 溶剂化前的干体系(Modeller.addSolvent 把水/离子追加在尾部)
-    import json
-    meta = json.load(open(os.path.join(ROOT, "data", "prepared", "S4_meta.json")))
-    n_dry = int(meta["n_atoms"])
-    solute_idx = np.arange(n_dry)
-    lig_local = np.asarray(meta["ligand_idx"])  # 干体系里本就是 0 基局部索引
+        # 溶质 = 溶剂化前的干体系(Modeller.addSolvent 把水/离子追加在尾部)
+        import json
+        meta = json.load(open(os.path.join(ROOT, "data", "prepared", "S4_meta.json")))
+        n_dry = int(meta["n_atoms"])
+        solute_idx = np.arange(n_dry)
+        lig_local = np.asarray(meta["ligand_idx"])  # 干体系里本就是 0 基局部索引
+        pilot, ref_A, props = None, pos_A[solute_idx], {}
+    if cfg != "baseline" and pilot is None:
+        pilot = _pilot()
+    analyzer_kwargs = dict(pilot_coords_A=pilot, **GRIDS[grid])
 
     def make_reporter():
         if mode == "async":
             from jaxpbsa.online_async import AsyncPBSAReporter
             return AsyncPBSAReporter.from_system(
-                system, pdb.topology, solute_idx, lig_local, pos_A[solute_idx],
-                interval_steps=int(cfg), analyzer_kwargs=dict(pilot_coords_A=_pilot()),
+                system, topology, solute_idx, lig_local, ref_A,
+                interval_steps=int(cfg), analyzer_kwargs=analyzer_kwargs,
                 mps_thread_percentage=mps_percentage, mps_priority=mps_priority,
-                max_pending=2)
+                max_pending=2, cache_dir=cache_dir)
         import jaxpbsa
-        jaxpbsa.enable_compilation_cache()
+        jaxpbsa.enable_compilation_cache(cache_dir)
         from jaxpbsa.online import OnlineMMPBSA, PBSAReporter
-        analyzer = OnlineMMPBSA(system, pdb.topology, solute_idx, lig_local,
-                                 pos_A[solute_idx], pilot_coords_A=_pilot())
+        analyzer = OnlineMMPBSA(system, topology, solute_idx, lig_local,
+                                 ref_A, **analyzer_kwargs)
         return PBSAReporter(analyzer, int(cfg), solute_idx)
 
     reporter = None
@@ -138,8 +183,8 @@ def _worker(cfg: str, steps: int, order: str, mode: str,
             reporter = make_reporter()
         integrator = mm.LangevinMiddleIntegrator(
             T_K, FRICTION / unit.picosecond, DT_PS * unit.picoseconds)
-        sim = app.Simulation(pdb.topology, system, integrator,
-                             mm.Platform.getPlatformByName("CUDA"))
+        sim = app.Simulation(topology, system, integrator,
+                             mm.Platform.getPlatformByName("CUDA"), props)
         sim.context.setState(state0)
         if order != "jax" and cfg != "baseline":
             reporter = make_reporter()
@@ -181,7 +226,10 @@ def _worker(cfg: str, steps: int, order: str, mode: str,
           f"max_latency_s={getattr(reporter, 'max_latency_s', 0.0):.3f} "
           f"submit_s={getattr(reporter, 'total_submit_s', 0.0):.3f} "
           f"worker_mps_percentage={mps_percentage if mode == 'async' and reporter else None} "
-          f"worker_mps_priority={mps_priority if mode == 'async' and reporter else None}",
+          f"worker_mps_priority={mps_priority if mode == 'async' and reporter else None} "
+          f"system={hou_run_id or 'S4'} grid={grid} expected={steps // int(cfg) if cfg != 'baseline' else 0} "
+          f"submitted={getattr(reporter, 'n_submitted', n_rep)} skipped={getattr(reporter, 'n_skipped', 0)} "
+          f"max_pending={getattr(reporter, 'max_pending', None)}",
           flush=True)
 
 
@@ -193,6 +241,9 @@ def main() -> None:
     ap.add_argument("--mode", choices=["sync", "async", "both"], default="sync")
     ap.add_argument("--mps-percentage", type=int, choices=range(1, 101), metavar="1..100")
     ap.add_argument("--mps-priority", type=int, choices=[0, 1])
+    ap.add_argument("--hou-run-id", default=None, help="Hou replica of the small-molecule package (default: S4)")
+    ap.add_argument("--grid", choices=sorted(GRIDS), default="default")
+    ap.add_argument("--cache-dir", default=None, help="XLA compilation cache directory")
     ap.add_argument("--worker", type=str, default=None)  # 内部: 子进程模式
     args = ap.parse_args()
     if args.mps_percentage is not None and args.mps_priority is None:
@@ -200,7 +251,7 @@ def main() -> None:
 
     if args.worker:
         _worker(args.worker, args.steps, args.order, args.mode,
-                args.mps_percentage, args.mps_priority)
+                args.mps_percentage, args.mps_priority, args.hou_run_id, args.grid, args.cache_dir)
         return
 
     cfgs = [args.config] if args.config else ["baseline", *map(str, INTERVALS)]
@@ -216,6 +267,11 @@ def main() -> None:
                     command += ["--mps-percentage", str(args.mps_percentage)]
                 if args.mps_priority is not None:
                     command += ["--mps-priority", str(args.mps_priority)]
+                if args.hou_run_id:
+                    command += ["--hou-run-id", args.hou_run_id]
+                command += ["--grid", args.grid]
+                if args.cache_dir:
+                    command += ["--cache-dir", args.cache_dir]
                 r = subprocess.run(command, cwd=ROOT)
                 if r.returncode != 0:
                     failed = True

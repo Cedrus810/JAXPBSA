@@ -153,9 +153,11 @@ class AsyncPBSAReporter:
             raise ValueError("on_backlog must be 'raise' or 'skip'")
         if on_violation not in ("flag", "raise"):
             raise ValueError("on_violation must be 'flag' or 'raise'")
-        idx = np.asarray(solute_idx, dtype=int)
-        if idx.ndim != 1 or not idx.size or (idx < 0).any() or np.unique(idx).size != idx.size:
+        idx = np.asarray(solute_idx)
+        if (idx.ndim != 1 or not idx.size or idx.dtype.kind not in "iu"
+                or (idx < 0).any() or np.unique(idx).size != idx.size):
             raise ValueError("solute_idx must contain distinct nonnegative indices")
+        idx = idx.astype(int)
         env = _worker_environment(mps_thread_percentage, mps_priority, cpu_threads)
         self.interval_steps, self.solute_idx = int(interval_steps), idx.copy()
         self.max_pending, self.on_backlog = int(max_pending), on_backlog
@@ -228,8 +230,8 @@ class AsyncPBSAReporter:
 
         factory = _OnlineFactory(
             XmlSerializer.serialize(system), topology,
-            np.array(solute_idx, dtype=int, copy=True),
-            np.array(ligand_local_idx, dtype=int, copy=True),
+            np.array(solute_idx, copy=True),
+            np.array(ligand_local_idx, copy=True),
             np.array(ref_coords_A, dtype=np.float64, copy=True),
             dict(analyzer_kwargs or {}), np.dtype(dtype()).itemsize * 8, cache_dir)
         return cls(factory, interval_steps, solute_idx, **reporter_kwargs)

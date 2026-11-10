@@ -26,13 +26,20 @@ class MMParams:
 def extract_nonbonded(system: mm.System) -> MMParams:
     if system.getNumParticles() == 0:
         raise ValueError("empty System")
-    nb = None
-    for force in system.getForces():
-        if isinstance(force, mm.NonbondedForce):
-            nb = force
-            break
-    if nb is None:
-        raise ValueError("System contains no NonbondedForce")
+    forces = system.getForces()
+    nbs = [f for f in forces if isinstance(f, mm.NonbondedForce)]
+    if len(nbs) != 1:
+        raise ValueError("System must contain exactly one NonbondedForce")
+    nb = nbs[0]
+    unsupported = [type(f).__name__ for f in forces if isinstance(
+        f, (mm.CustomNonbondedForce, mm.CustomGBForce, mm.GBSAOBCForce))
+        or type(f).__name__.startswith("Amoeba")]
+    if unsupported:
+        raise ValueError(f"unsupported nonbonded force representation: {unsupported}")
+    if nb.getNumParticleParameterOffsets() or nb.getNumExceptionParameterOffsets():
+        raise ValueError("NonbondedForce parameter offsets are not supported")
+    if nb.getNumParticles() != system.getNumParticles():
+        raise ValueError("NonbondedForce particle count differs from System")
     if nb.getNonbondedMethod() not in (
         mm.NonbondedForce.NoCutoff,
         mm.NonbondedForce.CutoffNonPeriodic,
@@ -51,6 +58,10 @@ def extract_nonbonded(system: mm.System) -> MMParams:
         charge[i] = q.value_in_unit(mm.unit.elementary_charge)
         sigma[i] = s.value_in_unit(mm.unit.nanometer) * NM_TO_ANGSTROM
         epsilon[i] = e.value_in_unit(mm.unit.kilojoule_per_mole) * KJ_TO_KCAL
+    if not all(np.isfinite(x).all() for x in (charge, sigma, epsilon)):
+        raise ValueError("nonbonded parameters contain NaN/Inf")
+    if (sigma < 0).any() or (epsilon < 0).any():
+        raise ValueError("nonbonded sigma/epsilon must be nonnegative")
 
     exceptions = []
     for i in range(nb.getNumExceptions()):
@@ -65,3 +76,11 @@ def extract_nonbonded(system: mm.System) -> MMParams:
             )
         )
     return MMParams(charge=charge, sigma=sigma, epsilon=epsilon, exceptions=exceptions)
+
+
+def validate_cross_exceptions(params: MMParams, ligand_idx, receptor_idx) -> None:
+    """The cross kernel supports independent, noncovalently bound species only."""
+    lig, rec = set(map(int, ligand_idx)), set(map(int, receptor_idx))
+    for a, b, *_ in params.exceptions:
+        if (a in lig and b in rec) or (b in lig and a in rec):
+            raise ValueError(f"unsupported receptor-ligand nonbonded exception: {a}, {b}")
