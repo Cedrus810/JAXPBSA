@@ -1,0 +1,78 @@
+{
+  "schema": 2,
+  "run_id": "a2_ph74_gaff2_rep01",
+  "target": "hou",
+  "sample": "a2",
+  "model": "ph74_gaff2",
+  "inputs": {
+    "system": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a2/ph74_gaff2/setup/system.xml",
+      "sha256": "6d91370215253060b00e7046912596d9dac8f5e1d22d29aebe171ac6d6d94fb8"
+    },
+    "setup_record": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a2/ph74_gaff2/setup/setup_record.json",
+      "sha256": "44ba2c9bf5fcac8e0b0564abc48e6bbf78bb7e385cb413bb610c8225ada11cfd"
+    },
+    "prmtop": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a2/ph74_gaff2/complex_solv.prmtop",
+      "sha256": "8b826abe3420d3b4fe7f9c54c4839732d4ab0cb85a2f7c7c4d41b494cfb45b8a"
+    }
+  },
+  "trajectory": {
+    "dcd": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a2/ph74_gaff2/rep01/analysis/solute_dry.dcd",
+    "frame_times": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a2/ph74_gaff2/rep01/analysis/frame_times.csv",
+    "n_atoms": 4693
+  },
+  "window_ns": [
+    0.0,
+    5.0
+  ],
+  "stride_frames": 20,
+  "block_ns": 1.0,
+  "analyzer": {
+    "h": 0.5,
+    "h_lig": 0.25,
+    "pb_params": {
+      "eps_in": 1.0,
+      "eps_out": 78.5,
+      "ionic_strength_M": 0.15,
+      "temperature_K": 298.15,
+      "probe_radius": 1.4,
+      "ion_radius": 2.0,
+      "swin": 0.5,
+      "surface": "binary",
+      "gauss_sigma": 0.93,
+      "gauss_selfcorr": true,
+      "gap_sigma": 1.0,
+      "gauss_m": 1,
+      "eps_gap": 8.0,
+      "gcs_probe": 1.5,
+      "gcs_sigma2": 1.0,
+      "gcs_tau": 0.0025,
+      "gcs_normalize": true,
+      "eps_vacuum": 1.0,
+      "nonlinear": false,
+      "newton_max_iter": 60,
+      "newton_inner_tol": 0.001,
+      "ref_solver": "dst",
+      "precond": "auto",
+      "mg_nu": 2,
+      "mg_coarse_sweeps": 50,
+      "mg_min_n": 7,
+      "boundary_atom_block": 128,
+      "tol": 1e-05,
+      "max_iter": 2000
+    },
+    "radii_model": "mbondi2",
+    "gamma": 0.005,
+    "beta": 0.0,
+    "sa_k": 192,
+    "sa_points": 960,
+    "precision_bits": 32
+  },
+  "pilot": {
+    "source": "npt",
+    "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a2/ph74_gaff2/rep01/npt_solute_A.npy",
+    "ref": "last pilot frame"
+  }
+}

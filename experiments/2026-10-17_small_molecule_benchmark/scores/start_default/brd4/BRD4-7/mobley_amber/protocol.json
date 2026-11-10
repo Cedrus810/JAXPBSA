@@ -1,0 +1,76 @@
+{
+  "schema": 2,
+  "kind": "minimised_start",
+  "target": "brd4",
+  "sample": "BRD4-7",
+  "model": "mobley_amber",
+  "inputs": {
+    "system": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-7/mobley_amber/setup/system.xml",
+      "sha256": "cc0e4d175b13b4d0b1b4c17b4832e0ba55b9b60edaf6b46977771aa5d44931e4"
+    },
+    "setup_record": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-7/mobley_amber/setup/setup_record.json",
+      "sha256": "9b88bc27fd628dce4f4ad1769c1b95dc00de278f1285be8db7ca0bb2209a5a1a"
+    },
+    "start": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-7/mobley_amber/setup/solute_reference.npz",
+      "sha256": "fbe8e414270f40417e97a6233a587af48dfcebe1524c0c414cbee17e7a5b997f"
+    },
+    "prmtop": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/sources/brd4/amber/BRD4-7.prmtop",
+      "sha256": "7f38a1db5c20e8b1ed8f56c7fa49f2d115ee5cfee3f0fa29680b99a85cea4c12"
+    }
+  },
+  "start_label": {
+    "frame": 0,
+    "step": 0,
+    "time_ps": 0.0,
+    "meaning": "minimised start, before NVT"
+  },
+  "analyzer": {
+    "h": 0.5,
+    "h_lig": 0.25,
+    "pb_params": {
+      "eps_in": 1.0,
+      "eps_out": 78.5,
+      "ionic_strength_M": 0.15,
+      "temperature_K": 298.15,
+      "probe_radius": 1.4,
+      "ion_radius": 2.0,
+      "swin": 0.5,
+      "surface": "binary",
+      "gauss_sigma": 0.93,
+      "gauss_selfcorr": true,
+      "gap_sigma": 1.0,
+      "gauss_m": 1,
+      "eps_gap": 8.0,
+      "gcs_probe": 1.5,
+      "gcs_sigma2": 1.0,
+      "gcs_tau": 0.0025,
+      "gcs_normalize": true,
+      "eps_vacuum": 1.0,
+      "nonlinear": false,
+      "newton_max_iter": 60,
+      "newton_inner_tol": 0.001,
+      "ref_solver": "dst",
+      "precond": "auto",
+      "mg_nu": 2,
+      "mg_coarse_sweeps": 50,
+      "mg_min_n": 7,
+      "boundary_atom_block": 128,
+      "tol": 1e-05,
+      "max_iter": 2000
+    },
+    "radii_model": "mbondi2",
+    "gamma": 0.005,
+    "beta": 0.0,
+    "sa_k": 192,
+    "sa_points": 960,
+    "precision_bits": 32
+  },
+  "pilot": {
+    "source": "none: grid fitted to the start",
+    "fluctuation_allowance_A": 0.0
+  }
+}

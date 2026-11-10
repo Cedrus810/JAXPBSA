@@ -1,0 +1,76 @@
+{
+  "schema": 2,
+  "kind": "minimised_start",
+  "target": "hou",
+  "sample": "a6",
+  "model": "ph74_gaff2",
+  "inputs": {
+    "system": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a6/ph74_gaff2/setup/system.xml",
+      "sha256": "d607f4497ae6a6fcca2432fb5c856ca31270eb4bfaa9ad11b09e808a9312d3e8"
+    },
+    "setup_record": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a6/ph74_gaff2/setup/setup_record.json",
+      "sha256": "12b271c9a604a9926434b198bbc7b597086be4a2e1dd156a3ab161bb6791aa57"
+    },
+    "start": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a6/ph74_gaff2/setup/solute_reference.npz",
+      "sha256": "42aa78d3a92f1b02d5c969b4d947d5c28fefa35cb2fa68a5b2f03e2281df6caa"
+    },
+    "prmtop": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a6/ph74_gaff2/complex_solv.prmtop",
+      "sha256": "d10c9a83f5b3bf8e209c82c186985412ff477b08469502f2325df47316e4f23f"
+    }
+  },
+  "start_label": {
+    "frame": 0,
+    "step": 0,
+    "time_ps": 0.0,
+    "meaning": "minimised start, before NVT"
+  },
+  "analyzer": {
+    "h": 0.5,
+    "h_lig": 0.25,
+    "pb_params": {
+      "eps_in": 1.0,
+      "eps_out": 78.5,
+      "ionic_strength_M": 0.15,
+      "temperature_K": 298.15,
+      "probe_radius": 1.4,
+      "ion_radius": 2.0,
+      "swin": 0.5,
+      "surface": "binary",
+      "gauss_sigma": 0.93,
+      "gauss_selfcorr": true,
+      "gap_sigma": 1.0,
+      "gauss_m": 1,
+      "eps_gap": 8.0,
+      "gcs_probe": 1.5,
+      "gcs_sigma2": 1.0,
+      "gcs_tau": 0.0025,
+      "gcs_normalize": true,
+      "eps_vacuum": 1.0,
+      "nonlinear": false,
+      "newton_max_iter": 60,
+      "newton_inner_tol": 0.001,
+      "ref_solver": "dst",
+      "precond": "auto",
+      "mg_nu": 2,
+      "mg_coarse_sweeps": 50,
+      "mg_min_n": 7,
+      "boundary_atom_block": 128,
+      "tol": 1e-05,
+      "max_iter": 2000
+    },
+    "radii_model": "mbondi2",
+    "gamma": 0.005,
+    "beta": 0.0,
+    "sa_k": 192,
+    "sa_points": 960,
+    "precision_bits": 32
+  },
+  "pilot": {
+    "source": "none: grid fitted to the start",
+    "fluctuation_allowance_A": 0.0
+  }
+}

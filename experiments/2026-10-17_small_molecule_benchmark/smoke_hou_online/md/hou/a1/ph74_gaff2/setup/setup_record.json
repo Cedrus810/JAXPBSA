@@ -1,0 +1,87 @@
+{
+  "sample": "a1",
+  "target": "hou",
+  "model_id": "ph74_gaff2",
+  "prmtop": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.prmtop",
+  "coordinates": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.rst7",
+  "n_atoms": 40794,
+  "n_solute_atoms": 4690,
+  "ligand_residue": "BZT",
+  "ligand_local_idx": [
+    4615,
+    4690
+  ],
+  "receptor_local_idx": [
+    0,
+    4615
+  ],
+  "ligand_elements": {
+    "C": 32,
+    "S": 1,
+    "O": 2,
+    "Br": 1,
+    "N": 2,
+    "H": 37
+  },
+  "solvent_residues": {
+    "Na+": 35,
+    "Cl-": 42,
+    "HOH": 12009
+  },
+  "forces": [
+    "HarmonicBondForce",
+    "HarmonicAngleForce",
+    "PeriodicTorsionForce",
+    "NonbondedForce",
+    "CMMotionRemover"
+  ],
+  "charge_e": {
+    "total": 0.000999890244384738,
+    "solute": 7.000999890244378,
+    "receptor": 4.999999888049271,
+    "ligand": 2.0010000021951124,
+    "solute_off_integer": 0.0009998902443779656
+  },
+  "box_vectors_nm": [
+    [
+      7.8672,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      7.8634,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      8.1867
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "restraints": "none",
+    "E_before_kJ_mol": -343586.49858122785,
+    "E_after_kJ_mol": -660991.123378196,
+    "max_force_after_kJ_mol_nm": 2395.332935143262,
+    "ligand_heavy_shift_A": {
+      "max": 3.0773432244060226,
+      "mean": 1.1595329721218526
+    },
+    "wall_s": 6.08
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 2080 Ti",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "kasuga",
+  "wall_s": 20.3
+}

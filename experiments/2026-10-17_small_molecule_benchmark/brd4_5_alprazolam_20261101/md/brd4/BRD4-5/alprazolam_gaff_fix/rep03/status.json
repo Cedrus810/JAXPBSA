@@ -1,0 +1,151 @@
+{
+  "run_id": "BRD4-5_alprazolam_gaff_fix_rep03",
+  "target": "brd4",
+  "sample_id": "BRD4-5",
+  "model_id": "alprazolam_gaff_fix",
+  "replica": 3,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101/md/brd4/BRD4-5/alprazolam_gaff_fix/setup",
+  "seeds": {
+    "velocity": 20261032,
+    "integrator": 24000001,
+    "barostat": 24500001
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 50000,
+  "nvt_steps": 50000,
+  "npt_steps": 500000,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 50,
+  "prod_target_history": [
+    2500000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 24000001,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 24007920,
+      "barostat_seed": 24507920,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 24015839,
+      "barostat_seed": 24515839,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 17.37,
+    "npt": 210.11,
+    "prod_chunk_0000": 22.24,
+    "prod_chunk_0001": 22.14,
+    "prod_chunk_0002": 22.17,
+    "prod_chunk_0003": 22.09,
+    "prod_chunk_0004": 22.1,
+    "prod_chunk_0005": 22.26,
+    "prod_chunk_0006": 22.21,
+    "prod_chunk_0007": 22.27,
+    "prod_chunk_0008": 22.33,
+    "prod_chunk_0009": 22.25,
+    "prod_chunk_0010": 22.23,
+    "prod_chunk_0011": 22.2,
+    "prod_chunk_0012": 22.24,
+    "prod_chunk_0013": 22.26,
+    "prod_chunk_0014": 22.56,
+    "prod_chunk_0015": 22.47,
+    "prod_chunk_0016": 22.37,
+    "prod_chunk_0017": 22.25,
+    "prod_chunk_0018": 22.23,
+    "prod_chunk_0019": 22.2,
+    "prod_chunk_0020": 22.33,
+    "prod_chunk_0021": 22.37,
+    "prod_chunk_0022": 22.35,
+    "prod_chunk_0023": 22.29,
+    "prod_chunk_0024": 22.34,
+    "prod_chunk_0025": 22.41,
+    "prod_chunk_0026": 22.3,
+    "prod_chunk_0027": 22.19,
+    "prod_chunk_0028": 22.29,
+    "prod_chunk_0029": 22.45,
+    "prod_chunk_0030": 22.19,
+    "prod_chunk_0031": 22.17,
+    "prod_chunk_0032": 22.28,
+    "prod_chunk_0033": 22.33,
+    "prod_chunk_0034": 22.25,
+    "prod_chunk_0035": 22.12,
+    "prod_chunk_0036": 22.29,
+    "prod_chunk_0037": 22.18,
+    "prod_chunk_0038": 22.15,
+    "prod_chunk_0039": 22.39,
+    "prod_chunk_0040": 22.33,
+    "prod_chunk_0041": 22.18,
+    "prod_chunk_0042": 22.29,
+    "prod_chunk_0043": 22.64,
+    "prod_chunk_0044": 22.6,
+    "prod_chunk_0045": 22.4,
+    "prod_chunk_0046": 22.26,
+    "prod_chunk_0047": 22.32,
+    "prod_chunk_0048": 22.27,
+    "prod_chunk_0049": 22.31
+  },
+  "complete": true,
+  "source_inputs": {
+    "prmtop": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101/prepared/brd4/BRD4-5/alprazolam_gaff_fix/complex_solv.prmtop",
+      "sha256": "ba7728de6bd8a46293094be498b7e8013df2ccccce638a3d4caa96ebdbb07d61"
+    },
+    "coordinates": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101/prepared/brd4/BRD4-5/alprazolam_gaff_fix/complex_solv.rst7",
+      "sha256": "e46990870aaa46a594022c8e2af5897351e867b15becfec6994061d5466142d2"
+    },
+    "system": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101/md/brd4/BRD4-5/alprazolam_gaff_fix/setup/system.xml",
+      "sha256": "6e2ddbaec7e558b5a856bcc48a099b584fc92cde67de7216d8a507114367dc41"
+    },
+    "minimized": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101/md/brd4/BRD4-5/alprazolam_gaff_fix/setup/minimized_state.xml",
+      "sha256": "cac35f3bc770f7a2324a7c172834d66c8fbc1fda4c5e1405ce69d13c1fa26a41"
+    },
+    "setup_record": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101/md/brd4/BRD4-5/alprazolam_gaff_fix/setup/setup_record.json",
+      "sha256": "350e553407a1a93cf7fa6f27b3b83383145392ccd2af037d1a834f0ab387f270"
+    }
+  },
+  "legacy_setup_input_history_unverified": false,
+  "dynamics": {
+    "temperature_K": 298.15,
+    "dt_ps": 0.002,
+    "friction_per_ps": 1.0,
+    "pressure_atm": 1.0,
+    "cutoff_nm": 1.0
+  },
+  "online_required": false,
+  "md_complete": true,
+  "online_complete": false,
+  "openmm": "8.5.2",
+  "host": "yayoi28.cluster.local"
+}

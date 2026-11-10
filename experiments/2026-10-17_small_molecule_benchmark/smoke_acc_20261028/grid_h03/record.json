@@ -1,0 +1,110 @@
+{
+  "run_id": "a1_ph74_gaff2_rep01",
+  "frames": [
+    {
+      "frame": "249",
+      "chunk": "24",
+      "step": "1250000",
+      "time_ps": "2500.0"
+    }
+  ],
+  "seed": 20261019,
+  "n_rot": 3,
+  "legacy_setup_input_history_unverified": true,
+  "rotations": [
+    [
+      [
+        -0.073003,
+        -0.979601,
+        -0.187223
+      ],
+      [
+        -0.764562,
+        0.17551,
+        -0.620194
+      ],
+      [
+        0.640402,
+        0.097868,
+        -0.761779
+      ]
+    ],
+    [
+      [
+        -0.298879,
+        0.751935,
+        0.587593
+      ],
+      [
+        0.006903,
+        0.617425,
+        -0.786599
+      ],
+      [
+        -0.954266,
+        -0.231042,
+        -0.189725
+      ]
+    ],
+    [
+      [
+        -0.201642,
+        -0.28272,
+        0.937768
+      ],
+      [
+        -0.922884,
+        -0.265844,
+        -0.278589
+      ],
+      [
+        0.328062,
+        -0.921627,
+        -0.207313
+      ]
+    ]
+  ],
+  "pilot_window_ns": [
+    0.0,
+    5.0
+  ],
+  "host": "kasuga02",
+  "device": "cuda:0",
+  "jax": "0.10.2",
+  "translation": "not tested: TripletSolver re-centres C/R and L on their own COM",
+  "configs": {
+    "h0.3": {
+      "kwargs": {
+        "h": 0.3,
+        "h_lig": 0.15
+      },
+      "n_pilot": 500,
+      "n_evals": 1,
+      "sizing": {
+        "source": "pilot 500 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.75,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.602581802737351,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          321,
+          321,
+          321
+        ],
+        "grid_lig": [
+          225,
+          225,
+          257
+        ],
+        "min_margin_on_sizing_frames": 10.66821683790291,
+        "min_margin_lig_on_sizing_frames": 2.823785440637085
+      },
+      "init_incl_warmup_s": 339.08,
+      "warmup_s": 335.28,
+      "new_evals_this_call": 1,
+      "ms_per_eval_median": 2340.15
+    }
+  }
+}

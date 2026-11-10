@@ -1,0 +1,73 @@
+{
+  "schema": 2,
+  "run_id": "BRD4-2_mobley_amber_rep03",
+  "target": "brd4",
+  "sample": "BRD4-2",
+  "model": "mobley_amber",
+  "inputs": {
+    "system": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-2/mobley_amber/setup/system.xml",
+      "sha256": "ed68d6d0da34dd92a9f7110e8c34cb6e0b9ae3f7d553f5f4fce3e7faa405271b"
+    },
+    "setup_record": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-2/mobley_amber/setup/setup_record.json",
+      "sha256": "76887f57613918ffb277087f1ffd110d1d0803c50bc70c5d502386d2a873083e"
+    },
+    "prmtop": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/sources/brd4/amber/BRD4-2.prmtop",
+      "sha256": "b8bbc204979d99188371148926e72d2408c5e083c51f8008289b1e8f5802aa6b"
+    }
+  },
+  "trajectory": {
+    "dcd": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-2/mobley_amber/rep03/analysis/solute_dry.dcd",
+    "frame_times": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-2/mobley_amber/rep03/analysis/frame_times.csv",
+    "n_atoms": 2063
+  },
+  "window_ns": [
+    0.0,
+    5.0
+  ],
+  "stride_frames": 1,
+  "block_ns": 1.0,
+  "analyzer": {
+    "h": 0.4,
+    "h_lig": 0.2,
+    "pb_params": {
+      "eps_in": 1.0,
+      "eps_out": 78.5,
+      "ionic_strength_M": 0.15,
+      "temperature_K": 298.15,
+      "probe_radius": 1.4,
+      "ion_radius": 2.0,
+      "swin": 0.5,
+      "surface": "binary",
+      "gauss_sigma": 0.93,
+      "gauss_selfcorr": true,
+      "gap_sigma": 1.0,
+      "gauss_m": 1,
+      "eps_gap": 8.0,
+      "gcs_probe": 1.5,
+      "gcs_sigma2": 1.0,
+      "gcs_tau": 0.0025,
+      "gcs_normalize": true,
+      "eps_vacuum": 1.0,
+      "nonlinear": false,
+      "newton_max_iter": 60,
+      "newton_inner_tol": 0.001,
+      "ref_solver": "dst",
+      "precond": "auto",
+      "mg_nu": 2,
+      "mg_coarse_sweeps": 50,
+      "mg_min_n": 7,
+      "boundary_atom_block": 128,
+      "tol": 1e-05,
+      "max_iter": 2000
+    },
+    "radii_model": "mbondi2",
+    "gamma": 0.005,
+    "beta": 0.0,
+    "sa_k": 192,
+    "sa_points": 960,
+    "precision_bits": 32
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "run_id": "a1_ph74_gaff2_accbase",
+  "target": "hou",
+  "sample_id": "a1",
+  "model_id": "ph74_gaff2",
+  "replica": 91,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/acceptance_online_20261028/md/hou/a1/ph74_gaff2/setup",
+  "seeds": {
+    "velocity": 20261091,
+    "integrator": 91000001,
+    "barostat": 91500001
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 50000,
+  "nvt_steps": 50000,
+  "npt_steps": 500000,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 10,
+  "prod_target_history": [
+    500000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 91000001,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 91007920,
+      "barostat_seed": 91507920,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 91015839,
+      "barostat_seed": 91515839,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 20.84,
+    "npt": 261.32,
+    "prod_chunk_0000": 28.76,
+    "prod_chunk_0001": 28.26,
+    "prod_chunk_0002": 28.55,
+    "prod_chunk_0003": 28.53,
+    "prod_chunk_0004": 28.13,
+    "prod_chunk_0005": 28.53,
+    "prod_chunk_0006": 28.28,
+    "prod_chunk_0007": 28.42,
+    "prod_chunk_0008": 28.04,
+    "prod_chunk_0009": 28.07
+  },
+  "complete": true,
+  "source_inputs": {
+    "prmtop": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.prmtop",
+      "sha256": "8e15dce8f9dba213f31cea28a435778a0e4ae4a42bdb644de986b46def918e7a"
+    },
+    "coordinates": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.rst7",
+      "sha256": "25a1ae46ce989cba003ad36d3535413dd2f31c437dc696e5353e28957dd04e7d"
+    },
+    "system": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup/system.xml",
+      "sha256": "a01246fda5d479f7e97c4b372f847200a294c4fe08638f294496284e223a9d99"
+    },
+    "minimized": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup/minimized_state.xml",
+      "sha256": "7d18db1d4bc2881834386ed2bb8e0edea2c2236bc54e0baaf90115f0d822ee1c"
+    },
+    "setup_record": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup/setup_record.json",
+      "sha256": "d560d5cb75014d8e953a384c26368e57000a4166a626ce796091ddb33186c3ce"
+    }
+  },
+  "legacy_setup_input_history_unverified": true,
+  "dynamics": {
+    "temperature_K": 298.15,
+    "dt_ps": 0.002,
+    "friction_per_ps": 1.0,
+    "pressure_atm": 1.0,
+    "cutoff_nm": 1.0
+  },
+  "online_required": false,
+  "md_complete": true,
+  "online_complete": false,
+  "openmm": "8.5.2",
+  "host": "yayoi10.cluster.local"
+}

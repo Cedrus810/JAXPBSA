@@ -1,0 +1,251 @@
+{
+  "run_id": "PMI_v21m2_rep03",
+  "frames": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000,
+    1100,
+    1200,
+    1300,
+    1400,
+    1500,
+    1600,
+    1700,
+    1800,
+    1900
+  ],
+  "config_list": [
+    "h0.4",
+    "h0.35",
+    "rot",
+    "shift",
+    "tol6"
+  ],
+  "n_var": 3,
+  "seed": 20261108,
+  "pilot_window_ns": [
+    1.0,
+    20.0
+  ],
+  "scores": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/scores_1_20/PMI/v21m2/rep03/frames.csv",
+  "out": "/home/ruigengji/JAXPBSA/experiments/2026-11-08_ppi_r4/n1_grid/PMI/v21m2/rep03",
+  "rotations": [
+    [
+      [
+        0.801718,
+        -0.175775,
+        0.571272
+      ],
+      [
+        -0.560764,
+        0.109591,
+        0.820691
+      ],
+      [
+        -0.206863,
+        -0.978311,
+        -0.010708
+      ]
+    ],
+    [
+      [
+        -0.738314,
+        -0.380233,
+        -0.557059
+      ],
+      [
+        -0.006856,
+        -0.821664,
+        0.569932
+      ],
+      [
+        -0.674422,
+        0.424608,
+        0.604039
+      ]
+    ],
+    [
+      [
+        0.410707,
+        0.541897,
+        -0.733258
+      ],
+      [
+        0.068816,
+        0.783499,
+        0.61757
+      ],
+      [
+        0.909167,
+        -0.3041,
+        0.284498
+      ]
+    ]
+  ],
+  "host": "yayoi30.cluster.local",
+  "device": "cuda:0",
+  "jax": "0.10.2",
+  "prepared": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/PMI/v21m2",
+  "configs": {
+    "h0.4": {
+      "kwargs": {
+        "h": 0.4,
+        "h_lig": 0.2
+      },
+      "n_pilot": 1900,
+      "new_evals": 19,
+      "sizing": {
+        "source": "pilot 1900 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.7,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.552581802737352,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          225,
+          193,
+          193
+        ],
+        "grid_lig": [
+          257,
+          225,
+          193
+        ],
+        "min_margin_on_sizing_frames": 11.775346085595661,
+        "min_margin_lig_on_sizing_frames": 3.593105010139648
+      },
+      "init_incl_warmup_s": 97.44,
+      "warmup_s": 96.33,
+      "ms_per_eval_median": 403.02
+    },
+    "h0.35": {
+      "kwargs": {
+        "h": 0.35,
+        "h_lig": 0.16666666666666666
+      },
+      "n_pilot": 1900,
+      "new_evals": 19,
+      "sizing": {
+        "source": "pilot 1900 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.7,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.552581802737352,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          257,
+          225,
+          225
+        ],
+        "grid_lig": [
+          321,
+          257,
+          225
+        ],
+        "min_margin_on_sizing_frames": 12.177684100555673,
+        "min_margin_lig_on_sizing_frames": 3.0597716768063092
+      },
+      "init_incl_warmup_s": 103.56,
+      "warmup_s": 102.49,
+      "ms_per_eval_median": 1134.62
+    },
+    "rot": {
+      "kwargs": {},
+      "n_pilot": 1957,
+      "new_evals": 76,
+      "sizing": {
+        "source": "pilot 1957 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.7,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.552581802737352,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          193,
+          161,
+          161
+        ],
+        "grid_lig": [
+          193,
+          193,
+          193
+        ],
+        "min_margin_on_sizing_frames": 8.276339322591603,
+        "min_margin_lig_on_sizing_frames": 3.63455208446928
+      },
+      "init_incl_warmup_s": 6.22,
+      "warmup_s": 5.25,
+      "ms_per_eval_median": 149.17
+    },
+    "shift": {
+      "kwargs": {},
+      "n_pilot": 1900,
+      "new_evals": 76,
+      "sizing": {
+        "source": "pilot 1900 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.7,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.552581802737352,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          193,
+          161,
+          161
+        ],
+        "grid_lig": [
+          193,
+          161,
+          161
+        ],
+        "min_margin_on_sizing_frames": 13.375346085595655,
+        "min_margin_lig_on_sizing_frames": 2.213495346485842
+      },
+      "init_incl_warmup_s": 32.68,
+      "warmup_s": 31.94,
+      "ms_per_eval_median": 116.79
+    },
+    "tol6": {
+      "kwargs": {
+        "pb_params": "PBParams(eps_in=1.0, eps_out=78.5, ionic_strength_M=0.15, temperature_K=298.15, probe_radius=1.4, ion_radius=2.0, swin=0.5, surface='binary', gauss_sigma=0.93, gauss_selfcorr=True, gap_sigma=1.0, gauss_m=1, eps_gap=8.0, gcs_probe=1.5, gcs_sigma2=1.0, gcs_tau=0.0025, gcs_normalize=True, eps_vacuum=1.0, nonlinear=False, newton_max_iter=60, newton_inner_tol=0.001, ref_solver='dst', precond='auto', mg_nu=2, mg_coarse_sweeps=50, mg_min_n=7, boundary_atom_block=128, tol=1e-06, max_iter=2000)"
+      },
+      "n_pilot": 1900,
+      "new_evals": 19,
+      "sizing": {
+        "source": "pilot 1900 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.7,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.552581802737352,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          193,
+          161,
+          161
+        ],
+        "grid_lig": [
+          193,
+          161,
+          161
+        ],
+        "min_margin_on_sizing_frames": 13.375346085595655,
+        "min_margin_lig_on_sizing_frames": 2.213495346485842
+      },
+      "init_incl_warmup_s": 31.77,
+      "warmup_s": 31.02,
+      "ms_per_eval_median": 144.04
+    }
+  }
+}

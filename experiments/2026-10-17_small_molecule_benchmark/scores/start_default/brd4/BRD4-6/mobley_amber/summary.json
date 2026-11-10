@@ -1,0 +1,64 @@
+{
+  "sample": "BRD4-6",
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-6/mobley_amber/setup",
+  "start": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-6/mobley_amber/setup/solute_reference.npz",
+  "grid": {
+    "name": "default",
+    "h": 0.5,
+    "h_lig": 0.25
+  },
+  "pilot": "none (fluctuation_allowance 0)",
+  "out": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/scores/start_default/brd4/BRD4-6/mobley_amber",
+  "done": false,
+  "target": "brd4",
+  "model": "mobley_amber",
+  "valid": true,
+  "flag": null,
+  "delta_g_mmpbsa": -26.92828933530602,
+  "components": {
+    "e_coul_rl": -21.055747903648076,
+    "e_lj_rl": -33.210316117592484,
+    "g_pb_complex": -1754.75553333879,
+    "g_pb_receptor": -1753.5707885683923,
+    "g_pb_ligand": -32.235493814194484,
+    "delta_g_pb": 31.050749043796856,
+    "delta_g_sa": -3.7129743578623153
+  },
+  "solute_charge_e": {
+    "total": -0.002001031263889008,
+    "solute": 2.997998968736115,
+    "receptor": 2.9999999665245403,
+    "ligand": -0.0020009977884239416,
+    "solute_off_integer": -0.002001031263885178
+  },
+  "sizing": {
+    "source": "\u53c2\u8003\u5e27 + fluctuation_allowance",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      161,
+      129,
+      161
+    ],
+    "grid_lig": [
+      97,
+      129,
+      129
+    ],
+    "min_margin_on_sizing_frames": 7.992781015235475,
+    "min_margin_lig_on_sizing_frames": 2.3769422761515626
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only fluctuation_allowance=0 given",
+  "init_incl_warmup_s": 48.02,
+  "warmup_s": 47.54,
+  "ms_score": 111.24,
+  "device": "cuda:0",
+  "host": "yayoi43.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

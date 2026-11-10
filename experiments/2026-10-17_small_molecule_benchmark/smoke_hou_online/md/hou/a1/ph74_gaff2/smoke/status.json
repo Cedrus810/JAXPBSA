@@ -1,0 +1,172 @@
+{
+  "run_id": "a1_ph74_gaff2_smoke",
+  "target": "hou",
+  "sample_id": "a1",
+  "model_id": "ph74_gaff2",
+  "replica": 1,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/smoke_hou_online/md/hou/a1/ph74_gaff2/setup",
+  "seeds": {
+    "velocity": 20261048,
+    "integrator": 40000001,
+    "barostat": 40500001
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 50000,
+  "nvt_steps": 5000,
+  "npt_steps": 50000,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 3,
+  "prod_target_history": [
+    100000,
+    150000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 40000001,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 2080 Ti",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 40007920,
+      "barostat_seed": 40507920,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 2080 Ti",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 40015839,
+      "barostat_seed": 40515839,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 2080 Ti",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": 2,
+      "integrator_seed": 40039596,
+      "barostat_seed": 40539596,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 2080 Ti",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 3.34,
+    "npt": 38.07,
+    "prod_chunk_0000": 41.45,
+    "prod_chunk_0001": 41.79,
+    "prod_chunk_0002": 41.62
+  },
+  "complete": true,
+  "online": [
+    {
+      "csv": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/smoke_hou_online/md/hou/a1/ph74_gaff2/smoke/online/pbsa_from_chunk_0000.csv",
+      "from_chunk": 0,
+      "to_chunk": 2,
+      "n_submitted": 20,
+      "n_reports": 20,
+      "n_flagged": 0,
+      "n_skipped": 0,
+      "total_pbsa_s": 15.4,
+      "max_latency_s": 0.85,
+      "warmup_time_s": 60.41,
+      "sizing": {
+        "source": "pilot 10 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.75,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.602581802737351,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          161,
+          193,
+          193
+        ],
+        "grid_lig": [
+          129,
+          129,
+          161
+        ],
+        "min_margin_on_sizing_frames": 8.15702510051431,
+        "min_margin_lig_on_sizing_frames": 3.0818082613841007
+      },
+      "worker_config": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "CUDA_MPS_ACTIVE_THREAD_PERCENTAGE": "30",
+        "CUDA_MPS_CLIENT_PRIORITY": "1",
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "mps_thread_percentage": 30
+    },
+    {
+      "csv": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/smoke_hou_online/md/hou/a1/ph74_gaff2/smoke/online/pbsa_from_chunk_0002.csv",
+      "from_chunk": 2,
+      "to_chunk": 3,
+      "n_submitted": 10,
+      "n_reports": 10,
+      "n_flagged": 0,
+      "n_skipped": 0,
+      "total_pbsa_s": 7.73,
+      "max_latency_s": 0.845,
+      "warmup_time_s": 8.13,
+      "sizing": {
+        "source": "pilot 10 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.75,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.602581802737351,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          161,
+          193,
+          193
+        ],
+        "grid_lig": [
+          129,
+          129,
+          161
+        ],
+        "min_margin_on_sizing_frames": 8.15702510051431,
+        "min_margin_lig_on_sizing_frames": 3.0818082613841007
+      },
+      "worker_config": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "CUDA_MPS_ACTIVE_THREAD_PERCENTAGE": "30",
+        "CUDA_MPS_CLIENT_PRIORITY": "1",
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "mps_thread_percentage": 30
+    }
+  ],
+  "openmm": "8.5.2",
+  "host": "kasuga"
+}

@@ -1,0 +1,107 @@
+{
+  "sample": "BRD4-5",
+  "target": "brd4",
+  "model_id": "alprazolam_gaff_fix",
+  "prmtop": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101_smoke/prepared/brd4/BRD4-5/alprazolam_gaff_fix/complex_solv.prmtop",
+  "coordinates": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101_smoke/prepared/brd4/BRD4-5/alprazolam_gaff_fix/complex_solv.rst7",
+  "input_contract": {
+    "schema": 1,
+    "sample": "BRD4-5",
+    "inputs": {
+      "prmtop": {
+        "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101_smoke/prepared/brd4/BRD4-5/alprazolam_gaff_fix/complex_solv.prmtop",
+        "sha256": "1418306df37264f8d0816541bdd11b260f575072421faf76150b58e6731b335a"
+      },
+      "coordinates": {
+        "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/brd4_5_alprazolam_20261101_smoke/prepared/brd4/BRD4-5/alprazolam_gaff_fix/complex_solv.rst7",
+        "sha256": "e46990870aaa46a594022c8e2af5897351e867b15becfec6994061d5466142d2"
+      }
+    },
+    "n_system_atoms": 35137,
+    "n_solute_atoms": 2070,
+    "ligand_residue": "08H",
+    "ligand_residue_1based": 122,
+    "ligand_local_idx": [
+      2035,
+      2070
+    ]
+  },
+  "n_atoms": 35137,
+  "n_solute_atoms": 2070,
+  "ligand_residue": "08H",
+  "ligand_local_idx": [
+    2035,
+    2070
+  ],
+  "receptor_local_idx": [
+    0,
+    2035
+  ],
+  "ligand_elements": {
+    "C": 17,
+    "Cl": 1,
+    "N": 4,
+    "H": 13
+  },
+  "solvent_residues": {
+    "Na+": 32,
+    "Cl-": 35,
+    "HOH": 11000
+  },
+  "forces": [
+    "HarmonicBondForce",
+    "HarmonicAngleForce",
+    "PeriodicTorsionForce",
+    "NonbondedForce",
+    "CMMotionRemover"
+  ],
+  "charge_e": {
+    "total": -0.002000035121800914,
+    "solute": 2.9979999648782005,
+    "receptor": 2.9999999665245403,
+    "ligand": -0.0020000016463343484,
+    "solute_off_integer": -0.0020000351217994705
+  },
+  "box_vectors_nm": [
+    [
+      7.0505,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      6.3133,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      9.7203
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "restraints": "none",
+    "E_before_kJ_mol": -402340.0082086399,
+    "E_after_kJ_mol": -580423.2548484202,
+    "max_force_after_kJ_mol_nm": 2325.2884611119516,
+    "ligand_heavy_shift_A": {
+      "max": 1.2697664463078104,
+      "mean": 0.8400096367032872
+    },
+    "wall_s": 6.13
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 2080 Ti",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "kasuga02",
+  "wall_s": 37.71
+}

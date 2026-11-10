@@ -1,0 +1,64 @@
+{
+  "sample": "a2",
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a2/ph74_gaff2/setup",
+  "start": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a2/ph74_gaff2/setup/solute_reference.npz",
+  "grid": {
+    "name": "default",
+    "h": 0.5,
+    "h_lig": 0.25
+  },
+  "pilot": "none (fluctuation_allowance 0)",
+  "out": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/scores/start_default/hou/a2/ph74_gaff2",
+  "done": false,
+  "target": "hou",
+  "model": "ph74_gaff2",
+  "valid": true,
+  "flag": null,
+  "delta_g_mmpbsa": -34.320400589806496,
+  "components": {
+    "e_coul_rl": -26.933821644526574,
+    "e_lj_rl": -70.03891255888242,
+    "g_pb_complex": -3739.7228851424256,
+    "g_pb_receptor": -3660.455087037159,
+    "g_pb_ligand": -147.33793702699398,
+    "delta_g_pb": 68.07013892172739,
+    "delta_g_sa": -5.417805308124896
+  },
+  "solute_charge_e": {
+    "total": -0.0020001048166188307,
+    "solute": 6.997999895183382,
+    "receptor": 4.99999988859805,
+    "ligand": 1.9980000065853374,
+    "solute_off_integer": -0.0020001048166182755
+  },
+  "sizing": {
+    "source": "\u53c2\u8003\u5e27 + fluctuation_allowance",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      161,
+      161,
+      193
+    ],
+    "grid_lig": [
+      129,
+      129,
+      161
+    ],
+    "min_margin_on_sizing_frames": 8.65893365382506,
+    "min_margin_lig_on_sizing_frames": 3.2070923950498864
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only fluctuation_allowance=0 given",
+  "init_incl_warmup_s": 74.92,
+  "warmup_s": 74.29,
+  "ms_score": 510.0,
+  "device": "cuda:0",
+  "host": "yayoi43.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

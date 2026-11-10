@@ -1,0 +1,59 @@
+{
+  "run_id": "N8A_L10A_v21m1_rep01",
+  "frames": [
+    300,
+    700,
+    1100,
+    1500,
+    1900
+  ],
+  "prepared": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/prepared/N8A_L10A/v21m1",
+  "atoms": {
+    "complex": 1631,
+    "receptor": 1449,
+    "ligand": 182
+  },
+  "prmtop_charge_e": {
+    "complex": 4.0,
+    "receptor": 5.0,
+    "ligand": -1.0
+  },
+  "prmtop_source": "ParmEd from system_vacuum.xml + complex_dry.cif",
+  "screen": {
+    "H": 0.85,
+    "C": 0.72,
+    "N": 0.79,
+    "O": 0.85,
+    "S": 0.96,
+    "P": 0.86,
+    "F": 0.88
+  },
+  "gb": {
+    "igb": 5,
+    "saltcon": 0.15,
+    "surften": 0.0072,
+    "surfoff": 0.0
+  },
+  "pb": {
+    "istrng_M": 0.15,
+    "indi": 1.0,
+    "exdi": 78.5,
+    "pbsa_h": 0.5,
+    "prbrad": 1.4,
+    "inp": 1,
+    "cavity_surften": 0.005,
+    "cavity_offset": 0.0,
+    "fillratio": 4.0
+  },
+  "eo_methods_parsed": {
+    "GB": 5,
+    "PB": 5
+  },
+  "ours_scores": "/home/ruigengji/JAXPBSA/experiments/2026-10-11_public_data_execution_packet/scores_1_20/N8A_L10A/v21m1/rep01/frames.csv",
+  "ours_found": 5,
+  "amber_wall_s": 29.6,
+  "total_wall_s": 39.0,
+  "host": "yayoi30.cluster.local",
+  "amberhome": "/home/ruigengji/miniforge3/envs/openmm_dev",
+  "note": "EEL/VDW: correctness check; PB/SA: method comparison; GB: baseline. No thresholds applied."
+}

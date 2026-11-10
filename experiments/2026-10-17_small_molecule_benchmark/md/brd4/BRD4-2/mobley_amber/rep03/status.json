@@ -1,0 +1,118 @@
+{
+  "run_id": "BRD4-2_mobley_amber_rep03",
+  "target": "brd4",
+  "sample_id": "BRD4-2",
+  "model_id": "mobley_amber",
+  "replica": 3,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-2/mobley_amber/setup",
+  "seeds": {
+    "velocity": 20261023,
+    "integrator": 15000001,
+    "barostat": 15500001
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 50000,
+  "nvt_steps": 50000,
+  "npt_steps": 500000,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 50,
+  "prod_target_history": [
+    2500000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 15000001,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA RTX A4000",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 15007920,
+      "barostat_seed": 15507920,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA RTX A4000",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 15015839,
+      "barostat_seed": 15515839,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA RTX A4000",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 27.74,
+    "npt": 332.89,
+    "prod_chunk_0000": 35.46,
+    "prod_chunk_0001": 35.35,
+    "prod_chunk_0002": 35.46,
+    "prod_chunk_0003": 35.76,
+    "prod_chunk_0004": 35.61,
+    "prod_chunk_0005": 35.64,
+    "prod_chunk_0006": 35.44,
+    "prod_chunk_0007": 35.5,
+    "prod_chunk_0008": 35.49,
+    "prod_chunk_0009": 35.5,
+    "prod_chunk_0010": 35.46,
+    "prod_chunk_0011": 35.46,
+    "prod_chunk_0012": 35.37,
+    "prod_chunk_0013": 35.49,
+    "prod_chunk_0014": 35.54,
+    "prod_chunk_0015": 35.46,
+    "prod_chunk_0016": 35.48,
+    "prod_chunk_0017": 35.52,
+    "prod_chunk_0018": 35.49,
+    "prod_chunk_0019": 35.62,
+    "prod_chunk_0020": 35.5,
+    "prod_chunk_0021": 35.65,
+    "prod_chunk_0022": 35.59,
+    "prod_chunk_0023": 35.53,
+    "prod_chunk_0024": 35.53,
+    "prod_chunk_0025": 35.62,
+    "prod_chunk_0026": 35.51,
+    "prod_chunk_0027": 35.55,
+    "prod_chunk_0028": 35.48,
+    "prod_chunk_0029": 35.55,
+    "prod_chunk_0030": 35.56,
+    "prod_chunk_0031": 35.4,
+    "prod_chunk_0032": 35.48,
+    "prod_chunk_0033": 35.49,
+    "prod_chunk_0034": 35.48,
+    "prod_chunk_0035": 35.5,
+    "prod_chunk_0036": 35.43,
+    "prod_chunk_0037": 35.39,
+    "prod_chunk_0038": 35.47,
+    "prod_chunk_0039": 35.38,
+    "prod_chunk_0040": 35.51,
+    "prod_chunk_0041": 35.42,
+    "prod_chunk_0042": 35.45,
+    "prod_chunk_0043": 35.42,
+    "prod_chunk_0044": 35.45,
+    "prod_chunk_0045": 35.5,
+    "prod_chunk_0046": 35.51,
+    "prod_chunk_0047": 35.52,
+    "prod_chunk_0048": 35.41,
+    "prod_chunk_0049": 35.52
+  },
+  "complete": true,
+  "openmm": "8.5.2",
+  "host": "yayoi07.cluster.local"
+}

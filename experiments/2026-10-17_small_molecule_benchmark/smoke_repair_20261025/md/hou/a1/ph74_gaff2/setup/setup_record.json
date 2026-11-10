@@ -1,0 +1,109 @@
+{
+  "sample": "a1",
+  "target": "hou",
+  "model_id": "ph74_gaff2",
+  "prmtop": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.prmtop",
+  "coordinates": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.rst7",
+  "input_contract": {
+    "schema": 1,
+    "sample": "a1",
+    "inputs": {
+      "prmtop": {
+        "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.prmtop",
+        "sha256": "8e15dce8f9dba213f31cea28a435778a0e4ae4a42bdb644de986b46def918e7a"
+      },
+      "coordinates": {
+        "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.rst7",
+        "sha256": "25a1ae46ce989cba003ad36d3535413dd2f31c437dc696e5353e28957dd04e7d"
+      }
+    },
+    "n_system_atoms": 40794,
+    "n_solute_atoms": 4690,
+    "ligand_residue": "BZT",
+    "ligand_residue_1based": 289,
+    "ligand_local_idx": [
+      4615,
+      4690
+    ]
+  },
+  "n_atoms": 40794,
+  "n_solute_atoms": 4690,
+  "ligand_residue": "BZT",
+  "ligand_local_idx": [
+    4615,
+    4690
+  ],
+  "receptor_local_idx": [
+    0,
+    4615
+  ],
+  "ligand_elements": {
+    "C": 32,
+    "S": 1,
+    "O": 2,
+    "Br": 1,
+    "N": 2,
+    "H": 37
+  },
+  "solvent_residues": {
+    "Na+": 35,
+    "Cl-": 42,
+    "HOH": 12009
+  },
+  "forces": [
+    "HarmonicBondForce",
+    "HarmonicAngleForce",
+    "PeriodicTorsionForce",
+    "NonbondedForce",
+    "CMMotionRemover"
+  ],
+  "charge_e": {
+    "total": 0.000999890244384738,
+    "solute": 7.000999890244378,
+    "receptor": 4.999999888049271,
+    "ligand": 2.0010000021951124,
+    "solute_off_integer": 0.0009998902443779656
+  },
+  "box_vectors_nm": [
+    [
+      7.8672,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      7.8634,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      8.1867
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "restraints": "none",
+    "E_before_kJ_mol": -343586.4989443626,
+    "E_after_kJ_mol": -659831.0154309897,
+    "max_force_after_kJ_mol_nm": 2373.498991161585,
+    "ligand_heavy_shift_A": {
+      "max": 3.019619565162945,
+      "mean": 1.0788213096290253
+    },
+    "wall_s": 6.84
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 2080 Ti",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "kasuga02",
+  "wall_s": 13.2
+}

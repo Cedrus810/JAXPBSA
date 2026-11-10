@@ -1,0 +1,86 @@
+{
+  "sample": "a3",
+  "target": "hou",
+  "model_id": "ph74_gaff2",
+  "prmtop": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a3/ph74_gaff2/complex_solv.prmtop",
+  "coordinates": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a3/ph74_gaff2/complex_solv.rst7",
+  "n_atoms": 38780,
+  "n_solute_atoms": 4693,
+  "ligand_residue": "BT2",
+  "ligand_local_idx": [
+    4615,
+    4693
+  ],
+  "receptor_local_idx": [
+    0,
+    4615
+  ],
+  "ligand_elements": {
+    "C": 33,
+    "S": 1,
+    "O": 2,
+    "N": 2,
+    "H": 40
+  },
+  "solvent_residues": {
+    "Na+": 33,
+    "Cl-": 40,
+    "HOH": 11338
+  },
+  "forces": [
+    "HarmonicBondForce",
+    "HarmonicAngleForce",
+    "PeriodicTorsionForce",
+    "NonbondedForce",
+    "CMMotionRemover"
+  ],
+  "charge_e": {
+    "total": -0.0020001086580668237,
+    "solute": 6.997999891341934,
+    "receptor": 4.999999888049271,
+    "ligand": 1.998000003292669,
+    "solute_off_integer": -0.002000108658066324
+  },
+  "box_vectors_nm": [
+    [
+      7.4929,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      7.9177,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      8.1867
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "restraints": "none",
+    "E_before_kJ_mol": 11399593466.835165,
+    "E_after_kJ_mol": -624931.7936810786,
+    "max_force_after_kJ_mol_nm": 2311.7304959949106,
+    "ligand_heavy_shift_A": {
+      "max": 2.261119802907257,
+      "mean": 0.9046880335895325
+    },
+    "wall_s": 5.2
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 3090",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "yayoi26.cluster.local",
+  "wall_s": 14.49
+}

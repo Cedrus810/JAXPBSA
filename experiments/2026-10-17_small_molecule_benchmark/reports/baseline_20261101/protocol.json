@@ -1,0 +1,43 @@
+{
+  "plan": "docs/BRD4_HOU_NEXT_STEPS_PLAN_20261101.md §4.2-4.3; statistics per docs/SMALL_MOLECULE_BENCHMARK_DESIGN.md §9",
+  "fixed": "2026-11-01, before any B0/B1/B2-vs-experiment statistic was computed",
+  "decided_by": "Claude, within the plan; candidate groups and descriptor options below are not user wording",
+  "direction": {
+    "experiment": "dG kcal/mol, lower = stronger (BRD4 manifests/brd4_measurements.csv, Hou manifests/hou2011_table_s1.csv)",
+    "scores": "lower = predicted stronger, compared directly with dG; positive rho = agreement",
+    "size_baseline": "score_size = -N_heavy (predefined, plan §4.2)"
+  },
+  "methods": {
+    "B0_size": "score_size = -N_heavy from the ligand sdf",
+    "B1_start_default": "scores/start_default (score_smallmol_start.py): one frame, minimised start, frozen default grid sized on that frame; no replica SE",
+    "B2_md_default": "BRD4 reports/brd4_round1_replicas.csv (3 x (0,5] ns); Hou reports/hou_ranking_20261030/samples.csv (6 x (0,10] ns, 39 online + 3 offline-recovered replicas); replica time means, equal-weight average, SE = sd(replica means)/sqrt(n)",
+    "B2_md_h04_sensitivity": "BRD4 only: reports/brd4_h0.4_replicas.csv, same frames as B2_md_default. Hou h0.4 exists only for 3 x (0,5] ns, not the 6 x 10 ns budget, so it is not compared"
+  },
+  "descriptor_diagnostics": {
+    "n_heavy": "RDKit GetNumHeavyAtoms on the sdf",
+    "n_rotatable": "RDKit CalcNumRotatableBonds(mol, NumRotatableBondsOptions.Strict), hydrogens kept as in the sdf",
+    "formal_charge": "RDKit GetFormalCharge on the sdf (BRD4: sources/brd4/sdf; Hou: prepared/hou/<s>/ph74_gaff2/ligand_in.sdf, pH 7.4 model)",
+    "partial_charge_sum": "sum of simulated topology partial charges (manifests/*_inputs.csv ligand_charge)",
+    "use": "raw values with their own sign; Spearman/Kendall against dG reported as diagnostics only; no sign flip from experiment, no weights, no selection of best combination",
+    "not_computed": "contact/burial descriptors: no existing definition in the package (plan §4.2 'only if already defined')"
+  },
+  "groups": {
+    "hou_a1_a4_same_series": {"samples": ["a1", "a2", "a3", "a4"], "role": "primary Hou comparison (same chemical series; not verified same assay conditions)"},
+    "hou_all_seven_exploratory": {"samples": ["a1", "a2", "a3", "a4", "a5", "a6", "a7"], "role": "exploratory"},
+    "hou_a5_a7_secondary": {"samples": ["a5", "a6", "a7"], "role": "supplementary"},
+    "brd4_itc6_cross_source_exploratory": {"samples": ["BRD4-3", "BRD4-5", "BRD4-6", "BRD4-7", "BRD4-8", "BRD4-9"], "role": "ITC labels from four papers; cross-source, exploratory"},
+    "brd4_quant8_cross_assay_exploratory": {"samples": ["BRD4-3", "BRD4-4", "BRD4-5", "BRD4-6", "BRD4-7", "BRD4-8", "BRD4-9", "BRD4-10"], "role": "ITC + AlphaScreen-derived dG; cross-assay, exploratory"},
+    "brd4_same_source_pairs": {"pairs": [["BRD4-5", "BRD4-7"], ["BRD4-6", "BRD4-8"]], "role": "same paper per pair; same assay conditions not yet checked (P2)"}
+  },
+  "excluded": {
+    "BRD4-1": "non-binder (inactive at 250 uM), no exact dG; scores listed, no pair statistics until the P2 label audit",
+    "BRD4-2": "no saturation (32% inhibition at 250 uM), no exact dG; same handling as BRD4-1"
+  },
+  "statistics": {
+    "per_group_and_method": "Spearman rho (main), Kendall tau-b, concordant/discordant/tied pairs, two-sided exact permutation p over all label permutations (rank_hou_sampling.exact_statistics); undefined when a method has no variance in the group",
+    "size_dependence": "Spearman rho between each method's score and score_size within the group",
+    "pairs": "every pair in each group: experimental order, each method's difference and agreement; B2 difference / combined replica SE (sqrt(SE_i^2+SE_j^2)) listed as a ratio, no threshold; whether B2 reverses the B1 order",
+    "not_done_here": "no resampling: B1 has a single structure (no replica distribution is invented); Hou B2 sampling/candidate resampling already in reports/hou_ranking_20261030/ranking.json; BRD4 resampling belongs to P2"
+  },
+  "reproduction_check": "Hou B2_md_default rho/tau/pairs must equal reports/hou_ranking_20261030/ranking.json"
+}

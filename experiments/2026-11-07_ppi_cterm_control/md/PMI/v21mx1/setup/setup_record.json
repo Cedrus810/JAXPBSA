@@ -1,0 +1,131 @@
+{
+  "sample_id": "Li2021_MDM2_TSFAEYWNLLSP_Kd",
+  "peptide_name": "PMI",
+  "model_id": "v21mx1",
+  "prepared": "experiments/2026-11-07_ppi_cterm_control/prepared/PMI/v21mx1",
+  "solvation_seed": 20261011,
+  "forcefield": [
+    "amber/ff14SB.xml",
+    "amber/tip3p_standard.xml"
+  ],
+  "padding_nm": 1.2,
+  "ionic_strength_M": 0.15,
+  "neutralize": true,
+  "n_solute_atoms": 1644,
+  "n_atoms": 20621,
+  "added_residues": {
+    "HOH": 6313,
+    "NA": 17,
+    "CL": 21
+  },
+  "box_vectors_nm": [
+    [
+      6.1245,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      6.1245,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      6.1245
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "stage1": "omega + CA-chirality torsion restraints, k=10000.0 kJ/mol/rad^2, theta0=prepared",
+    "stage2": "unrestrained",
+    "E_before_kJ_mol": -233362.0010089965,
+    "E_stage1_incl_restraint_kJ_mol": -340666.46016308316,
+    "E_after_kJ_mol": -340774.00213551335,
+    "max_force_after_kJ_mol_nm": 2292.702729913406,
+    "stereo_terms": 188,
+    "stereo_class_changes": 0,
+    "max_stereo_dihedral_shift_deg": 7.4,
+    "largest_solute_force_at_restraint_release_kJ_mol_nm": [
+      [
+        1127.4,
+        "A:THR49.OG1"
+      ],
+      [
+        1126.1,
+        "A:THR49.HG1"
+      ],
+      [
+        1100.4,
+        "B:THR1.HG1"
+      ],
+      [
+        1095.7,
+        "B:THR1.OG1"
+      ],
+      [
+        1016.3,
+        "A:TYR60.OH"
+      ]
+    ],
+    "c3_checks": {
+      "passed": true,
+      "focus_residues": [
+        "A:25",
+        "A:26",
+        "B:11",
+        "B:12"
+      ],
+      "junction": {
+        "A25-A26 C-N": 1.339,
+        "A25-A26 CA-C-N": 118.7,
+        "A25-A26 O-C-N": 121.2,
+        "A25-A26 C-N-CA": 123.1,
+        "B11-B12 C-N": 1.358,
+        "B11-B12 CA-C-N": 119.8,
+        "B11-B12 O-C-N": 121.1,
+        "B11-B12 C-N-CA": 124.9,
+        "B11-B12 C-N-CD": 127.5,
+        "A25 N-CA": 1.489,
+        "A25 N-CA-C": 111.2,
+        "A26 N-CA": 1.482,
+        "A26 N-CA-C": 112.3,
+        "B11 N-CA": 1.474,
+        "B11 N-CA-C": 114.6,
+        "B12 N-CA": 1.475,
+        "B12 N-CA-C": 113.9,
+        "B12 N-CD": 1.455,
+        "B12 CD-CG": 1.527,
+        "B12 CG-CB": 1.534,
+        "B12 CB-CA": 1.541,
+        "B12 CD-N-CA": 106.1,
+        "B12 N-CA-CB": 105.5,
+        "B12 CA-CB-CG": 105.3,
+        "B12 CB-CG-CD": 103.9,
+        "B12 CG-CD-N": 103.8,
+        "B12 ring_torsions_deg": [
+          7.5,
+          16.0,
+          -34.3,
+          40.3,
+          -29.8
+        ],
+        "B12 pucker": "Cg-endo"
+      }
+    },
+    "wall_s": 4.25
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 2080 Ti",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "kasuga02",
+  "wall_s": 9.52
+}

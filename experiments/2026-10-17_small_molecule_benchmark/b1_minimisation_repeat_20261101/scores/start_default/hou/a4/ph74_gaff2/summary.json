@@ -1,0 +1,64 @@
+{
+  "sample": "a4",
+  "setup": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/md/hou/a4/ph74_gaff2/setup",
+  "start": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/md/hou/a4/ph74_gaff2/setup/solute_reference.npz",
+  "grid": {
+    "name": "default",
+    "h": 0.5,
+    "h_lig": 0.25
+  },
+  "pilot": "none (fluctuation_allowance 0)",
+  "out": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/scores/start_default/hou/a4/ph74_gaff2",
+  "done": false,
+  "target": "hou",
+  "model": "ph74_gaff2",
+  "valid": true,
+  "flag": null,
+  "delta_g_mmpbsa": -31.326878997425098,
+  "components": {
+    "e_coul_rl": -26.814296706180084,
+    "e_lj_rl": -64.22926829713215,
+    "g_pb_complex": -3701.5747397634123,
+    "g_pb_receptor": -3618.9572062978614,
+    "g_pb_ligand": -147.66329115358045,
+    "delta_g_pb": 65.04575768802957,
+    "delta_g_sa": -5.329071682142426
+  },
+  "solute_charge_e": {
+    "total": -0.0010001059141777624,
+    "solute": 6.998999894085824,
+    "receptor": 4.999999888049271,
+    "ligand": 1.9990000060365594,
+    "solute_off_integer": -0.0010001059141764301
+  },
+  "sizing": {
+    "source": "\u53c2\u8003\u5e27 + fluctuation_allowance",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      161,
+      161,
+      193
+    ],
+    "grid_lig": [
+      129,
+      129,
+      129
+    ],
+    "min_margin_on_sizing_frames": 8.867618506331855,
+    "min_margin_lig_on_sizing_frames": 3.083141570562428
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only fluctuation_allowance=0 given",
+  "init_incl_warmup_s": 77.05,
+  "warmup_s": 76.28,
+  "ms_score": 355.02,
+  "device": "cuda:0",
+  "host": "yayoi37.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

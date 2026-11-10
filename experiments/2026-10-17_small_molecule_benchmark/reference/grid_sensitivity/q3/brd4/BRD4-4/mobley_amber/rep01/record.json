@@ -1,0 +1,181 @@
+{
+  "run_id": "BRD4-4_mobley_amber_rep01",
+  "frames": [
+    {
+      "frame": "124",
+      "chunk": "12",
+      "step": "625000",
+      "time_ps": "1250.0"
+    },
+    {
+      "frame": "249",
+      "chunk": "24",
+      "step": "1250000",
+      "time_ps": "2500.0"
+    },
+    {
+      "frame": "374",
+      "chunk": "37",
+      "step": "1875000",
+      "time_ps": "3750.0"
+    }
+  ],
+  "seed": 20261019,
+  "n_rot": 3,
+  "rotations": [
+    [
+      [
+        -0.073003,
+        -0.979601,
+        -0.187223
+      ],
+      [
+        -0.764562,
+        0.17551,
+        -0.620194
+      ],
+      [
+        0.640402,
+        0.097868,
+        -0.761779
+      ]
+    ],
+    [
+      [
+        -0.298879,
+        0.751935,
+        0.587593
+      ],
+      [
+        0.006903,
+        0.617425,
+        -0.786599
+      ],
+      [
+        -0.954266,
+        -0.231042,
+        -0.189725
+      ]
+    ],
+    [
+      [
+        -0.201642,
+        -0.28272,
+        0.937768
+      ],
+      [
+        -0.922884,
+        -0.265844,
+        -0.278589
+      ],
+      [
+        0.328062,
+        -0.921627,
+        -0.207313
+      ]
+    ]
+  ],
+  "pilot_window_ns": [
+    0.0,
+    5.0
+  ],
+  "host": "yayoi30.cluster.local",
+  "device": "cuda:0",
+  "jax": "0.10.2",
+  "translation": "not tested: TripletSolver re-centres C/R and L on their own COM",
+  "configs": {
+    "h0.4": {
+      "kwargs": {
+        "h": 0.4,
+        "h_lig": 0.2
+      },
+      "n_pilot": 500,
+      "n_evals": 3,
+      "sizing": {
+        "source": "pilot 500 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.75,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.602581802737351,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          193,
+          193,
+          225
+        ],
+        "grid_lig": [
+          129,
+          161,
+          161
+        ],
+        "min_margin_on_sizing_frames": 9.584449864434838,
+        "min_margin_lig_on_sizing_frames": 2.420836936296457
+      },
+      "init_incl_warmup_s": 115.8,
+      "warmup_s": 114.83,
+      "ms_per_eval_median": 192.13
+    },
+    "h0.35": {
+      "kwargs": {
+        "h": 0.35,
+        "h_lig": 0.16666666666666666
+      },
+      "n_pilot": 500,
+      "n_evals": 3,
+      "sizing": {
+        "source": "pilot 500 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.75,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.602581802737351,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          225,
+          193,
+          225
+        ],
+        "grid_lig": [
+          161,
+          161,
+          161
+        ],
+        "min_margin_on_sizing_frames": 8.32590396735479,
+        "min_margin_lig_on_sizing_frames": 2.1933370357745723
+      },
+      "init_incl_warmup_s": 123.12,
+      "warmup_s": 122.18,
+      "ms_per_eval_median": 380.64
+    },
+    "rot": {
+      "kwargs": {},
+      "n_pilot": 509,
+      "n_evals": 12,
+      "sizing": {
+        "source": "pilot 509 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.75,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.602581802737351,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          161,
+          193,
+          161
+        ],
+        "grid_lig": [
+          129,
+          129,
+          129
+        ],
+        "min_margin_on_sizing_frames": 8.608325047713393,
+        "min_margin_lig_on_sizing_frames": 4.86000370244124
+      },
+      "init_incl_warmup_s": 50.21,
+      "warmup_s": 49.3,
+      "ms_per_eval_median": 104.19
+    }
+  }
+}

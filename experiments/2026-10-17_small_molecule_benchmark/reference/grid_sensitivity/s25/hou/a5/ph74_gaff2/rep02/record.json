@@ -1,0 +1,254 @@
+{
+  "run_id": "a5_ph74_gaff2_rep02",
+  "frames": [
+    {
+      "frame": "9",
+      "chunk": "0",
+      "step": "50000",
+      "time_ps": "100.0"
+    },
+    {
+      "frame": "29",
+      "chunk": "2",
+      "step": "150000",
+      "time_ps": "300.0"
+    },
+    {
+      "frame": "49",
+      "chunk": "4",
+      "step": "250000",
+      "time_ps": "500.0"
+    },
+    {
+      "frame": "69",
+      "chunk": "6",
+      "step": "350000",
+      "time_ps": "700.0"
+    },
+    {
+      "frame": "89",
+      "chunk": "8",
+      "step": "450000",
+      "time_ps": "900.0"
+    },
+    {
+      "frame": "109",
+      "chunk": "10",
+      "step": "550000",
+      "time_ps": "1100.0"
+    },
+    {
+      "frame": "129",
+      "chunk": "12",
+      "step": "650000",
+      "time_ps": "1300.0"
+    },
+    {
+      "frame": "149",
+      "chunk": "14",
+      "step": "750000",
+      "time_ps": "1500.0"
+    },
+    {
+      "frame": "169",
+      "chunk": "16",
+      "step": "850000",
+      "time_ps": "1700.0"
+    },
+    {
+      "frame": "189",
+      "chunk": "18",
+      "step": "950000",
+      "time_ps": "1900.0"
+    },
+    {
+      "frame": "209",
+      "chunk": "20",
+      "step": "1050000",
+      "time_ps": "2100.0"
+    },
+    {
+      "frame": "229",
+      "chunk": "22",
+      "step": "1150000",
+      "time_ps": "2300.0"
+    },
+    {
+      "frame": "249",
+      "chunk": "24",
+      "step": "1250000",
+      "time_ps": "2500.0"
+    },
+    {
+      "frame": "269",
+      "chunk": "26",
+      "step": "1350000",
+      "time_ps": "2700.0"
+    },
+    {
+      "frame": "289",
+      "chunk": "28",
+      "step": "1450000",
+      "time_ps": "2900.0"
+    },
+    {
+      "frame": "309",
+      "chunk": "30",
+      "step": "1550000",
+      "time_ps": "3100.0"
+    },
+    {
+      "frame": "329",
+      "chunk": "32",
+      "step": "1650000",
+      "time_ps": "3300.0"
+    },
+    {
+      "frame": "349",
+      "chunk": "34",
+      "step": "1750000",
+      "time_ps": "3500.0"
+    },
+    {
+      "frame": "369",
+      "chunk": "36",
+      "step": "1850000",
+      "time_ps": "3700.0"
+    },
+    {
+      "frame": "389",
+      "chunk": "38",
+      "step": "1950000",
+      "time_ps": "3900.0"
+    },
+    {
+      "frame": "409",
+      "chunk": "40",
+      "step": "2050000",
+      "time_ps": "4100.0"
+    },
+    {
+      "frame": "429",
+      "chunk": "42",
+      "step": "2150000",
+      "time_ps": "4300.0"
+    },
+    {
+      "frame": "449",
+      "chunk": "44",
+      "step": "2250000",
+      "time_ps": "4500.0"
+    },
+    {
+      "frame": "469",
+      "chunk": "46",
+      "step": "2350000",
+      "time_ps": "4700.0"
+    },
+    {
+      "frame": "489",
+      "chunk": "48",
+      "step": "2450000",
+      "time_ps": "4900.0"
+    }
+  ],
+  "seed": 20261019,
+  "n_rot": 3,
+  "legacy_setup_input_history_unverified": true,
+  "rotations": [
+    [
+      [
+        -0.073003,
+        -0.979601,
+        -0.187223
+      ],
+      [
+        -0.764562,
+        0.17551,
+        -0.620194
+      ],
+      [
+        0.640402,
+        0.097868,
+        -0.761779
+      ]
+    ],
+    [
+      [
+        -0.298879,
+        0.751935,
+        0.587593
+      ],
+      [
+        0.006903,
+        0.617425,
+        -0.786599
+      ],
+      [
+        -0.954266,
+        -0.231042,
+        -0.189725
+      ]
+    ],
+    [
+      [
+        -0.201642,
+        -0.28272,
+        0.937768
+      ],
+      [
+        -0.922884,
+        -0.265844,
+        -0.278589
+      ],
+      [
+        0.328062,
+        -0.921627,
+        -0.207313
+      ]
+    ]
+  ],
+  "pilot_window_ns": [
+    0.0,
+    5.0
+  ],
+  "host": "yayoi36.cluster.local",
+  "device": "cuda:0",
+  "jax": "0.10.2",
+  "translation": "not tested: TripletSolver re-centres C/R and L on their own COM",
+  "configs": {
+    "h0.35": {
+      "kwargs": {
+        "h": 0.35,
+        "h_lig": 0.16666666666666666
+      },
+      "n_pilot": 500,
+      "n_evals": 25,
+      "sizing": {
+        "source": "pilot 500 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.7,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.552581802737352,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          321,
+          257,
+          257
+        ],
+        "grid_lig": [
+          129,
+          161,
+          161
+        ],
+        "min_margin_on_sizing_frames": 8.363680292932468,
+        "min_margin_lig_on_sizing_frames": 2.3455475589749044
+      },
+      "init_incl_warmup_s": 144.41,
+      "warmup_s": 142.31,
+      "new_evals_this_call": 25,
+      "ms_per_eval_median": 415.26
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "sample": "a5",
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a5/ph74_gaff2/setup",
+  "start": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a5/ph74_gaff2/setup/solute_reference.npz",
+  "grid": {
+    "name": "default",
+    "h": 0.5,
+    "h_lig": 0.25
+  },
+  "pilot": "none (fluctuation_allowance 0)",
+  "out": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/scores/start_default/hou/a5/ph74_gaff2",
+  "done": false,
+  "target": "hou",
+  "model": "ph74_gaff2",
+  "valid": true,
+  "flag": null,
+  "delta_g_mmpbsa": -22.05826913520796,
+  "components": {
+    "e_coul_rl": -81.97159930267543,
+    "e_lj_rl": -17.2014184045089,
+    "g_pb_complex": -3802.940673076709,
+    "g_pb_receptor": -3822.4319270503797,
+    "g_pb_ligand": -59.480479882833485,
+    "delta_g_pb": 78.9717338565041,
+    "delta_g_sa": -1.856985284527735
+  },
+  "solute_charge_e": {
+    "total": -0.0010001130482901743,
+    "solute": 4.998999886951709,
+    "receptor": 3.9999998869517137,
+    "ligand": 0.9989999999999999,
+    "solute_off_integer": -0.0010001130482910625
+  },
+  "sizing": {
+    "source": "\u53c2\u8003\u5e27 + fluctuation_allowance",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      193,
+      193,
+      193
+    ],
+    "grid_lig": [
+      97,
+      97,
+      97
+    ],
+    "min_margin_on_sizing_frames": 11.372484399937647,
+    "min_margin_lig_on_sizing_frames": 3.4153473582462324
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only fluctuation_allowance=0 given",
+  "init_incl_warmup_s": 70.42,
+  "warmup_s": 69.3,
+  "ms_score": 228.95,
+  "device": "cuda:0",
+  "host": "yayoi43.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

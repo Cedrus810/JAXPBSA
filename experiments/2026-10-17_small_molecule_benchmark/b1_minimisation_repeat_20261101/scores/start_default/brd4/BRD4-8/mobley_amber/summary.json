@@ -1,0 +1,64 @@
+{
+  "sample": "BRD4-8",
+  "setup": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/md/brd4/BRD4-8/mobley_amber/setup",
+  "start": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/md/brd4/BRD4-8/mobley_amber/setup/solute_reference.npz",
+  "grid": {
+    "name": "default",
+    "h": 0.5,
+    "h_lig": 0.25
+  },
+  "pilot": "none (fluctuation_allowance 0)",
+  "out": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/scores/start_default/brd4/BRD4-8/mobley_amber",
+  "done": false,
+  "target": "brd4",
+  "model": "mobley_amber",
+  "valid": true,
+  "flag": null,
+  "delta_g_mmpbsa": -25.132918050862052,
+  "components": {
+    "e_coul_rl": -12.45806980414988,
+    "e_lj_rl": -33.685227741085164,
+    "g_pb_complex": -1735.2610571993291,
+    "g_pb_receptor": -1731.9972220025772,
+    "g_pb_ligand": -27.644137600904934,
+    "delta_g_pb": 24.380302404153063,
+    "delta_g_sa": -3.369922909780073
+  },
+  "solute_charge_e": {
+    "total": -0.0009980335083970004,
+    "solute": 2.99900196649161,
+    "receptor": 2.9999999665245403,
+    "ligand": -0.0009980000329266048,
+    "solute_off_integer": -0.000998033508389895
+  },
+  "sizing": {
+    "source": "\u53c2\u8003\u5e27 + fluctuation_allowance",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      161,
+      129,
+      161
+    ],
+    "grid_lig": [
+      97,
+      129,
+      129
+    ],
+    "min_margin_on_sizing_frames": 8.430455623747829,
+    "min_margin_lig_on_sizing_frames": 3.58787409446101
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only fluctuation_allowance=0 given",
+  "init_incl_warmup_s": 55.11,
+  "warmup_s": 54.55,
+  "ms_score": 111.78,
+  "device": "cuda:0",
+  "host": "yayoi37.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

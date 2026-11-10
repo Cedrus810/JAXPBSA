@@ -1,0 +1,64 @@
+{
+  "sample": "a6",
+  "setup": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/md/hou/a6/ph74_gaff2/setup",
+  "start": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/md/hou/a6/ph74_gaff2/setup/solute_reference.npz",
+  "grid": {
+    "name": "default",
+    "h": 0.5,
+    "h_lig": 0.25
+  },
+  "pilot": "none (fluctuation_allowance 0)",
+  "out": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/scores/start_default/hou/a6/ph74_gaff2",
+  "done": false,
+  "target": "hou",
+  "model": "ph74_gaff2",
+  "valid": true,
+  "flag": null,
+  "delta_g_mmpbsa": -6.534445373837534,
+  "components": {
+    "e_coul_rl": -97.71743232729457,
+    "e_lj_rl": -46.34199878003348,
+    "g_pb_complex": -3799.3976182020847,
+    "g_pb_receptor": -3839.2542185713037,
+    "g_pb_ligand": -102.34412179790812,
+    "delta_g_pb": 142.2007221671271,
+    "delta_g_sa": -4.675736433636579
+  },
+  "solute_charge_e": {
+    "total": 0.000998893553513014,
+    "solute": 4.000998893553513,
+    "receptor": 3.999999886402934,
+    "ligand": 0.0009990071505791356,
+    "solute_off_integer": 0.000998893553513014
+  },
+  "sizing": {
+    "source": "\u53c2\u8003\u5e27 + fluctuation_allowance",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      193,
+      161,
+      193
+    ],
+    "grid_lig": [
+      97,
+      129,
+      129
+    ],
+    "min_margin_on_sizing_frames": 7.915882002192869,
+    "min_margin_lig_on_sizing_frames": 2.3277963231527776
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only fluctuation_allowance=0 given",
+  "init_incl_warmup_s": 57.73,
+  "warmup_s": 56.77,
+  "ms_score": 146.6,
+  "device": "cuda:0",
+  "host": "yayoi37.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

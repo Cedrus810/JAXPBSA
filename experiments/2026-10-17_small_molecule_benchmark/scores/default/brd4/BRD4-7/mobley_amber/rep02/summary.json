@@ -1,0 +1,106 @@
+{
+  "run_id": "BRD4-7_mobley_amber_rep02",
+  "replica": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-7/mobley_amber/rep02",
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-7/mobley_amber/setup",
+  "dcd": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/brd4/BRD4-7/mobley_amber/rep02/analysis/solute_dry.dcd",
+  "dcd_exists": true,
+  "window_ns": [
+    0.0,
+    5.0
+  ],
+  "window_rule": "(start, end]",
+  "block_ns": 1.0,
+  "stride_frames": 1,
+  "out": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/scores/default/brd4/BRD4-7/mobley_amber/rep02",
+  "target": "brd4",
+  "sample": "BRD4-7",
+  "model": "mobley_amber",
+  "n_frames_in_window": 500,
+  "n_frames_scored": 500,
+  "n_valid": 500,
+  "n_flagged": 0,
+  "flags": [],
+  "first_scored": {
+    "frame": 0,
+    "step": 5000,
+    "time_ps": 10.0
+  },
+  "last_scored": {
+    "frame": 499,
+    "step": 2500000,
+    "time_ps": 5000.0
+  },
+  "delta_g_mmpbsa_mean": -23.421578275425315,
+  "delta_g_mmpbsa_sd": 2.3431130344943316,
+  "components_mean": {
+    "e_coul_rl": -11.009262682342682,
+    "e_lj_rl": -35.46647872509298,
+    "g_pb_complex": -1999.7635380721208,
+    "g_pb_receptor": -2010.0058127233635,
+    "g_pb_ligand": -16.403908854101164,
+    "delta_g_pb": 26.646183505343814,
+    "delta_g_sa": -3.5920203733334723
+  },
+  "block_means": {
+    "0-1ns": {
+      "mean": -23.30047224698207,
+      "n": 100
+    },
+    "1-2ns": {
+      "mean": -22.938181735419676,
+      "n": 100
+    },
+    "2-3ns": {
+      "mean": -23.716713708180787,
+      "n": 100
+    },
+    "3-4ns": {
+      "mean": -23.080565149536515,
+      "n": 100
+    },
+    "4-5ns": {
+      "mean": -24.071958537007532,
+      "n": 100
+    }
+  },
+  "solute_charge_e": {
+    "total": -0.0010000334754634577,
+    "solute": 2.9989999665245373,
+    "receptor": 2.9999999665245403,
+    "ligand": -0.0009999999999999454,
+    "solute_off_integer": -0.001000033475462736
+  },
+  "sizing": {
+    "source": "pilot 500 \u5e27",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      161,
+      161,
+      161
+    ],
+    "grid_lig": [
+      129,
+      129,
+      129
+    ],
+    "min_margin_on_sizing_frames": 8.238971523072284,
+    "min_margin_lig_on_sizing_frames": 4.289291676815732
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only pilot_coords_A given",
+  "init_incl_warmup_s": 10.53,
+  "warmup_s": 8.73,
+  "ms_per_frame_this_call": {
+    "median": 91.77,
+    "n": 500
+  },
+  "device": "cuda:0",
+  "host": "yayoi04.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

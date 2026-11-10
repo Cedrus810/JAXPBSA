@@ -1,0 +1,108 @@
+{
+  "plan": "docs/BRD4_HOU_NEXT_STEPS_PLAN_20261101.md \u00a75; statistics as docs/SMALL_MOLECULE_BENCHMARK_DESIGN.md \u00a79 and scripts/rank_hou_sampling.py",
+  "fixed": "2026-11-01, after the BRD4-5 alprazolam re-run finished and before any v2 statistic was computed",
+  "decided_by": "Claude, within the plan; groups and exclusions are not user wording",
+  "direction": "dG kcal/mol and MM/PBSA score: lower = stronger; positive rho = agreement",
+  "scores": {
+    "default": "scores/default/brd4/<s>/mobley_amber/rep0{1,2,3}/frames.csv, window (0,5] ns, 500 frames",
+    "h0.4": "scores/h0.4/brd4/<s>/mobley_amber/rep0{1,2,3}/frames.csv, same frames",
+    "aggregation": "replica time mean from frames.csv (not the rounded summary CSVs), then equal-weight mean of 3 replicas; SE = sd(replica means)/sqrt(3)",
+    "grid_choice": "both grids reported in full; neither chosen by correlation"
+  },
+  "groups": {
+    "itc_15C_same_protocol": {
+      "samples": [
+        "BRD4-5",
+        "BRD4-6",
+        "BRD4-7",
+        "BRD4-8",
+        "BRD4-9"
+      ],
+      "role": "main: ITC at 15 C, HEPES/150 mM NaCl, reverse titration, three papers of one lab protocol"
+    },
+    "itc_all": {
+      "samples": [
+        "BRD4-3",
+        "BRD4-5",
+        "BRD4-6",
+        "BRD4-7",
+        "BRD4-8",
+        "BRD4-9"
+      ],
+      "role": "exploratory: adds BRD4-3 (conditions unknown)"
+    },
+    "quantitative_cross_assay": {
+      "samples": [
+        "BRD4-3",
+        "BRD4-4",
+        "BRD4-5",
+        "BRD4-6",
+        "BRD4-7",
+        "BRD4-8",
+        "BRD4-9",
+        "BRD4-10"
+      ],
+      "role": "exploratory: ITC + AlphaScreen-derived"
+    },
+    "itc_15C_same_protocol_excl_BRD4-5": {
+      "samples": [
+        "BRD4-6",
+        "BRD4-7",
+        "BRD4-8",
+        "BRD4-9"
+      ],
+      "role": "continuity with v1 main group"
+    }
+  },
+  "pairs": {
+    "same_source": [
+      [
+        "BRD4-6",
+        "BRD4-8",
+        "PNAS 2013, same ITC protocol"
+      ],
+      [
+        "BRD4-5",
+        "BRD4-7",
+        "BMC 2012, same ITC protocol"
+      ]
+    ],
+    "alphascreen_cross_paper": [
+      [
+        "BRD4-4",
+        "BRD4-10",
+        "different papers; BRD4-10 assay not confirmed"
+      ]
+    ],
+    "censored_same_assay": [
+      [
+        "BRD4-2",
+        "BRD4-1",
+        "Vidler 2013 single-concentration AlphaScreen: BRD4-2 32% inhibition vs BRD4-1 inactive at 250 uM -> BRD4-2 taken as stronger (qualitative)"
+      ]
+    ]
+  },
+  "statistics": {
+    "point": "Spearman rho, Kendall tau-b, concordant/discordant/tied pairs, exact two-sided permutation p (rank_hou_sampling.exact_statistics)",
+    "sampling_bootstrap": "per sample resample 3 replicas with replacement, then circular contiguous time blocks of 1 ns or 5 ns within each drawn replica (1-ns block means from frames.csv); 10000 draws, seed 20261101; 2.5-97.5 percentiles; conditions on visited states",
+    "candidate_bootstrap": "resample candidates with fixed sample means; undefined (constant) draws counted",
+    "pair_fraction": "fraction of sampling draws in which sample i scores stronger than j (1 ns blocks)",
+    "experimental_error": "maintainer SEM listed, no distribution assigned"
+  },
+  "notes": [
+    "Experimental ITC dG values are at 15 C (288 K) where stated; MD at 298.15 K; scores are entropy-free and only ordered"
+  ],
+  "supersedes": "reports/brd4_statistics_20261101 (kept unchanged)",
+  "changes": [
+    "BRD4-5 scores from the alprazolam re-prep (docs/BRD4_5_REPREP_PLAN_20261101.md; package brd4_5_alprazolam_20261101, model alprazolam_gaff_fix, job 22051 yayoi28): same protocol, 3 x (0,5] ns, default and h0.4",
+    "BRD4-5 re-enters the groups; the v1 exclusion and the _incl_BRD4-5_mismatch sensitivity groups are dropped",
+    "itc_15C_same_protocol_excl_BRD4-5 (= v1 main group) kept for continuity",
+    "same-source pair BRD4-5/BRD4-7 is now interpretable"
+  ],
+  "sample_sources": {
+    "BRD4-5": {
+      "package": "brd4_5_alprazolam_20261101",
+      "model": "alprazolam_gaff_fix"
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "run_id": "a1_ph74_gaff2_smoke2",
+  "replica": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/smoke_repair_20261025/md/hou/a1/ph74_gaff2/smoke2",
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/smoke_repair_20261025/md/hou/a1/ph74_gaff2/setup",
+  "dcd": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/smoke_repair_20261025/md/hou/a1/ph74_gaff2/smoke2/analysis/solute_dry.dcd",
+  "dcd_exists": true,
+  "window_ns": [
+    0.0,
+    0.3
+  ],
+  "window_rule": "(start, end]",
+  "block_ns": 0.1,
+  "stride_frames": 1,
+  "out": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/smoke_repair_20261025/scores/a1_smoke2",
+  "target": "hou",
+  "sample": "a1",
+  "model": "ph74_gaff2",
+  "n_frames_in_window": 30,
+  "n_frames_scored": 30,
+  "n_valid": 30,
+  "n_flagged": 0,
+  "flags": [],
+  "first_scored": {
+    "frame": 0,
+    "step": 5000,
+    "time_ps": 10.0
+  },
+  "last_scored": {
+    "frame": 29,
+    "step": 150000,
+    "time_ps": 300.0
+  },
+  "delta_g_mmpbsa_mean": -29.781399558668593,
+  "delta_g_mmpbsa_sd": 5.3514674443289545,
+  "components_mean": {
+    "e_coul_rl": -17.87633526285308,
+    "e_lj_rl": -65.69919462847267,
+    "g_pb_complex": -4314.078959722839,
+    "g_pb_receptor": -4225.420886841459,
+    "g_pb_ligand": -147.7782172274784,
+    "delta_g_pb": 59.12014434609906,
+    "delta_g_sa": -5.32601401344192
+  },
+  "block_means": {
+    "0-0.1ns": {
+      "mean": -30.836711597010737,
+      "n": 10
+    },
+    "0.1-0.2ns": {
+      "mean": -30.482085817931278,
+      "n": 10
+    },
+    "0.2-0.3ns": {
+      "mean": -28.02540126106378,
+      "n": 10
+    }
+  },
+  "solute_charge_e": {
+    "total": 0.000999890244384738,
+    "solute": 7.000999890244378,
+    "receptor": 4.999999888049271,
+    "ligand": 2.0010000021951124,
+    "solute_off_integer": 0.0009998902443779656
+  },
+  "legacy_setup_input_history_unverified": false,
+  "sizing": {
+    "source": "pilot 30 \u5e27",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.75,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.602581802737351,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      193,
+      193,
+      193
+    ],
+    "grid_lig": [
+      129,
+      129,
+      161
+    ],
+    "min_margin_on_sizing_frames": 12.898730926091694,
+    "min_margin_lig_on_sizing_frames": 2.689950448224714
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only pilot_coords_A given",
+  "init_incl_warmup_s": 12.15,
+  "warmup_s": 10.51,
+  "ms_per_frame_this_call": null,
+  "device": "cuda:0",
+  "host": "kasuga02",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

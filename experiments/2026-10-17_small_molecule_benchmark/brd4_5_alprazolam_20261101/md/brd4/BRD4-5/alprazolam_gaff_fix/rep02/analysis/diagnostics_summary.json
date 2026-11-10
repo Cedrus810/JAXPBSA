@@ -1,0 +1,47 @@
+{
+  "run_id": "BRD4-5_alprazolam_gaff_fix_rep02",
+  "frames_total": 500,
+  "chunks_used": 50,
+  "diag_stride": 1,
+  "n_solute_atoms": 2070,
+  "first_frame": {
+    "frame": 0,
+    "chunk": 0,
+    "step": 5000,
+    "time_ps": 10.0
+  },
+  "last_frame": {
+    "frame": 499,
+    "chunk": 49,
+    "step": 2500000,
+    "time_ps": 5000.0
+  },
+  "quantiles_p5_p50_p95": {
+    "receptor_CA_rmsd_A": {
+      "5": 1.05,
+      "50": 1.286,
+      "95": 1.649
+    },
+    "ligand_heavy_rmsd_receptor_frame_A": {
+      "5": 0.827,
+      "50": 2.504,
+      "95": 3.18
+    },
+    "ligand_com_shift_A": {
+      "5": 0.565,
+      "50": 1.829,
+      "95": 2.48
+    },
+    "min_lig_rec_heavy_A": {
+      "5": 2.883,
+      "50": 3.07,
+      "95": 3.317
+    }
+  },
+  "log_means": {
+    "T_K": 298.4724,
+    "density": 1.0125
+  },
+  "reference": "setup minimized structure; ligand RMSD without symmetry correction",
+  "note": "diagnostic report only; no acceptance thresholds applied"
+}

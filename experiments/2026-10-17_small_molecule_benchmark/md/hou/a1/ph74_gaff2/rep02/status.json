@@ -1,0 +1,367 @@
+{
+  "run_id": "a1_ph74_gaff2_rep02",
+  "target": "hou",
+  "sample_id": "a1",
+  "model_id": "ph74_gaff2",
+  "replica": 2,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup",
+  "seeds": {
+    "velocity": 20261049,
+    "integrator": 41000001,
+    "barostat": 41500001
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 50000,
+  "nvt_steps": 50000,
+  "npt_steps": 500000,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 100,
+  "prod_target_history": [
+    2500000,
+    5000000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 41000001,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 41007920,
+      "barostat_seed": 41507920,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 41015839,
+      "barostat_seed": 41515839,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": 50,
+      "integrator_seed": 41419708,
+      "barostat_seed": 41919708,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 5090",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 18.98,
+    "npt": 242.94,
+    "prod_chunk_0000": 27.41,
+    "prod_chunk_0001": 27.95,
+    "prod_chunk_0002": 28.03,
+    "prod_chunk_0003": 28.94,
+    "prod_chunk_0004": 28.34,
+    "prod_chunk_0005": 26.28,
+    "prod_chunk_0006": 26.2,
+    "prod_chunk_0007": 26.15,
+    "prod_chunk_0008": 26.11,
+    "prod_chunk_0009": 26.08,
+    "prod_chunk_0010": 26.1,
+    "prod_chunk_0011": 26.25,
+    "prod_chunk_0012": 26.05,
+    "prod_chunk_0013": 26.36,
+    "prod_chunk_0014": 26.25,
+    "prod_chunk_0015": 26.02,
+    "prod_chunk_0016": 26.16,
+    "prod_chunk_0017": 26.2,
+    "prod_chunk_0018": 26.26,
+    "prod_chunk_0019": 26.28,
+    "prod_chunk_0020": 26.11,
+    "prod_chunk_0021": 26.2,
+    "prod_chunk_0022": 26.11,
+    "prod_chunk_0023": 26.16,
+    "prod_chunk_0024": 26.09,
+    "prod_chunk_0025": 26.06,
+    "prod_chunk_0026": 26.2,
+    "prod_chunk_0027": 26.21,
+    "prod_chunk_0028": 26.31,
+    "prod_chunk_0029": 26.77,
+    "prod_chunk_0030": 26.28,
+    "prod_chunk_0031": 26.4,
+    "prod_chunk_0032": 26.72,
+    "prod_chunk_0033": 27.39,
+    "prod_chunk_0034": 26.29,
+    "prod_chunk_0035": 26.19,
+    "prod_chunk_0036": 26.1,
+    "prod_chunk_0037": 26.14,
+    "prod_chunk_0038": 26.22,
+    "prod_chunk_0039": 26.24,
+    "prod_chunk_0040": 26.25,
+    "prod_chunk_0041": 26.34,
+    "prod_chunk_0042": 26.37,
+    "prod_chunk_0043": 26.28,
+    "prod_chunk_0044": 26.21,
+    "prod_chunk_0045": 26.38,
+    "prod_chunk_0046": 26.1,
+    "prod_chunk_0047": 26.42,
+    "prod_chunk_0048": 26.37,
+    "prod_chunk_0049": 26.21,
+    "prod_chunk_0050": 15.16,
+    "prod_chunk_0051": 15.02,
+    "prod_chunk_0052": 25.5,
+    "prod_chunk_0053": 18.02,
+    "prod_chunk_0054": 18.08,
+    "prod_chunk_0055": 15.48,
+    "prod_chunk_0056": 15.14,
+    "prod_chunk_0057": 15.58,
+    "prod_chunk_0058": 15.55,
+    "prod_chunk_0059": 15.26,
+    "prod_chunk_0060": 15.23,
+    "prod_chunk_0061": 17.18,
+    "prod_chunk_0062": 15.19,
+    "prod_chunk_0063": 15.22,
+    "prod_chunk_0064": 15.36,
+    "prod_chunk_0065": 15.48,
+    "prod_chunk_0066": 16.47,
+    "prod_chunk_0067": 15.28,
+    "prod_chunk_0068": 16.33,
+    "prod_chunk_0069": 15.37,
+    "prod_chunk_0070": 19.04,
+    "prod_chunk_0071": 15.4,
+    "prod_chunk_0072": 15.26,
+    "prod_chunk_0073": 15.1,
+    "prod_chunk_0074": 15.1,
+    "prod_chunk_0075": 15.2,
+    "prod_chunk_0076": 22.08,
+    "prod_chunk_0077": 18.27,
+    "prod_chunk_0078": 15.03,
+    "prod_chunk_0079": 14.94,
+    "prod_chunk_0080": 14.98,
+    "prod_chunk_0081": 14.88,
+    "prod_chunk_0082": 14.79,
+    "prod_chunk_0083": 14.9,
+    "prod_chunk_0084": 14.87,
+    "prod_chunk_0085": 15.16,
+    "prod_chunk_0086": 14.94,
+    "prod_chunk_0087": 14.87,
+    "prod_chunk_0088": 14.86,
+    "prod_chunk_0089": 14.83,
+    "prod_chunk_0090": 14.81,
+    "prod_chunk_0091": 16.4,
+    "prod_chunk_0092": 15.07,
+    "prod_chunk_0093": 14.83,
+    "prod_chunk_0094": 14.83,
+    "prod_chunk_0095": 15.02,
+    "prod_chunk_0096": 14.84,
+    "prod_chunk_0097": 14.86,
+    "prod_chunk_0098": 14.86,
+    "prod_chunk_0099": 16.57
+  },
+  "complete": true,
+  "online": [
+    {
+      "csv": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/rep02/online/pbsa_from_chunk_0000.csv",
+      "from_chunk": 0,
+      "to_chunk": 50,
+      "n_submitted": 500,
+      "n_reports": 500,
+      "n_flagged": 0,
+      "n_skipped": 0,
+      "total_pbsa_s": 178.23,
+      "max_latency_s": 0.407,
+      "warmup_time_s": 66.69,
+      "sizing": {
+        "source": "pilot 100 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.75,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.602581802737351,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          193,
+          193,
+          193
+        ],
+        "grid_lig": [
+          129,
+          161,
+          161
+        ],
+        "min_margin_on_sizing_frames": 11.348706658725703,
+        "min_margin_lig_on_sizing_frames": 2.8562085292199058
+      },
+      "worker_config": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "CUDA_MPS_ACTIVE_THREAD_PERCENTAGE": "30",
+        "CUDA_MPS_CLIENT_PRIORITY": "1",
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "mps_thread_percentage": 30
+    },
+    {
+      "csv": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/rep02/online/pbsa_from_chunk_0050.csv",
+      "from_chunk": 50,
+      "to_chunk": 100,
+      "state": "closed",
+      "n_submitted": 500,
+      "n_reports": 500,
+      "n_flagged": 0,
+      "n_skipped": 0,
+      "margin_flag": 0.7852581802737353,
+      "total_pbsa_s": 58.07,
+      "max_latency_s": 1.346,
+      "warmup_time_s": 22.0,
+      "sizing": {
+        "source": "pilot 100 \u5e27",
+        "fluctuation_allowance": 0.0,
+        "reach": 5.75,
+        "margin_min": 7.852581802737352,
+        "margin_flag": 0.7852581802737353,
+        "padding": 13.602581802737351,
+        "padding_lig": 7.852581802737352,
+        "grid": [
+          193,
+          193,
+          193
+        ],
+        "grid_lig": [
+          129,
+          161,
+          161
+        ],
+        "min_margin_on_sizing_frames": 11.348706658725703,
+        "min_margin_lig_on_sizing_frames": 2.8562085292199058
+      },
+      "worker_config": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "CUDA_MPS_ACTIVE_THREAD_PERCENTAGE": "30",
+        "CUDA_MPS_CLIENT_PRIORITY": "1",
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1"
+      },
+      "mps_thread_percentage": 30
+    }
+  ],
+  "openmm": "8.5.2",
+  "host": "yayoi26.cluster.local",
+  "legacy_input_history_unverified": true,
+  "source_inputs": {
+    "prmtop": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.prmtop",
+      "sha256": "8e15dce8f9dba213f31cea28a435778a0e4ae4a42bdb644de986b46def918e7a"
+    },
+    "coordinates": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.rst7",
+      "sha256": "25a1ae46ce989cba003ad36d3535413dd2f31c437dc696e5353e28957dd04e7d"
+    },
+    "system": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup/system.xml",
+      "sha256": "a01246fda5d479f7e97c4b372f847200a294c4fe08638f294496284e223a9d99"
+    },
+    "minimized": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup/minimized_state.xml",
+      "sha256": "7d18db1d4bc2881834386ed2bb8e0edea2c2236bc54e0baaf90115f0d822ee1c"
+    },
+    "setup_record": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup/setup_record.json",
+      "sha256": "d560d5cb75014d8e953a384c26368e57000a4166a626ce796091ddb33186c3ce"
+    }
+  },
+  "legacy_setup_input_history_unverified": true,
+  "dynamics": {
+    "temperature_K": 298.15,
+    "dt_ps": 0.002,
+    "friction_per_ps": 1.0,
+    "pressure_atm": 1.0,
+    "cutoff_nm": 1.0
+  },
+  "online_required": true,
+  "md_complete": true,
+  "online_complete": true,
+  "online_valid": true,
+  "legacy_online_input_history_unverified": true,
+  "online_inputs": {
+    "schema": 1,
+    "pilot": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/rep02/npt_solute_A.npy",
+      "sha256": "031a95c4ca436af8df6067a5033a389f146ba024e5841685c7a44c2ff4cdd3d6"
+    },
+    "analyzer": {
+      "h": 0.5,
+      "fluctuation_allowance": null,
+      "margin_min": null,
+      "margin_flag": null,
+      "padding": null,
+      "h_lig": 0.25,
+      "padding_lig": null,
+      "pb_params": {
+        "eps_in": 1.0,
+        "eps_out": 78.5,
+        "ionic_strength_M": 0.15,
+        "temperature_K": 298.15,
+        "probe_radius": 1.4,
+        "ion_radius": 2.0,
+        "swin": 0.5,
+        "surface": "binary",
+        "gauss_sigma": 0.93,
+        "gauss_selfcorr": true,
+        "gap_sigma": 1.0,
+        "gauss_m": 1,
+        "eps_gap": 8.0,
+        "gcs_probe": 1.5,
+        "gcs_sigma2": 1.0,
+        "gcs_tau": 0.0025,
+        "gcs_normalize": true,
+        "eps_vacuum": 1.0,
+        "nonlinear": false,
+        "newton_max_iter": 60,
+        "newton_inner_tol": 0.001,
+        "ref_solver": "dst",
+        "precond": "auto",
+        "mg_nu": 2,
+        "mg_coarse_sweeps": 50,
+        "mg_min_n": 7,
+        "boundary_atom_block": 128,
+        "tol": 1e-05,
+        "max_iter": 2000
+      },
+      "gamma": 0.005,
+      "beta": 0.0,
+      "sa_k": 192,
+      "sa_points": 960,
+      "radii_model": "mbondi2",
+      "net_charge": null
+    },
+    "precision_bits": 32,
+    "n_solute_atoms": 4690,
+    "ligand_local_idx": [
+      4615,
+      4690
+    ],
+    "frame_steps": 5000
+  }
+}

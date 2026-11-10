@@ -1,0 +1,47 @@
+{
+  "run_id": "BRD4-6_mobley_amber_rep02",
+  "frames_total": 500,
+  "chunks_used": 50,
+  "diag_stride": 1,
+  "n_solute_atoms": 2084,
+  "first_frame": {
+    "frame": 0,
+    "chunk": 0,
+    "step": 5000,
+    "time_ps": 10.0
+  },
+  "last_frame": {
+    "frame": 499,
+    "chunk": 49,
+    "step": 2500000,
+    "time_ps": 5000.0
+  },
+  "quantiles_p5_p50_p95": {
+    "receptor_CA_rmsd_A": {
+      "5": 0.924,
+      "50": 1.273,
+      "95": 1.498
+    },
+    "ligand_heavy_rmsd_receptor_frame_A": {
+      "5": 0.669,
+      "50": 1.081,
+      "95": 1.995
+    },
+    "ligand_com_shift_A": {
+      "5": 0.235,
+      "50": 0.615,
+      "95": 1.254
+    },
+    "min_lig_rec_heavy_A": {
+      "5": 2.697,
+      "50": 2.831,
+      "95": 3.025
+    }
+  },
+  "log_means": {
+    "T_K": 298.3715,
+    "density": 1.0128
+  },
+  "reference": "setup minimized structure; ligand RMSD without symmetry correction",
+  "note": "diagnostic report only; no acceptance thresholds applied"
+}

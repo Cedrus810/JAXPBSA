@@ -1,0 +1,64 @@
+{
+  "sample": "BRD4-5",
+  "setup": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/md/brd4/BRD4-5/alprazolam_gaff_fix/setup",
+  "start": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/md/brd4/BRD4-5/alprazolam_gaff_fix/setup/solute_reference.npz",
+  "grid": {
+    "name": "default",
+    "h": 0.5,
+    "h_lig": 0.25
+  },
+  "pilot": "none (fluctuation_allowance 0)",
+  "out": "experiments/2026-10-17_small_molecule_benchmark/b1_minimisation_repeat_20261101/scores/start_default/brd4/BRD4-5/alprazolam_gaff_fix",
+  "done": false,
+  "target": "brd4",
+  "model": "alprazolam_gaff_fix",
+  "valid": true,
+  "flag": null,
+  "delta_g_mmpbsa": -21.05427114617571,
+  "components": {
+    "e_coul_rl": -8.223721341659148,
+    "e_lj_rl": -35.587622528945076,
+    "g_pb_complex": -1677.8818193833088,
+    "g_pb_receptor": -1686.136745360986,
+    "g_pb_ligand": -17.945529882842937,
+    "delta_g_pb": 26.20045586052014,
+    "delta_g_sa": -3.443383136091626
+  },
+  "solute_charge_e": {
+    "total": -0.002000035121800914,
+    "solute": 2.9979999648782005,
+    "receptor": 2.9999999665245403,
+    "ligand": -0.0020000016463343484,
+    "solute_off_integer": -0.0020000351217994705
+  },
+  "sizing": {
+    "source": "\u53c2\u8003\u5e27 + fluctuation_allowance",
+    "fluctuation_allowance": 0.0,
+    "reach": 5.7,
+    "margin_min": 7.852581802737352,
+    "margin_flag": 0.7852581802737353,
+    "padding": 13.552581802737352,
+    "padding_lig": 7.852581802737352,
+    "grid": [
+      161,
+      129,
+      161
+    ],
+    "grid_lig": [
+      129,
+      97,
+      129
+    ],
+    "min_margin_on_sizing_frames": 8.185918321597736,
+    "min_margin_lig_on_sizing_frames": 2.1795490125040535
+  },
+  "analyzer_defaults": "OnlineMMPBSA defaults (frozen main 3737870); only fluctuation_allowance=0 given",
+  "init_incl_warmup_s": 51.72,
+  "warmup_s": 50.76,
+  "ms_score": 62.42,
+  "device": "cuda:0",
+  "host": "yayoi37.cluster.local",
+  "jax": "0.10.2",
+  "openmm": "8.5.2",
+  "units": "kcal/mol (analyzer output); \u00c5 for margins and areas"
+}

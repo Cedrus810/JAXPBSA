@@ -1,0 +1,108 @@
+{
+  "sample": "a7",
+  "target": "hou",
+  "model_id": "ph74_gaff2",
+  "prmtop": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a7/ph74_gaff2/complex_solv.prmtop",
+  "coordinates": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a7/ph74_gaff2/complex_solv.rst7",
+  "input_contract": {
+    "schema": 1,
+    "sample": "a7",
+    "inputs": {
+      "prmtop": {
+        "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a7/ph74_gaff2/complex_solv.prmtop",
+        "sha256": "3c532bc0fa31183c24f2a2a0ca68a2bbe12d25709da50cc2d936f74288aeb441"
+      },
+      "coordinates": {
+        "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a7/ph74_gaff2/complex_solv.rst7",
+        "sha256": "ace42a07ef8b22aaaa319041f9f8c33190cba492e46e6023df2f0ee32bec0f08"
+      }
+    },
+    "n_system_atoms": 48253,
+    "n_solute_atoms": 4703,
+    "ligand_residue": "MID",
+    "ligand_residue_1based": 291,
+    "ligand_local_idx": [
+      4634,
+      4703
+    ]
+  },
+  "n_atoms": 48253,
+  "n_solute_atoms": 4703,
+  "ligand_residue": "MID",
+  "ligand_local_idx": [
+    4634,
+    4703
+  ],
+  "receptor_local_idx": [
+    0,
+    4634
+  ],
+  "ligand_elements": {
+    "S": 1,
+    "O": 4,
+    "C": 27,
+    "N": 5,
+    "H": 32
+  },
+  "solvent_residues": {
+    "Na+": 39,
+    "Cl-": 44,
+    "HOH": 14489
+  },
+  "forces": [
+    "HarmonicBondForce",
+    "HarmonicAngleForce",
+    "PeriodicTorsionForce",
+    "NonbondedForce",
+    "CMMotionRemover"
+  ],
+  "charge_e": {
+    "total": 0.0009998962809399936,
+    "solute": 5.000999896280938,
+    "receptor": 3.9999998875004907,
+    "ligand": 1.001000008780451,
+    "solute_off_integer": 0.0009998962809376621
+  },
+  "box_vectors_nm": [
+    [
+      8.8304,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      8.0169,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      8.4432
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "restraints": "none",
+    "E_before_kJ_mol": 643729022.1073724,
+    "E_after_kJ_mol": -784192.6466646334,
+    "max_force_after_kJ_mol_nm": 2286.7339616585523,
+    "ligand_heavy_shift_A": {
+      "max": 1.4914106142796026,
+      "mean": 0.8459852183556482
+    },
+    "wall_s": 4.06
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA GeForce RTX 5080",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "yayoi37.cluster.local",
+  "wall_s": 11.71
+}

@@ -1,0 +1,24 @@
+{
+  "calls": [
+    {
+      "models": [
+        "PMI:v21m1",
+        "P12Q_L10A:v21m1"
+      ],
+      "new": {
+        "PMI:v21m1": {
+          "init_s": 151.73,
+          "ms": 203.79
+        },
+        "P12Q_L10A:v21m1": {
+          "init_s": 126.6,
+          "ms": 223.69
+        }
+      },
+      "host": "kasuga02",
+      "device": "cuda:0",
+      "jax": "0.10.2",
+      "note": "start = minimized_state.xml solute; grid from the start alone"
+    }
+  ]
+}

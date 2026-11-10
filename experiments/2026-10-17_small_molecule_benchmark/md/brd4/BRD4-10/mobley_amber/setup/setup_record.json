@@ -1,0 +1,87 @@
+{
+  "sample": "BRD4-10",
+  "target": "brd4",
+  "model_id": "mobley_amber",
+  "prmtop": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/sources/brd4/amber/BRD4-10.prmtop",
+  "coordinates": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/sources/brd4/amber/BRD4-10.crds",
+  "n_atoms": 35147,
+  "n_solute_atoms": 2080,
+  "ligand_residue": "1XB",
+  "ligand_local_idx": [
+    2035,
+    2080
+  ],
+  "receptor_local_idx": [
+    0,
+    2035
+  ],
+  "ligand_elements": {
+    "C": 20,
+    "N": 3,
+    "O": 2,
+    "S": 1,
+    "Cl": 1,
+    "H": 18
+  },
+  "solvent_residues": {
+    "Na+": 32,
+    "Cl-": 35,
+    "HOH": 11000
+  },
+  "forces": [
+    "HarmonicBondForce",
+    "HarmonicAngleForce",
+    "PeriodicTorsionForce",
+    "NonbondedForce",
+    "CMMotionRemover"
+  ],
+  "charge_e": {
+    "total": 0.005000966947093843,
+    "solute": 3.005000966947098,
+    "receptor": 2.9999999665245403,
+    "ligand": 0.005001000422559465,
+    "solute_off_integer": 0.00500096694709784
+  },
+  "box_vectors_nm": [
+    [
+      7.1547,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      6.3133,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      9.5595
+    ]
+  ],
+  "pme_cutoff_nm": 1.0,
+  "constraints": "HBonds",
+  "rigid_water": true,
+  "minimisation": {
+    "tolerance_kJ_mol_nm": 10.0,
+    "max_iterations": "until converged",
+    "restraints": "none",
+    "E_before_kJ_mol": -406496.7430957018,
+    "E_after_kJ_mol": -581359.2189390636,
+    "max_force_after_kJ_mol_nm": 2462.7599810329266,
+    "ligand_heavy_shift_A": {
+      "max": 1.7906151252114395,
+      "mean": 0.8722657360043359
+    },
+    "wall_s": 4.97
+  },
+  "device": {
+    "platform": "CUDA",
+    "DeviceIndex": "0",
+    "DeviceName": "NVIDIA RTX A4000",
+    "Precision": "mixed"
+  },
+  "openmm": "8.5.2",
+  "host": "yayoi07.cluster.local",
+  "wall_s": 10.61
+}

@@ -1,0 +1,47 @@
+{
+  "run_id": "a1_ph74_gaff2_acconline",
+  "frames_total": 120,
+  "chunks_used": 12,
+  "diag_stride": 1,
+  "n_solute_atoms": 4690,
+  "first_frame": {
+    "frame": 0,
+    "chunk": 0,
+    "step": 5000,
+    "time_ps": 10.0
+  },
+  "last_frame": {
+    "frame": 119,
+    "chunk": 11,
+    "step": 600000,
+    "time_ps": 1200.0
+  },
+  "quantiles_p5_p50_p95": {
+    "receptor_CA_rmsd_A": {
+      "5": 0.913,
+      "50": 0.995,
+      "95": 1.1
+    },
+    "ligand_heavy_rmsd_receptor_frame_A": {
+      "5": 1.079,
+      "50": 1.531,
+      "95": 2.145
+    },
+    "ligand_com_shift_A": {
+      "5": 0.504,
+      "50": 0.836,
+      "95": 1.41
+    },
+    "min_lig_rec_heavy_A": {
+      "5": 2.8,
+      "50": 3.08,
+      "95": 3.275
+    }
+  },
+  "log_means": {
+    "T_K": 298.6238,
+    "density": 1.0316
+  },
+  "reference": "setup minimized structure; ligand RMSD without symmetry correction",
+  "note": "diagnostic report only; no acceptance thresholds applied"
+}

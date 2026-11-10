@@ -1,0 +1,65 @@
+{
+  "sample": "BRD4-8",
+  "replicas": [
+    1,
+    2,
+    3
+  ],
+  "frames": [
+    124,
+    249,
+    374
+  ],
+  "n_shift": 8,
+  "seed": 20261025,
+  "host": "kasuga02",
+  "device": "cuda:0",
+  "jax": "0.10.2",
+  "precision_bits": 32,
+  "net_charge": 2.99900196649161,
+  "q_ligand": -0.0009980000329266048,
+  "grids": {
+    "0.5_base": {
+      "shape": [
+        161,
+        161,
+        193
+      ],
+      "padding": 13.552581802737352,
+      "first_call_incl_compile_s": 25.6,
+      "ms_median": {
+        "full": 122.5,
+        "ronly": 58.5,
+        "lonly": 58.5,
+        "shift": 118.2
+      }
+    },
+    "0.5_tol6": {
+      "shape": [
+        161,
+        161,
+        193
+      ],
+      "padding": 13.552581802737352,
+      "first_call_incl_compile_s": 25.7,
+      "ms_median": {
+        "tol6": 144.8
+      }
+    },
+    "0.35_base": {
+      "shape": [
+        225,
+        225,
+        257
+      ],
+      "padding": 13.552581802737352,
+      "first_call_incl_compile_s": 41.7,
+      "ms_median": {
+        "full": 401.0,
+        "ronly": 206.8,
+        "lonly": 206.2,
+        "shift": 400.8
+      }
+    }
+  }
+}

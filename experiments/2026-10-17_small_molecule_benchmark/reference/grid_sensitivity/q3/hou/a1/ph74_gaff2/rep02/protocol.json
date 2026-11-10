@@ -1,0 +1,96 @@
+{
+  "schema": 2,
+  "run_id": "a1_ph74_gaff2_rep02",
+  "frames": [
+    124,
+    249,
+    374
+  ],
+  "configs": {
+    "h0.4": {
+      "h": 0.4,
+      "h_lig": 0.2
+    },
+    "h0.35": {
+      "h": 0.35,
+      "h_lig": 0.16666666666666666
+    },
+    "rot": {}
+  },
+  "n_rot": 3,
+  "seed": 20261019,
+  "pilot_window_ns": [
+    0.0,
+    5.0
+  ],
+  "pb_params": {
+    "eps_in": 1.0,
+    "eps_out": 78.5,
+    "ionic_strength_M": 0.15,
+    "temperature_K": 298.15,
+    "probe_radius": 1.4,
+    "ion_radius": 2.0,
+    "swin": 0.5,
+    "surface": "binary",
+    "gauss_sigma": 0.93,
+    "gauss_selfcorr": true,
+    "gap_sigma": 1.0,
+    "gauss_m": 1,
+    "eps_gap": 8.0,
+    "gcs_probe": 1.5,
+    "gcs_sigma2": 1.0,
+    "gcs_tau": 0.0025,
+    "gcs_normalize": true,
+    "eps_vacuum": 1.0,
+    "nonlinear": false,
+    "newton_max_iter": 60,
+    "newton_inner_tol": 0.001,
+    "ref_solver": "dst",
+    "precond": "auto",
+    "mg_nu": 2,
+    "mg_coarse_sweeps": 50,
+    "mg_min_n": 7,
+    "boundary_atom_block": 128,
+    "tol": 1e-05,
+    "max_iter": 2000
+  },
+  "precision_bits": 32,
+  "inputs": {
+    "prmtop": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.prmtop",
+      "sha256": "8e15dce8f9dba213f31cea28a435778a0e4ae4a42bdb644de986b46def918e7a"
+    },
+    "system": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup/system.xml",
+      "sha256": "a01246fda5d479f7e97c4b372f847200a294c4fe08638f294496284e223a9d99"
+    },
+    "setup_record": {
+      "path": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/setup/setup_record.json",
+      "sha256": "d560d5cb75014d8e953a384c26368e57000a4166a626ce796091ddb33186c3ce"
+    }
+  },
+  "trajectory": {
+    "dcd": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/rep02/analysis/solute_dry.dcd",
+    "n_atoms": 4690,
+    "reference_frames": [
+      [
+        124,
+        625000,
+        1250.0
+      ],
+      [
+        249,
+        1250000,
+        2500.0
+      ],
+      [
+        374,
+        1875000,
+        3750.0
+      ]
+    ]
+  },
+  "ours_online_csvs": [
+    "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/rep02/online/pbsa_from_chunk_0000.csv"
+  ]
+}

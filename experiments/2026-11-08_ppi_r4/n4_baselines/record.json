@@ -1,0 +1,94 @@
+{
+  "calls": [
+    {
+      "models": [
+        "PMI:v21m1",
+        "PMI:v21m2",
+        "PMI-L10A:v21m1",
+        "PMI-L10A:v21m2",
+        "T1L_L10A:v21m1",
+        "T1L_L10A:v21m2",
+        "A4L_L10A:v21m1",
+        "A4L_L10A:v21m2",
+        "N8A_L10A:v21m1",
+        "N8A_L10A:v21m2",
+        "S11M_L10A:v21m1",
+        "S11M_L10A:v21m2",
+        "P12Q_L10A:v21m1",
+        "P12Q_L10A:v21m2",
+        "PMI-M4:v21m1",
+        "PMI-M4:v21m2"
+      ],
+      "new": {
+        "PMI:v21m1": {
+          "init_s": 123.91,
+          "ms": 119.4
+        },
+        "PMI:v21m2": {
+          "init_s": 28.65,
+          "ms": 111.76
+        },
+        "PMI-L10A:v21m1": {
+          "init_s": 75.36,
+          "ms": 103.02
+        },
+        "PMI-L10A:v21m2": {
+          "init_s": 14.17,
+          "ms": 109.74
+        },
+        "T1L_L10A:v21m1": {
+          "init_s": 46.98,
+          "ms": 108.86
+        },
+        "T1L_L10A:v21m2": {
+          "init_s": 5.1,
+          "ms": 106.26
+        },
+        "A4L_L10A:v21m1": {
+          "init_s": 5.01,
+          "ms": 97.62
+        },
+        "A4L_L10A:v21m2": {
+          "init_s": 5.0,
+          "ms": 107.37
+        },
+        "N8A_L10A:v21m1": {
+          "init_s": 46.31,
+          "ms": 100.71
+        },
+        "N8A_L10A:v21m2": {
+          "init_s": 14.52,
+          "ms": 107.28
+        },
+        "S11M_L10A:v21m1": {
+          "init_s": 47.77,
+          "ms": 108.73
+        },
+        "S11M_L10A:v21m2": {
+          "init_s": 5.06,
+          "ms": 106.56
+        },
+        "P12Q_L10A:v21m1": {
+          "init_s": 45.62,
+          "ms": 106.23
+        },
+        "P12Q_L10A:v21m2": {
+          "init_s": 5.1,
+          "ms": 106.35
+        },
+        "PMI-M4:v21m1": {
+          "init_s": 47.29,
+          "ms": 106.41
+        },
+        "PMI-M4:v21m2": {
+          "init_s": 14.79,
+          "ms": 101.63
+        }
+      },
+      "host": "yayoi30.cluster.local",
+      "device": "cuda:0",
+      "jax": "0.10.2",
+      "note": "start = minimized_state.xml solute; grid from the start alone"
+    }
+  ]
+}

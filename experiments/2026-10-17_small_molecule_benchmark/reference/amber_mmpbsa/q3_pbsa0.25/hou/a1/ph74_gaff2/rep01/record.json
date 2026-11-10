@@ -1,0 +1,93 @@
+{
+  "run_id": "a1_ph74_gaff2_rep01",
+  "frames": [
+    {
+      "frame": "124",
+      "chunk": "12",
+      "step": "625000",
+      "time_ps": "1250.0"
+    },
+    {
+      "frame": "249",
+      "chunk": "24",
+      "step": "1250000",
+      "time_ps": "2500.0"
+    },
+    {
+      "frame": "374",
+      "chunk": "37",
+      "step": "1875000",
+      "time_ps": "3750.0"
+    }
+  ],
+  "prmtop_source": "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/prepared/hou/a1/ph74_gaff2/complex_solv.prmtop",
+  "atoms": {
+    "complex": 4690,
+    "receptor": 4615,
+    "ligand": 75
+  },
+  "radii_overwritten_vs_ante_mbondi2": {
+    "complex": 1,
+    "receptor": 0,
+    "ligand": 1
+  },
+  "prmtop_charge_e": {
+    "complex": 7.000999890244378,
+    "receptor": 4.999999888049271,
+    "ligand": 2.0010000021951124
+  },
+  "gb": {
+    "igb": 5,
+    "saltcon": 0.15,
+    "surften": 0.0072,
+    "surfoff": 0.0
+  },
+  "pb": {
+    "istrng_M": 0.15,
+    "indi": 1.0,
+    "exdi": 78.5,
+    "pbsa_h": 0.25,
+    "prbrad": 1.4,
+    "inp": 1,
+    "cavity_surften": 0.005,
+    "cavity_offset": 0.0,
+    "fillratio": 4.0
+  },
+  "pbsa_mdin_as_read": {
+    "inp": "1",
+    "smoothopt": "1",
+    "radiopt": "0",
+    "npbopt": "0",
+    "solvopt": "1",
+    "maxitn": "1000",
+    "nfocus": "2",
+    "bcopt": "5",
+    "eneopt": "2",
+    "fscale": "8",
+    "epsin": "1.0",
+    "epsout": "78.5",
+    "istrng": "150.0",
+    "dprob": "1.4",
+    "iprob": "2.0",
+    "accept": "0.001",
+    "fillratio": "4.0",
+    "space": "0.25",
+    "cutnb": "0",
+    "sprob": "0.557",
+    "cavity_surften": "0.005",
+    "cavity_offset": "0.0"
+  },
+  "eo_methods_parsed": {
+    "GB": 3,
+    "PB": 3
+  },
+  "ours_scores": [
+    "/home/ruigengji/JAXPBSA/experiments/2026-10-17_small_molecule_benchmark/md/hou/a1/ph74_gaff2/rep01/online/pbsa_from_chunk_0000.csv"
+  ],
+  "ours_found": 3,
+  "amber_wall_s": 271.2,
+  "total_wall_s": 362.1,
+  "host": "yayoi36.cluster.local",
+  "amberhome": "/home/ruigengji/miniforge3/envs/openmm_dev",
+  "note": "EEL/VDW: correctness check; PB/SA: method comparison; GB: baseline. No thresholds applied."
+}

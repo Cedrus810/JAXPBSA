@@ -1,0 +1,57 @@
+{
+  "reference": {
+    "sample_scores": {
+      "PMI": -61.409,
+      "A4L_L10A": -60.595,
+      "S11M_L10A": -60.285,
+      "PMI-L10A": -59.817,
+      "PMI-M4": -59.751,
+      "T1L_L10A": -58.95,
+      "P12Q_L10A": -57.575,
+      "N8A_L10A": -56.852
+    },
+    "adjacent_gaps": {
+      "min": 0.066,
+      "max": 1.375
+    },
+    "replica_se": {
+      "min": 0.302,
+      "max": 0.786
+    },
+    "score_range": 4.557
+  },
+  "n1": {
+    "frames": 798,
+    "samples": [
+      "A4L_L10A",
+      "N8A_L10A",
+      "PMI",
+      "PMI-L10A",
+      "PMI-M4",
+      "S11M_L10A",
+      "T1L_L10A"
+    ],
+    "sample_mean_default_err_total": {
+      "min": -10.366,
+      "max": -9.235,
+      "spread": 1.131
+    },
+    "spearman_samples_default_vs": {
+      "h0.4": 0.8214285714285715,
+      "h0.35": 0.6785714285714287
+    }
+  },
+  "n2n3": {
+    "frames": 240
+  },
+  "rank_vs_main_8samples": {
+    "ours_amberframes": 0.857,
+    "amber_pb": 0.524,
+    "amber_gb": 0.524,
+    "start_score_mean2": 0.286,
+    "start_dsasa_mean2": 0.5,
+    "md_dsasa": 0.762,
+    "start_contacts_mean2 (negated)": 0.024
+  },
+  "note": "label-free: no experimental values read; Spearman values compare orderings of scorers only"
+}

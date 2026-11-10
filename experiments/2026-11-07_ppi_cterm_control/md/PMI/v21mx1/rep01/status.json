@@ -1,0 +1,101 @@
+{
+  "run_id": "PMI_v21mx1_rep01",
+  "sample_id": "Li2021_MDM2_TSFAEYWNLLSP_Kd",
+  "peptide_name": "PMI",
+  "model_id": "v21mx1",
+  "replica": 1,
+  "setup": "/home/ruigengji/JAXPBSA/experiments/2026-11-07_ppi_cterm_control/md/PMI/v21mx1/setup",
+  "seeds": {
+    "velocity": 2026691011,
+    "integrator": 2026692011,
+    "barostat": 2026693011
+  },
+  "dt_ps": 0.002,
+  "frame_steps": 5000,
+  "chunk_steps": 500000,
+  "nvt_steps": 50000,
+  "npt_steps": 500000,
+  "eq_restraint_k": 0.0,
+  "nvt_done": true,
+  "npt_done": true,
+  "chunks_done": 20,
+  "prod_target_history": [
+    10000000
+  ],
+  "contexts": [
+    {
+      "stage": "nvt",
+      "chunk": null,
+      "integrator_seed": 2026692011,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "npt",
+      "chunk": null,
+      "integrator_seed": 2026699930,
+      "barostat_seed": 2026700930,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": null,
+      "integrator_seed": 2026707849,
+      "barostat_seed": 2026708849,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    },
+    {
+      "stage": "prod",
+      "chunk": 7,
+      "integrator_seed": 2026771201,
+      "barostat_seed": 2026772201,
+      "device": {
+        "platform": "CUDA",
+        "DeviceIndex": "0",
+        "DeviceName": "NVIDIA GeForce RTX 3090",
+        "Precision": "mixed"
+      }
+    }
+  ],
+  "stage_wall_s": {
+    "nvt": 31.82,
+    "npt": 387.48,
+    "prod_chunk_0000": 384.12,
+    "prod_chunk_0001": 387.65,
+    "prod_chunk_0002": 387.13,
+    "prod_chunk_0003": 387.52,
+    "prod_chunk_0004": 390.09,
+    "prod_chunk_0005": 389.59,
+    "prod_chunk_0006": 389.5,
+    "prod_chunk_0007": 164.9,
+    "prod_chunk_0008": 167.97,
+    "prod_chunk_0009": 167.93,
+    "prod_chunk_0010": 168.06,
+    "prod_chunk_0011": 168.44,
+    "prod_chunk_0012": 167.97,
+    "prod_chunk_0013": 168.06,
+    "prod_chunk_0014": 168.01,
+    "prod_chunk_0015": 168.12,
+    "prod_chunk_0016": 167.35,
+    "prod_chunk_0017": 168.17,
+    "prod_chunk_0018": 168.79,
+    "prod_chunk_0019": 167.98
+  },
+  "complete": true,
+  "openmm": "8.5.2",
+  "host": "yayoi08.cluster.local"
+}

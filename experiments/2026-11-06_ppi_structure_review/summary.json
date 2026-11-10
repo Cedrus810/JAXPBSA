@@ -1,0 +1,11 @@
+{
+  "scope": "Explicit record files for eight samples and two v2.1 models; no trajectory scan or molecular calculation",
+  "n_samples": 8,
+  "n_models": 16,
+  "finalize_pass_recorded": 16,
+  "c2_pass_recorded": 16,
+  "c3_pass_recorded": 16,
+  "all_named_coordinate_files_present": true,
+  "bound_pose_review": "not performed",
+  "inventory": "record_inventory.csv"
+}
